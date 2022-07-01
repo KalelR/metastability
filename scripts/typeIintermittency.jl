@@ -1,85 +1,123 @@
-using InteractiveDynamics, GLMakie, DynamicalSystems
+using GLMakie, DynamicalSystems
 
+# Cobweb interactive
 # the second range is a convenience for intermittency example of logistic
 # rrange = 1:0.001:4.0
 # rrange = (rc = 1 + sqrt(8); [rc, rc - 1e-5, rc - 1e-3])
 # rrange = 3.8248:0.00001:3.8249
 # rrange = 3.7:0.0001:3.845
-rrange = 3.8:0.00001:3.84
-lo = Systems.logistic(0.4; r = rrange[1])
-interactive_cobweb(lo, rrange, 5)
+# using InteractiveDynamics, 
+# rrange = 3.8:0.00001:3.84
+# lo = Systems.logistic(0.4; r = rrange[1])
+# interactive_cobweb(lo, rrange, 5)
 
-
-
-# Distribution of laminar period
-lo = Systems.logistic(0.4; r = 3.8284)
-Ttr = 500
-T = 500000
-# λt, t = ChaosTools.lyapunovspectrum_convergence(lo, T; Ttr)
-
-win_size = 4
-std_th = 0.001;
-
-u0s = sort(rand(1000))
-Ts = zeros(Float64, length(u0s))
-for (idx,u0) ∈ enumerate(u0s) 
-    tr = trajectory(lo, T, u0; Ttr); t_tr = Ttr:1:Ttr+T
-    Ts[idx] = estimate_laminarperiod_duration(tr; win_size, std_th)
-end
-
-
-tr = trajectory(lo, T, rand(); Ttr); t_tr = Ttr:1:Ttr+T
-Ts = estimate_laminarperiod_duration(tr; win_size, std_th)
-
-fig = Figure()
-ax = Axis(fig[1,1])
-hist!(ax, Ts; bins=40)
-
-function estimate_laminarperiod_duration(tr; win_size=4, std_th)
-    std_tr3 = moving_std(tr, 3*win_size);
-    laminar_period_bool = std_tr3 .< std_th #0s are laminar, 1s are nonlaminar
-    T = length_samevalues_allowfluctuations(laminar_period_bool, 3)[0] #laminar period only for 0
-end
-
-function length_samevalues(v)
-    unique_vals = unique(v)
-    lens_values = Dict(unique_vals .=> [Int64[] for i=1:length(unique_vals)])
-    current_value = v[1]
-    duration = 1
-    for i = 2:length(v)
-        if v[i] == current_value 
-            duration += 1
-        else 
-            push!(lens_values[current_value], duration)
-            current_value = v[i]; duration=1
-        end
+function moving_std(v, ws)
+    mv_average = zeros(length(v)-(ws-1))
+    for i=1:length(mv_average)
+        mv_average[i] = std(v[i:3:i+ws-1])
     end
-    return lens_values 
+    return mv_average 
 end
+
+function estimate_laminarperiod_duration(tr; win_size=4, std_th, num_allowed_fluctuations=3)
+    std_tr3 = moving_std(tr, 3*win_size);
+    laminar_period_bool = std_tr3 .< std_th #1s are laminar, 0s are nonlaminar
+    T = length_samevalues_allowfluctuations(laminar_period_bool, num_allowed_fluctuations)[1] #laminar period only for 1
+end
+
 """
 fluctuation_th = 0 allows no repetition
 """
 function length_samevalues_allowfluctuations(v, num_fluctuations=0)
     unique_vals = unique(v)
     lens_values = Dict(unique_vals .=> [Int64[] for i=1:length(unique_vals)])
-    duration = 0
-    for i = 1:length(v)-(1+num_fluctuations)
-        if any(v[i] .== v[(i+1):(i+1)+num_fluctuations]) 
+    duration = 1
+    curr_val = v[1]
+    for i = 1:length(v)-(num_fluctuations+1)
+        if any(curr_val .== v[(i+1):(i+1)+num_fluctuations]) 
             duration += 1
         else 
-            push!(lens_values[v[i-1]], duration)
-            duration=1
+            push!(lens_values[curr_val], duration)
+            duration=1; curr_val = v[i+1]
         end
     end
+    if duration > 1 push!(lens_values[curr_val], duration-1) end
     return lens_values 
 end
 
+# --------------------------------------------------------- Distribution of laminar period --------------------------------------------------------- #
+reduced_r(r, rc) = abs(r-rc)/rc
+reduced_to_normal(μ, rc) = rc*(1-μ)
+r = rc-1e-4
+rc = 1+√8
+Ttr = 500
+T = 5e6
+win_size = 4
+std_th = 0.001;
+for r ∈ [rc-1e-3, rc-1e-4, rc-1e-5, rc-1e-6, rc-1e-7, rc-1e-8]
+lo = Systems.logistic(0.4; r)
+μ = reduced_r(r, rc)
+println("$(μ^(-1/2))")
+
+u0s = sort(rand(10))
+Ts_all = []
+for (idx,u0) ∈ enumerate(u0s) 
+    tr = trajectory(lo, T, u0; Ttr); t_tr = Ttr:1:Ttr+T
+    Ts = estimate_laminarperiod_duration(tr; win_size, std_th)
+    Ts_all = vcat(Ts_all, Ts)
+end
+
+# tr = trajectory(lo, T, rand(); Ttr); t_tr = Ttr:1:Ttr+T
+# Ts = estimate_laminarperiod_duration(tr; win_size, std_th, num_allowed_fluctuations=10)
+
+fig = Figure()
+ax = Axis(fig[1,1], title="r = $(r), rc = $(rc)")
+hist!(ax, Ts; bins=50)
+save("logistic-distribution-laminartimes-r_$(r).png", fig)
+end
+
+
+
+
+
+
+# -------------------------------------------------------- Scaling of laminar period with r -------------------------------------------------------- #
+logrange(x1, x2; length) = (10^y for y in range(log10(x1), log10(x2), length=length))
+
+Ttr = 500
+T = 1000000
+win_size = 4
+std_th = 0.001;
+μs = collect(logrange(1e-9, 1e-5; length=30))
+rs = reduced_to_normal.(μs, rc)
+
+u0 = rand();
+T_means = zeros(Float64, length(rs));
+for (i, r) ∈ enumerate(rs)
+    lo = Systems.logistic(u0; r)
+    tr = trajectory(lo, T, u0; Ttr); t_tr = Ttr:1:Ttr+T
+    T_means[i] = mean(estimate_laminarperiod_duration(tr; win_size, std_th, num_allowed_fluctuations=10))
+end
+
+using CurveFit 
+offset, exponent = linear_fit(log10.(μs), log10.(T_means))
+fig = Figure()
+ax = Axis(fig[1,1], yscale=log10, xscale=log10, title = "<τ> ~ μ^{$(round(exponent, digits=3))}")
+scatter!(ax, μs, T_means, color=:black)
+lines!(ax, μs, μs .^(exponent) .* 10^offset, color=:red )
+ax.ylabel="<τ>"; ax.xlabel="μ"
+save("logistic-scaling-with-r.png", fig)
+
+
+
+
 
 # length_samevalues([1,1,1,0,0,0,1,1,1,0,1,0,1,1,0,0,0,0])
-length_samevalues_allowfluctuations([1,1,1,0,0,0,1,1,1,0,1,0,1,1,0,0,0,0], 1)
+# length_samevalues_allowfluctuations([1,1,1,0,0,0,1,1,1,0,1,0,1,1,0,0,0,0,0,0,0], 1)
 
 
-## Below: tried a few different ways: through finite-time lyapunovs (tried mean and min, its hard because they fluctuate a lot); and finally with std of f^3. This worked best.
+# ---------- Below: tried a few different ways: through finite-time lyapunovs (tried mean and min, its hard because they fluctuate a lot); --------- #
+#  and finally with std of f^3. This worked best.
 
 
 fig = Figure()
@@ -153,19 +191,16 @@ lines!(ax2, t_tr, tr, color=λt_fs .> λ_th, colormap=[:blue, :red])
 linkxaxes!(ax, ax2)
 
 ## trying with f3 
-function moving_std(v, ws)
-    mv_average = zeros(length(v)-(ws-1))
-    for i=1:length(mv_average)
-        mv_average[i] = std(v[i:3:i+ws-1])
-    end
-    return mv_average 
-end
+
 # tr3 = tr[1:3:end]
 # t_tr3 = t[1:3:end]
+lo = Systems.logistic(0.4; rs[end])
+Ttr = 500
+T = 5000
 win_size = 4
 tr = trajectory(lo, T; Ttr); t_tr = Ttr:1:Ttr+T;
-std_tr3 = moving_std(tr, 3*win_size)
-t_stdtr3 = t[1:end-3*win_size+1];
+std_tr3 = moving_std(tr, 3*win_size);
+t_stdtr3 = t_tr[1:end-3*win_size+1];
 t_tr = t_tr[1:end-(3*win_size-1)];
 tr = tr[1:end-(3*win_size-1)];
 
@@ -180,7 +215,8 @@ ax2 = Axis(fig[2,1])
 lines!(ax2, t_tr, tr, color=std_tr3 .< std_th, colormap=[:red, :blue])
 linkxaxes!(ax, ax2)
 
-
+laminar_period_bool = std_tr3 .< std_th #1s are laminar, 0s are nonlaminar
+T = length_samevalues_allowfluctuations(laminar_period_bool, 10)[1] #laminar period only for 0
 
 
 # scaling of laminar period
