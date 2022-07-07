@@ -1,5 +1,6 @@
 using GLMakie, DynamicalSystems
 
+# ------------------------------------------------------------------ Phenomenology ----------------------------------------------------------------- #
 # Cobweb interactive
 # the second range is a convenience for intermittency example of logistic
 # rrange = 1:0.001:4.0
@@ -11,6 +12,39 @@ using GLMakie, DynamicalSystems
 # lo = Systems.logistic(0.4; r = rrange[1])
 # interactive_cobweb(lo, rrange, 5)
 
+T = 1000
+Ttr = 0
+
+
+
+r = 3.8282
+lo = Systems.logistic(0.4; r); t = Ttr:Ttr+T 
+tr = trajectory(lo, T; Ttr)
+fig = Figure()
+ax = Axis(fig[1,1])
+scatterlines!(ax, t, tr, color=:black, markersize=4)
+ylims!(0, 1)
+xlims!(0, 150)
+
+
+
+#coloring the laminar and chaotic periods; not very good though
+win_size = 4
+std_th = 0.001;
+
+r = 3.8284
+lo = Systems.logistic(0.4; r); t = Ttr:Ttr+T 
+tr = trajectory(lo, T; Ttr)
+lam_periods_bool = laminarperiods(tr; win_size, std_th); tr = tr[1:end-3*win_size+1]; t = t[1:end-3*win_size+1];
+fig = Figure()
+ax = Axis(fig[1,1])
+# lines!(ax, t, tr)
+scatterlines!(ax, t, tr, color=lam_periods_bool)
+save("../plots/typeI/logistic-timeseries-r_$(r).png", fig)
+
+
+
+
 function moving_std(v, ws)
     mv_average = zeros(length(v)-(ws-1))
     for i=1:length(mv_average)
@@ -19,9 +53,13 @@ function moving_std(v, ws)
     return mv_average 
 end
 
-function estimate_laminarperiod_duration(tr; win_size=4, std_th, num_allowed_fluctuations=3)
+function laminarperiods(tr; win_size=4, std_th)
     std_tr3 = moving_std(tr, 3*win_size);
     laminar_period_bool = std_tr3 .< std_th #1s are laminar, 0s are nonlaminar
+end
+
+function estimate_laminarperiod_duration(tr; win_size=4, std_th, num_allowed_fluctuations=3)
+    laminar_period_bool = laminarperiods(tr; win_size, std_th)
     T = length_samevalues_allowfluctuations(laminar_period_bool, num_allowed_fluctuations)[1] #laminar period only for 1
 end
 

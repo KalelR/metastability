@@ -7,9 +7,9 @@ using GLMakie, DynamicalSystems
 using InteractiveDynamics 
 n = 2000
 Ttr = 2000
-rrange = 3.4:0.0005:4.0; #interesting part of the diagram 
+rrange = 3.4:0.0001:4.0; #interesting part of the diagram 
 lo = Systems.logistic(0.4; r = rrange[1]);
-interactive_cobweb(lo, rrange, 5)
+# interactive_cobweb(lo, rrange, 5)
 output = orbitdiagram(lo, 1, 1, rrange; n, Ttr);
 
 L = length(rrange);
@@ -23,6 +23,20 @@ end
 fig, ax = scatter(x, y; axis = (xlabel = L"r", ylabel = L"x"),
     markersize = 0.8, color = ("black", 0.05),
 )
+
+##plot iterates of logistic map starting at 0.5
+n = 20; Ttr=  0
+output = orbitdiagram(lo, 1, 1, rrange; n, Ttr, u0=0.5);
+
+L = length(rrange);
+x = Vector{Float64}(undef, n*L);
+y = copy(x);
+for j in 1:L
+    x[(1 + (j-1)*n):j*n] .= rrange[j]
+    y[(1 + (j-1)*n):j*n] .= output[j]
+end
+
+scatter!(ax, x, y; markersize = 3, color = ("red", 0.3))
 
 # ------------------------------------------------- Example on particle in double well (eg duffing). Following Ishii, 1986 (Physics Letters A) ------------------------------------------------ #
 # """
