@@ -16,8 +16,8 @@ end
 
 
 
-T = 5000
-# T = 200000
+# T = 5000
+T = 10000
 μ = 1.0 
 
 ##GH - stable HC!!!!!
@@ -28,6 +28,15 @@ b = -0.1
 # a = -0.5
 # b = -0.01
 c = -1 - a - b
+
+#inpisred by ashwin (with fps being (1,0,0)) but does not work
+# a = -1.0
+# b = -1.0
+# c = -1.0 
+
+# ##or 
+# μ = 0.2 
+# a = b = c = -μ
 
 ## stabilitizes and becomes node apparently
 # T = 1500
@@ -65,8 +74,8 @@ fps = hcat([fps_x; fps_y; fps_z]...)'
 
 # u0 = fps_y[3] .+ [0.1, -0.5, 0.1] #still converges to node, this fp is repeller
 # u0 = fps_y[1] .+ [0.1, +0.5, 0.1]
-u0 = [0.1, 0.2, 0.3] #off the coordinate plane or axis should be attracted towards HC
-# u0 = 5 .* rand(3)
+# u0 = [0.1, 0.2, 0.3] #off the coordinate plane or axis should be attracted towards HC
+u0 = 5 .* rand(3)
 # u0 = [5.3, 5.2, 5.4]
 # u0 = [-0.1, -0.2, -0.3] 
 # u0 = [10,10,10] #goes to a node
