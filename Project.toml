@@ -3,7 +3,12 @@ authors = ["kalelrossi"]
 
 [deps]
 CurveFit = "5a033b19-8c74-5913-a970-47c3779ef25c"
+DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
+DiffEqBase = "2b5f629d-d688-5b77-993f-72d75c75574e"
+DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
 DrWatson = "634d3b9d-ee7a-5ddf-bec9-22491ea816e1"
+DynamicalSystems = "61744808-ddfa-5f27-97ff-6e42cc95d634"
+GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 Symbolics = "0c5d862f-8b57-4792-8d23-62f2024744c7"
 
