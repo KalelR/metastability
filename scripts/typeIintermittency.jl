@@ -20,11 +20,13 @@ Ttr = 0
 r = 3.8282
 lo = Systems.logistic(0.4; r); t = Ttr:Ttr+T 
 tr = trajectory(lo, T; Ttr)
-fig = Figure()
-ax = Axis(fig[1,1])
+fig = Figure(resolution=(800, 250))
+ax = Axis(fig[1,1], ylabel="x", xlabel="t")
 scatterlines!(ax, t, tr, color=:black, markersize=4)
 ylims!(0, 1)
 xlims!(0, 150)
+save("../plots/typeI/logistic-timeseries-r_$(r)-uncoloured.png", fig)
+
 
 
 
@@ -84,6 +86,7 @@ function length_samevalues_allowfluctuations(v, num_fluctuations=0)
 end
 
 # --------------------------------------------------------- Distribution of laminar period --------------------------------------------------------- #
+using Statistics
 reduced_r(r, rc) = abs(r-rc)/rc
 reduced_to_normal(μ, rc) = rc*(1-μ)
 r = rc-1e-4
@@ -92,27 +95,28 @@ Ttr = 500
 T = 5e6
 win_size = 4
 std_th = 0.001;
-for r ∈ [rc-1e-3, rc-1e-4, rc-1e-5, rc-1e-6, rc-1e-7, rc-1e-8]
-lo = Systems.logistic(0.4; r)
-μ = reduced_r(r, rc)
-println("$(μ^(-1/2))")
+r = rc-1e-7
+# for r ∈ [rc-1e-3, rc-1e-4, rc-1e-5, rc-1e-6, rc-1e-7, rc-1e-8]
+    lo = Systems.logistic(0.4; r)
+    μ = reduced_r(r, rc)
+    println("$(μ^(-1/2))")
 
-u0s = sort(rand(10))
-Ts_all = []
-for (idx,u0) ∈ enumerate(u0s) 
-    tr = trajectory(lo, T, u0; Ttr); t_tr = Ttr:1:Ttr+T
-    Ts = estimate_laminarperiod_duration(tr; win_size, std_th)
-    Ts_all = vcat(Ts_all, Ts)
-end
+    u0s = sort(rand(10))
+    Ts_all = []
+    for (idx,u0) ∈ enumerate(u0s) 
+        tr = trajectory(lo, T, u0; Ttr); t_tr = Ttr:1:Ttr+T
+        Ts = estimate_laminarperiod_duration(tr; win_size, std_th)
+        Ts_all = vcat(Ts_all, Ts)
+    end
 
-# tr = trajectory(lo, T, rand(); Ttr); t_tr = Ttr:1:Ttr+T
-# Ts = estimate_laminarperiod_duration(tr; win_size, std_th, num_allowed_fluctuations=10)
+    # tr = trajectory(lo, T, rand(); Ttr); t_tr = Ttr:1:Ttr+T
+    # Ts = estimate_laminarperiod_duration(tr; win_size, std_th, num_allowed_fluctuations=10)
 
-fig = Figure()
-ax = Axis(fig[1,1], title="r = $(r), rc = $(rc)")
-hist!(ax, Ts; bins=50)
-save("logistic-distribution-laminartimes-r_$(r).png", fig)
-end
+    fig = Figure()
+    ax = Axis(fig[1,1], title="r = $(r), rc = $(rc)")
+    hist!(ax, Ts_all; bins=50)
+    save("logistic-distribution-laminartimes-r_$(r).png", fig)
+# end
 
 
 
@@ -265,3 +269,106 @@ lines(x, logistic_derivative)
 
 
 #for lorenz maybe: ChaosTools.lyapunovspectrum_convergence(tinteg, T, 1, Ttr); tinteg = tangent_integrator(lo, 1)
+
+
+
+#---------------------------------------------- LORENZ ---------------------------------------------
+using OrdinaryDiffEq
+include("utils.jl")
+plotsdir() = "../plots/"
+
+@inbounds @inline function lorenz!(du, u, p, t)
+    σ, ρ, β = p
+    du[1] = σ*(u[2]-u[1])
+    du[2] = u[1]*(ρ-u[3]) - u[2]
+    du[3] = u[1]*u[2] - β*u[3]
+end
+
+T = 5000; Ttr = 100; Δt = 0.05 #rho = 166.3
+# T = 10000; Ttr = 100; Δt = 0.05 #rho = 166.062
+
+u0 = [0.1, 0.1, 0.1]
+σ = 10
+β = 8/3
+# ρ = 166 #period (LC)
+# ρ = 166.06 #LC
+# ρ = 166.062 #intermittency (CA) GOOD
+# ρ = 166.063 #intermittency (CA) GOOD
+ρ = 166.1 #intermittency (CA) 
+# ρ = 166.2 #intermittency (CA) 
+# ρ = 166.3 #intermittency (CA) GOOD
+# ρ = 166.3 #intermittency (CA)
+p = [σ, ρ, β]
+solver = Tsit5()
+tspan = (0, T)
+typename = "typeI/lorenz"
+prob = ODEProblem(lorenz!, u0, tspan, p)
+sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8, maxiters=1e9)
+t = sol.t 
+tr = sol[:,:]'
+speeds = norm.(timederivative(sol))
+
+
+fig = Figure(resolution=(800,600), fontsize = 20)
+ax1 = Axis(fig[1, 1],  ylabel="x", xlabel="t")
+# ax2 = Axis(fig[1, 2])
+# ax3 = Axis(fig[1, 3])
+ax4 = Axis3(fig[2, :])
+lines!(ax1, t, tr[:, 1], linewidth=1, color=:black)
+# lines!(ax2, t, tr[:, 2], linewidth=1, color=:black)
+# lines!(ax3, t, tr[:, 3], linewidth=1, color=:black)
+# xlims = (990, 1000) #LC, sharing 3 cols
+xlims = (900, 1000) #intermittency at 166.062
+xlims!(ax1, xlims[1], xlims[2])
+# xlims!(ax2, xlims[1], xlims[2])
+# xlims!(ax3, xlims[1], xlims[2])
+scatter!(ax4, tr[:,1], tr[:,2], tr[:,3], color= log10.(1 ./ speeds), markersize=5)
+save("$(plotsdir())$(typename)/lorenz-x-attractor-rho_$(ρ).png", fig)
+
+
+##just time series
+fig = Figure(resolution=(800,250))
+ax1 = Axis(fig[1, 1],  ylabel="x", xlabel="t")
+lines!(ax1, t, tr[:, 1], linewidth=1, color=:black)
+xlims!(ax1, 780, 840) #for 166.1
+save("$(plotsdir())$(typename)/lorenz-timeseriesx-rho_$(ρ).png", fig)
+
+
+
+
+#---------------------------------------movie --------------
+Tplot= T-Ttr
+framerate=500 #166.3
+# framerate=1000 #166.3
+# framerate=2000 #166.3
+tplot = Int64(Tplot/Δt);
+Δt_plot = Int64(1/Δt);
+t_plot = t[1:Δt_plot:tplot];
+tr_plot = tr[1:Δt_plot:tplot, :];
+speeds_plot = log10.(1 ./ speeds[1:Δt_plot:tplot]);
+frames = 2:length(t_plot);
+
+az = -1.142477796076938
+el = 0.08906585039886639
+
+#transform the vector with the info for the colors onto a Int vector going from 1 to 264; this is used to index the colormap (wihch has 264 colors); basically transforming it into an vector of indices
+v = (speeds_plot .- minimum(speeds_plot)) ./ (maximum(speeds_plot) .- minimum(speeds_plot)) .* 255 .+ 1;
+v = round.(Int, v );
+colors = ColorSchemes.viridis[v];
+
+points = Observable(Point3f[(tr[1,1], tr[1,2], tr[1,3])])
+colors_ob = Observable([colors[1]])
+fig = Figure(resolution=(800, 600))
+ax = Axis3(fig[1,1], azimuth = az, elevation = el)
+scatter!(ax, points, color=colors_ob)
+hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
+limits!(ax, -50, 50, -100, 100, 50, 250)
+# hidespines!(ax, :t, :r) 
+record(fig, "$(plotsdir())$(typename)/lorenz-rho_$(ρ)-faster2.mp4", frames;
+        framerate) do frame
+    new_point = Point3f(tr_plot[frame,1], tr_plot[frame,2], tr_plot[frame,3])
+    points[] = push!(points[], new_point)
+	colors_ob[] = push!(colors_ob[], colors[frame])
+end
+
+

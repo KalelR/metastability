@@ -3,6 +3,7 @@
 
 # using GLMakie, DynamicalSystems
 using GLMakie, OrdinaryDiffEq
+include("utils.jl")
 plotsdir() = "../plots/"
 
 # """ prey = N; predator = P """
@@ -14,21 +15,7 @@ plotsdir() = "../plots/"
 	# return SVector{2}(du1, du2)
 end
 
-using DataStructures
-"""
-for each point in trajectory, round it to number digits (sort of equivalent of getting the eps-neighborhood of each point, eps being 10^-numdigits), count number of occurrences of rounded point and divided by total amount of points to give the measure of each point. 
-"""
-function histmeasure(tr, numdigits)
-	v = [[tr[i,1], tr[i,2]] for i=1:length(tr)]
-	vround = [round.(el, digits=numdigits) for el in v]
-	c = counter(vround)
-	measure = [c[elround] for elround in vround ]
-	measure ./ length(v)
-end
 
-
-timederivative(sol) = [sol(t, Val{1}) for t ∈ sol.t]
-norm(v) = sum(v.^2)
 γ = 2.5
 h = 1 
 ν = 0.5 
@@ -37,18 +24,20 @@ m = 0.4
 
 
 #crawlby (fast-slow dynamics) (due to saddle point)
-typename = "crawlby"
-ϵ = 1.0
-T = 1e5
-Ttr= 100
-Δt = 0.01
-Tplot = 300
+# typename = "crawlby"
+# ϵ = 1.0
+# T = 1e5
+# Ttr= 100
+# Δt = 0.01
+# Tplot = 300
 ##state space  fig
-α =1.5 
-K = 10
-## time-series figs
+# α =1.5 
+# K = 10
+# numbins = 80
+# time-series figs
 # α = 0.8 
 # K = 15 
+# dirname=typename
 #
 
 #fast-slow system 
@@ -59,18 +48,22 @@ Ttr=500
 α = 1.5 
 K = 2.2 
 ϵ = 0.01
-Tplot = 1000
+Tplot = 2000
+numbins = 40
+dirname=typename
 #
 
 #regular LC
-# typename = "regularLC"
-# ϵ = 1.0
+typename = "regularLC"
+dirname = "not_metastable/$(typename)"
+ϵ = 1.0
 # T = 1e5
-# Ttr= 100
-# Δt = 0.01
-# α = 1.5 
-# K = 2.2 
-# Tplot=300
+T = 300
+Ttr= 100
+Δt = 0.01
+α = 1.5 
+K = 2.2 
+Tplot=300
 #
 
 u0 = [0.1, 0.1]
@@ -95,41 +88,262 @@ ms_plot = ms[1:tplot];
 speeds_plot = speeds[1:tplot]
 
 c2 = :blue
-# fig = Figure(resolution=(4000, 2000), fontsize = 20)
-fig = Figure()
-ax1 = Axis(fig[1, 1], xlabel="t", ylabel="Prey", title="$(typename) in predator-prey system")
+fig = Figure(resolution=(800, 800), fontsize = 20)
+# ax1 = Axis(fig[1, 1:2], xlabel="t", ylabel="Prey", title="$(typename) in predator-prey system, min = ($(round(minimum(tr[:,1]), digits=6)), $(round(minimum(tr[:,2]), digits=6)))")
+ax1 = Axis(fig[1, 1:2], xlabel="t", ylabel="Prey", title="$(typename) in predator-prey system")
 lines!(ax1, t_plot, tr_plot[:, 1], linewidth=1, color=:black)
-ax2 = Axis(fig[1, 1], xlabel="t", ylabel="Predator", yticklabelcolor = c2, ylabelcolor=c2, yaxisposition = :right)
+ax2 = Axis(fig[1, 1:2], xlabel="t", ylabel="Predator", yticklabelcolor = c2, ylabelcolor=c2, yaxisposition = :right)
 lines!(ax2, t_plot, tr_plot[:, 2], linewidth=1, color=c2)
 hidespines!(ax2)
 hidexdecorations!(ax2)
-linkxaxes!(ax1, ax2); xlims!(Ttr, Tplot)
-
+linkxaxes!(ax1, ax2); xlims!(ax1, Ttr, Tplot)
 
 ax3 = Axis(fig[2, 1][1,1], xlabel="Prey", ylabel="Predator")
-# s=scatter!(ax3, tr_plot[:,1], tr_plot[:, 2], linewidth=1, color=log.(ms_plot), marker=:circle)
-s=scatter!(ax3, tr_plot[:,1], tr_plot[:, 2], linewidth=1, color=ms_plot, marker=:circle)
-Colorbar(fig[2,1][1,2], limits=(minimum(ms_plot), maximum(ms_plot)), label="Measure, log scale")
+s=scatter!(ax3, tr_plot[:,1], tr_plot[:, 2], linewidth=1, color=log10.(ms_plot), marker=:circle)
+Colorbar(fig[2,1][1,2], s, label="log10(ρ)")
 
 ax4 = Axis(fig[3, 1][1,1], xlabel="Prey", ylabel="Predator")
-# s=scatterlines!(ax4, tr_plot[:,1], tr_plot[:, 2], linewidth=1, color=speeds_plot, marker=:circle)
-s=scatter!(ax4, tr_plot[:,1], tr_plot[:, 2], linewidth=1, color=log.(speeds_plot), marker=:circle)
-Colorbar(fig[3,1][1,2], limits=(minimum(speeds_plot), maximum(speeds_plot)), label="|xdot|, log scale")
+s=scatter!(ax4, tr_plot[:,1], tr_plot[:, 2], linewidth=1, color=log10.(1 ./ speeds_plot), marker=:circle)
+Colorbar(fig[3,1][1,2], s, label="log10(1/|xdot|)")
 
-ax5 = Axis(fig[4, 1], xlabel="measure", ylabel="PDF(measure)")
-# hist!(ax4, ms, bins=20, normalization=:pdf)
-hist!(ax5, ms, bins=20, normalization=:pdf)
+# ax5 = Axis(fig[2, 2], xlabel="density of points ρ", ylabel="PDF(ρ)")
+# hist!(ax5, log.(ms), bins=numbins, normalization=:pdf, color=:black)
+ax5 = Axis(fig[2, 2], xlabel="density of points ρ", ylabel="PDF(ρ)", yscale=log10, xscale=log10)
+# hist!(ax5, ms, bins=bins, normalization=:pdf, color=:black, offset=1e-8)
+weights, bins = histogram(ms, numbins)
+weights .+= 1
+lines!(ax5, bins[1:end-1], weights, color=:black)
+ax6 = Axis(fig[3, 2], xlabel="1/|xdot|", ylabel="PDF(1/|xdot|)", yscale=log10, xscale=log10)
+# ax6 = Axis(fig[3, 2], xlabel="1/|xdot|", ylabel="PDF(1/|xdot|)",  xscale=log10)
+# hist!(ax6, log.(1 ./ speeds), bins=numbins, normalization=:pdf, color=:black)
+weights, bins = histogram(1 ./ speeds, numbins)
+lines!(ax6, bins[1:end-1], weights, color=:black)
 
-save("$(plotsdir())/$(typename)/predatorprey-$(typename)-α_$(α)-K_$(K)-numdigitsmeasure_$(numdigits)-intstep_$(Δt)-pdf.png", fig)
+save("$(plotsdir())/$(dirname)/predatorprey-$(typename)-α_$(α)-K_$(K)-numdigitsmeasure_$(numdigits)-intstep_$(Δt)-pdf.png", fig)
+# save("$(plotsdir())/$(typename)/homoclinicbifurcation/predatorprey-$(typename)-α_$(α)-K_$(K)-numdigitsmeasure_$(numdigits)-intstep_$(Δt)-pdf.png", fig)
 # xlims!(ax1, Ttr, T)
 # xlims!(ax2, Ttr, T)
 # xlims!(ax3, Ttr, T)
 
-using Symbolics
-@variables N P 
-@variables α γ ϵ ν h K m
-J = Symbolics.jacobian([α*N*(1 - N/K) - γ*N*P / (N+h), ϵ * (  ν*γ*N*P/(N+h) - m*P    )], [N, P]; simplify=true)
-J_fp = substitute.(J, (Dict(α=>1.5, γ=>2.5, ϵ=>1.0, ν=>0.5, h=>1.0, K=>10., m=>0.4, N=>0., P=>0.),))
+
+# Looking for homoc bif
+using Statistics
+# Ks = [5, 10, 15, 18, 19, 20, 21, 22, 25, 30]
+logrange(x1, x2; length) = (10^y for y in range(log10(x1), log10(x2), length=length))
+# Ks = collect(logrange(5, 30; length=20))
+Ks = range(2, 30; length=100)
+T=5e4
+speedstats = zeros(Float64, (length(Ks), 2))
+msstats = zeros(Float64, (length(Ks), 2))
+posstats = zeros(Float64, (length(Ks), 4))
+for (idx, K) ∈ enumerate(Ks)
+	u0 = [0.1, 0.1]
+	p = [α, γ, ϵ, ν, h, K, m]
+	solver = Tsit5()
+	tspan = (0, T)
+	prob = ODEProblem(predator_prey!, u0, tspan, p)
+	sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8)
+	t = sol.t 
+	tr = sol[:,:]'
+	
+	speeds = norm.(timederivative(sol))
+	
+	numdigits = 5
+	ms = histmeasure(sol', numdigits);
+	speedstats[idx, :] = [mean(1 ./ speeds), maximum(1 ./ speeds)]
+	msstats[idx, :] = [mean(ms), maximum(ms)]
+	posstats[idx, :] = [minimum(tr[:,1]), maximum(tr[:,1]), minimum(tr[:,2]), maximum(tr[:,2])]
+end
+
+yscale=log 
+c1 = :black
+c2 = :purple
+c3 = :green
+c4 = :cyan
+fig=Figure(resolution=(800, 800), fontsize = 20) 
+ax = Axis(fig[1,1], yscale=log10, ylabel="mean(ρ)")
+scatterlines!(ax, Ks, msstats[:,1], color=c1)
+ax = Axis(fig[1,2], yscale=log10, ylabel="max(ρ)")
+scatterlines!(ax, Ks, msstats[:,2], color=c1)
+ax = Axis(fig[2,1], yscale=log10, ylabel="mean(1/|xdot|)", xlabel="K")
+scatterlines!(ax, Ks, speedstats[:,1], color=c2)
+ax = Axis(fig[2,2], yscale=log10, ylabel="mean(1/|xdot|)", xlabel="K")
+scatterlines!(ax, Ks, speedstats[:,2], color=c2)
+ax = Axis(fig[3,1], yscale=log10, ylabel="minimum(x(t))", xlabel="K")
+scatterlines!(ax, Ks, abs.(posstats[:,1]), color=c3)
+ax = Axis(fig[3,2], yscale=log10, ylabel="maximum(x(t))", xlabel="K")
+scatterlines!(ax, Ks, abs.(posstats[:,2]), color=c3)
+ax = Axis(fig[4,1], yscale=log10, ylabel="minimum(y(t))", xlabel="K")
+scatterlines!(ax, Ks, abs.(posstats[:,3]), color=c4)
+ax = Axis(fig[4,2], yscale=log10, ylabel="maximum(y(t))", xlabel="K")
+scatterlines!(ax, Ks, abs.(posstats[:,4]), color=c4)
+
+save("$(plotsdir())/$(typename)/homoclinicbifurcation/predatorprey-$(typename)-scaling-α_$(α)-numdigitsmeasure_$(numdigits)-intstep_$(Δt).png", fig)
+
+#-----------------Analyss
+fp1 = [0,0] #origin
+
+Nfp = h*m/(ν*γ - m)
+Pfp = (Nfp+h)*α*(1-Nfp/K)/γ
+fp2 = [Nfp, Pfp]
+
+fp3 = [K, 0]
+
+using Symbolics, LinearAlgebra
+function get_jacobian_predatorprey(fp, p)
+	@variables N P 
+	@variables α γ ϵ ν h K m
+	J = Symbolics.jacobian([α*N*(1 - N/K) - γ*N*P / (N+h), ϵ * (  ν*γ*N*P/(N+h) - m*P    )], [N, P]; simplify=true)
+	J_fp = substitute.(J, (Dict(α=>p[1], γ=>p[2], ϵ=>p[3], ν=>p[4], h=>p[5], K=>p[6], m=>p[7], N=>fp[1], P=>fp[2]),))
+	J_fp = Symbolics.value.(J_fp)
+end
+
+##origin
+J = get_jacobian_predatorprey(fp1, p)
+eigvals, eigvecs = eigen(J)
+
+J = get_jacobian_predatorprey(fp3, p)
+eigvals, eigvecs = eigen(J)
+
+J = get_jacobian_predatorprey(fp2, p)
+eigvals, eigvecs = eigen(J)
+
+#---------- MOVIE 
+# u0 = [0.1, 0.1]
+using ColorSchemes
+u0 = [5, 0.1]
+p = [α, γ, ϵ, ν, h, K, m]
+solver = Tsit5()
+tspan = (0, T)
+prob = ODEProblem(predator_prey!, u0, tspan, p)
+sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8)
+t = sol.t 
+tr = sol[:,:]'
+speeds = norm.(timederivative(sol))
+Tplot= 44.1
+framerate=450
+tplot = Int64(Tplot/Δt);
+Δt_plot = Int64(0.01/Δt)
+t_plot = t[1:Δt_plot:tplot];
+tr_plot = tr[1:Δt_plot:tplot, :];
+speeds_plot = log10.(1 ./ speeds[1:Δt_plot:tplot])
+frames = 2:length(t_plot)
+
+#transform the vector with the info for the colors onto a Int vector going from 1 to 264; this is used to index the colormap (wihch has 264 colors); basically transforming it into an vector of indices
+v = (speeds_plot .- minimum(speeds_plot)) ./ (maximum(speeds_plot) .- minimum(speeds_plot)) .* 255 .+ 1
+v = round.(Int, v )
+colors = ColorSchemes.viridis[v]
+
+points = Observable(Point2f[(tr[1,1], tr[1,2])])
+colors_ob = Observable([colors[1]])
+fig = Figure(resolution=(800, 600))
+ax = Axis(fig[1,1], ylabel="Predator", xlabel="Prey")
+# fig, ax = scatter(points, color=colors_obg)
+scatter!(ax, points, color=colors_ob)
+hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
+limits!(ax, -0.5, 10.5, -0.3, 6)
+hidespines!(ax, :t, :r) 
+record(fig, "$(plotsdir())$(typename)/crawlby_animation.mp4", frames;
+        framerate) do frame
+    new_point = Point2f(tr_plot[frame,1], tr_plot[frame,2])
+    points[] = push!(points[], new_point)
+	colors_ob[] = push!(colors_ob[], colors[frame])
+end
 
 
 
+
+
+### ------for limit cycle 
+using ColorSchemes
+T=113
+Ttr=100
+Δt = 0.01
+u0 = [5, 0.1]
+p = [α, γ, ϵ, ν, h, K, m]
+solver = Tsit5()
+tspan = (0, T)
+prob = ODEProblem(predator_prey!, u0, tspan, p)
+sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8)
+t = sol.t 
+tr = sol[:,:]'
+speeds = norm.(timederivative(sol))
+Tplot= T-Ttr
+framerate=200
+tplot = Int64(Tplot/Δt);
+Δt_plot = Int64(Δt/Δt)
+t_plot = t[1:Δt_plot:tplot];
+tr_plot = tr[1:Δt_plot:tplot, :];
+speeds_plot = log10.(1 ./ speeds[1:Δt_plot:tplot])
+frames = 2:length(t_plot)
+
+#transform the vector with the info for the colors onto a Int vector going from 1 to 264; this is used to index the colormap (wihch has 264 colors); basically transforming it into an vector of indices
+v = (speeds_plot .- minimum(speeds_plot)) ./ (maximum(speeds_plot) .- minimum(speeds_plot)) .* 255 .+ 1
+v = round.(Int, v )
+colors = ColorSchemes.viridis[v]
+
+points = Observable(Point2f[(tr[1,1], tr[1,2])])
+colors_ob = Observable([colors[1]])
+t_title = Observable(t_plot[1])
+fig = Figure(resolution=(800, 600))
+ax = Axis(fig[1,1], ylabel="Predator", xlabel="Prey", title= @lift("t = $($t_title)"))
+# fig, ax = scatter(points, color=colors_obg)
+scatter!(ax, points, color=colors_ob)
+hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
+limits!(ax, 0, 1.25, 0.25, 1.1)
+hidespines!(ax, :t, :r) 
+record(fig, "$(plotsdir())$(dirname)/$(typename)_animation.mp4", frames;
+        framerate) do frame
+	t_title[] = t_plot[frame]
+    new_point = Point2f(tr_plot[frame,1], tr_plot[frame,2])
+    points[] = push!(points[], new_point)
+	colors_ob[] = push!(colors_ob[], colors[frame])
+end
+
+
+### -----------fast-slow system
+using ColorSchemes
+T=820
+Ttr=500
+Δt = 0.05
+# u0 = [5, 0.1]
+p = [α, γ, ϵ, ν, h, K, m]
+solver = Tsit5()
+tspan = (0, T)
+prob = ODEProblem(predator_prey!, u0, tspan, p)
+sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8)
+t = sol.t 
+tr = sol[:,:]'
+speeds = norm.(timederivative(sol))
+Tplot= T-Ttr
+framerate=350
+tplot = Int64(Tplot/Δt);
+Δt_plot = Int64(Δt/Δt)
+# Δt_plot = Int64(1.0/Δt)
+t_plot = t[1:Δt_plot:tplot];
+tr_plot = tr[1:Δt_plot:tplot, :];
+speeds_plot = log10.(1 ./ speeds[1:Δt_plot:tplot])
+frames = 2:length(t_plot)
+
+#transform the vector with the info for the colors onto a Int vector going from 1 to 264; this is used to index the colormap (wihch has 264 colors); basically transforming it into an vector of indices
+v = (speeds_plot .- minimum(speeds_plot)) ./ (maximum(speeds_plot) .- minimum(speeds_plot)) .* 255 .+ 1
+v = round.(Int, v )
+colors = ColorSchemes.viridis[v]
+
+points = Observable(Point2f[(tr[1,1], tr[1,2])])
+colors_ob = Observable([colors[1]])
+t_title = Observable(t_plot[1])
+fig = Figure(resolution=(800, 600))
+ax = Axis(fig[1,1], ylabel="Predator", xlabel="Prey", title= @lift("t = $($t_title)"))
+# fig, ax = scatter(points, color=colors_obg)
+scatter!(ax, points, color=colors_ob)
+hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
+limits!(ax, -0.02, 1.42, 0.5, 0.73)
+hidespines!(ax, :t, :r) 
+record(fig, "$(plotsdir())$(dirname)/$(typename)_animation.mp4", frames;
+        framerate) do frame
+	t_title[] = t_plot[frame]
+    new_point = Point2f(tr_plot[frame,1], tr_plot[frame,2])
+    points[] = push!(points[], new_point)
+	colors_ob[] = push!(colors_ob[], colors[frame])
+end

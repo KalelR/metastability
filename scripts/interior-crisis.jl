@@ -90,3 +90,81 @@ for (i, d) ∈ enumerate([7.1, 7.3])
 	ylims!(-1.8, 1.4)
 end
 save("interiorcrisis-ikedamap.png", fig, px_per_unit=4)
+
+
+
+
+
+##--------------------------------------------------animations --------------------a = 0.84
+include("utils.jl")
+plotsdir() = "../plots/"
+a = 0.84
+b = 0.9 
+c = 0.4 
+# d = 7.1
+d = 7.3
+ik = Systems.ikedamap(;a, b, c, d)
+
+# T = 10e3
+T = 5e3
+Ttr = 1e3
+tr = trajectory(ik, T; Ttr)
+
+x = tr[:,1]; y = tr[:,2]; t = Ttr:Ttr+T
+# sol = [ [tr[i,1], tr[i,2]] for i=1:length(tr)]
+p = [a, b, c, d]
+speeds = norm.([ik.jacobian([tr[i,1], tr[i,2]], p, 1) for i=1:length(tr)])
+
+Δt = 1.0
+Tplot= T-Ttr
+framerate=200
+# framerate=400
+tplot = Int64(Tplot/Δt);
+Δt_plot = round(Int64, Δt/Δt);
+t_plot = t[1:Δt_plot:tplot];
+tr_plot = tr[1:Δt_plot:tplot, :];
+speeds_plot = log10.(1 ./ speeds[1:Δt_plot:tplot]);
+frames = 2:length(t_plot)
+duration = length(frames) / framerate
+
+#transform the vector with the info for the colors onto a Int vector going from 1 to 264; this is used to index the colormap (wihch has 264 colors); basically transforming it into an vector of indices
+v = (speeds_plot .- minimum(speeds_plot)) ./ (maximum(speeds_plot) .- minimum(speeds_plot)) .* 255 .+ 1;
+v = round.(Int, v );
+colors = ColorSchemes.viridis[v];
+
+
+points = Observable(Point2f[(tr_plot[1,1], tr_plot[1,2])])
+colors_ob = Observable([colors[1]])
+time = Observable(t_plot[1])
+fig = Figure(resolution=(800, 600))
+ax = Axis(fig[1,1], title= @lift("t = $($time)"))
+s=scatter!(ax, points, color=colors_ob, markersize=3)
+hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
+xlims!(-0.6, 1.7)
+ylims!(-1.8, 1.4)
+record(fig, "../plots/interiorcrisis/ikedamap-animation-a_$(a)-b_$(b)-c_$(c)-d_$(d).mp4", frames;
+        framerate) do frame
+    time[] = t_plot[frame]
+    new_point = Point2f(tr_plot[frame,1], tr_plot[frame,2])
+	points[] = push!(points[], new_point)
+	colors_ob[] = push!(colors_ob[], colors[frame])
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ax = Axis(fig[1,1], ylabel="y", xlabel="x"); 
+scatter!(ax, x, y, markersize=3, color=measure)

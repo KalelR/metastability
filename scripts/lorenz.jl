@@ -1,32 +1,34 @@
-using DrWatson
-@quickactivate "metastability"
+# using DrWatson
+# @quickactivate "metastability"
 
 using GLMakie, DynamicalSystems
 
 T = 1000
 Ttr=100
-Δt = 0.005
+# Δt = 0.005
+Δt = 0.1
 
-ρ = 28 #normal CA 
-# ρ = 166 #period (LC)
+# ρ = 28 #normal CA 
+ρ = 166 #period (LC)
 # ρ = 166.06 #LC
 # ρ = 166.068 #intermittency (CA)
 # ρ = 166.3 #intermittency (CA)
 # ρ = 166.3 #intermittency (CA)
 lo = Systems.lorenz(; σ=10, β=8/3, ρ) #lorenz 63; σ==a; β==b; ρ==r
 tr = trajectory(lo, T; Δt, Ttr); t = 0:Δt:T
+speeds = norm.(timederivative(tr'))
 
-fig = Figure()
-ax1 = Axis(fig[1, 1])
-lines!(ax1, t, tr[:, 3], linewidth=1)
-# save("lorenz-zvariable-r_$(ρ).png", fig)
+# fig = Figure()
+# ax1 = Axis(fig[1, 1])
+# lines!(ax1, t, tr[:, 3], linewidth=1)
+# # save("lorenz-zvariable-r_$(ρ).png", fig)
 
 
 
-fig = Figure(resolution=(1000,600), fontsize = 20)
-ax1 = Axis3(fig[1, 1], aspect=(1,1,0.5))
-scatter!(ax1, tr[:,1], tr[:,2], tr[:,3], color=t, colormap=:thermal, markersize=1000)
-save("lorenzattractor-r_$(ρ).png", fig)
+# fig = Figure(resolution=(1000,600), fontsize = 20)
+# ax1 = Axis3(fig[1, 1], aspect=(1,1,0.5))
+# scatter!(ax1, tr[:,1], tr[:,2], tr[:,3], color=t, colormap=:thermal, markersize=1000)
+# save("lorenzattractor-r_$(ρ).png", fig)
 # save("$(plotsdir())/lorenzattractor-r_$(ρ).png", fig)
 
 
@@ -42,8 +44,8 @@ lines!(ax3, t, tr[:, 3], linewidth=1, color=:black)
 xlims!(ax1, 900,1000)
 xlims!(ax2, 900,1000)
 xlims!(ax3, 900,1000)
-scatter!(ax4, tr[:,1], tr[:,2], tr[:,3], color=t, colormap=:thermal, markersize=1000)
-save("lorenzdynamics-r_$(ρ).png", fig)
+scatter!(ax4, tr[:,1], tr[:,2], tr[:,3], color=t)
+# save("lorenzdynamics-r_$(ρ).png", fig)
 
 
 #points remain, so they accumualte
