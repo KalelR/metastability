@@ -47,27 +47,25 @@ b = 0.9
 c = 0.4 
 d = 6.0
 a = 1.0 # a=A=r varying
-u0 = [0.875, -1.1]
+a = 1.003
+# u0 = [0.875, -1.1]
+u0 = [-2.0, -2.0]
 ik = Systems.ikedamap(u0;a, b, c, d)
 
 T = 1e6
 Ttr = 0
-# tr = trajectory(ik, T; Ttr)
-# x = tr[:,1]; y = tr[:,2]
+tr = trajectory(ik, T; Ttr); t = Ttr:Ttr+T
+x = tr[:,1]; y = tr[:,2]
+measure = histmeasure(tr, 2)
 
-# fig = Figure() 
-# ax = Axis(fig[1,1])
-# scatter!(ax, x, y, markersize=2, color=:black)
+fig = Figure() 
+ax = Axis(fig[1:3,1])
+scatter!(ax, x, y, markersize=2, color=measure)
 
+ax = Axis(fig[4, 1], ylabel="x")
+lines!(t, x, color=:black)
+save("$(plotsdir())/boundarycrisis/boundarycrisis-ikedamap-statespace-timeseries-a_$(a).png", fig, px_per_unit=4)
 
-using DataStructures
-function histmeasure(tr, numdigits)
-	v = [[tr[i,1], tr[i,2]] for i=1:length(tr)]
-	vround = [round.(el, digits=numdigits) for el in v]
-	c = counter(vround)
-	measure = [c[elround] for elround in vround ]
-	measure ./ length(v)
-end
 
 
 fig = Figure(resolution=(1920, 1080)) 

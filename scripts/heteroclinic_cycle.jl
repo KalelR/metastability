@@ -98,8 +98,8 @@ hcgh = ODEProblem(ff, u0, tspan, p)
 # sol = solve(hcgh, saveat=0:0.01:T, abstol=1e-16, reltol=1e-16); t = sol.t;
 # sol = solve(hcgh, AutoTsit5(Rosenbrock23()), saveat=0:0.01:T, abstol=1e-8, reltol=1e-8); t = sol.t;
 # sol = solve(hcgh, Rodas5(), saveat=0:0.01:T, abstol=1e-10, reltol=1e-10, maxiters=1e9); t = sol.t;
-sol = solve(hcgh, VCABM(), saveat=0:0.01:T, abstol=1e-10, reltol=1e-10, maxiters=1e9); t = sol.t;
-# sol = solve(hcgh, RK4(), dt=1/1000); t = sol.t;
+# sol = solve(hcgh, VCABM(), saveat=0:0.01:T, abstol=1e-10, reltol=1e-10, maxiters=1e9); t = sol.t;
+sol = solve(hcgh, RK4(), dt=1/1000); t = sol.t;
 # sol = solve(hcgh, saveat=0:0.01:T); t = sol.t;
 # sol = solve(hcgh, RadauIIA3(), saveat=0:0.01:T, abstol=1e-10, reltol=1e-10, maxiters=1e9); t = sol.t;
 
@@ -109,6 +109,7 @@ ax1 = Axis(fig[1, 1])
 lines!(ax1, t, sol[1,:])
 lines!(ax1, t, sol[2,:])
 lines!(ax1, t, sol[3,:])
+save("../plots/heterocliniccycle/guckenheimerholmes.png", fig)
 
 # fig2 = Figure()
 ax2 = Axis3(fig[1,2])
@@ -117,6 +118,62 @@ lines!(ax2, sol[1,:], sol[2,:], sol[3,:], color=t)
 scatter!(ax2, fps[:,1], fps[:,2], fps[:,3], color=:red, markersize=10)
 scatter!(ax2, [0], [0], [0], color=:blue, markersize=13)
 
+
+#------------------------movie ---------------------------
+fps_x = [[xpcoor(μ, a), 0, 0]];
+fps_y = [[0, xpcoor(μ, a), 0]];
+fps_z = [[0, 0, xpcoor(μ, a)]];
+fps = hcat([fps_x; fps_y; fps_z]...)'
+
+
+include("utils.jl")
+plotsdir() = "../plots/"
+Ttr = 240
+T = 420
+Ttr = 0.0; T = 240; 
+Δt= 0.1
+tspan = (0, T)
+ff = ODEFunction(heteroclinic_cycle_gh!; jac=jac!)
+hcgh = ODEProblem(ff, u0, tspan, p)
+sol = solve(hcgh, RK4(), dt=1/1000, saveat=Ttr:Δt:T); t = sol.t; tr = sol[:, :]';
+Tplot= T-Ttr
+framerate = 150 #166.3
+tplot = Int64(Tplot/Δt);
+Δt_plot = Int64(Δt/Δt);
+t_plot = t[1:Δt_plot:tplot];
+tr_plot = tr[1:Δt_plot:tplot, :];
+speeds = norm.(timederivative(sol))
+speeds_plot = log10.(1 ./ speeds[1:Δt_plot:tplot]);
+frames = 2:length(t_plot);
+
+az =0.7875222039230623 
+el =0.3190658503988664 
+
+#transform the vector with the info for the colors onto a Int vector going from 1 to 264; this is used to index the colormap (wihch has 264 colors); basically transforming it into an vector of indices
+# v = (speeds_plot .- minimum(speeds_plot)) ./ (maximum(speeds_plot) .- minimum(speeds_plot)) .* 255 .+ 1;
+v = (t .- minimum(t)) ./ (maximum(t) .- minimum(t)) .* 255 .+ 1;
+v = round.(Int, v );
+colors = ColorSchemes.viridis[v];
+
+points = Observable(Point3f[(tr[1,1], tr[1,2], tr[1,3])])
+colors_ob = Observable([colors[1]])
+fig = Figure(resolution=(800, 600))
+time_p = Observable(t_plot[1])
+ax = Axis3(fig[1,1], azimuth = az, elevation = el, title= @lift("t = $($time_p)"))
+# scatter!(ax, points, color=colors_ob)
+lines!(ax, points, color=colors_ob)
+scatter!(ax, fps[:,1], fps[:,2], fps[:,3], color=:red, markersize=10)
+# scatter!(ax, [0], [0], [0], color=:blue, markersize=13)
+hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
+limits!(ax, 0.0, 2.4, 0, 2.4, 0, 2.4)
+# hidespines!(ax, :t, :r) 
+record(fig, "../plots/heterocliniccycle/guckenheimerholmes-Ttr_$(Ttr).mp4", frames;
+        framerate) do frame
+    time_p[] = t_plot[frame]
+    new_point = Point3f(tr_plot[frame,1], tr_plot[frame,2], tr_plot[frame,3])
+    points[] = push!(points[], new_point)
+	colors_ob[] = push!(colors_ob[], colors[frame])
+end
 
 
 
@@ -164,3 +221,115 @@ lines!(ax2, sol[1,:], sol[2,:], sol[3,:], color=t)
 
 scatter!(ax2, fps[:,1], fps[:,2], fps[:,3], color=:red, markersize=5000)
 scatter!(ax2, [0], [0], [0], color=:blue, markersize=8000)
+
+
+
+
+
+#--------------------------------------------3 COUPLED HODGKIN-HUXLEY NEURONS----------------------------------------------------------------
+using GLMakie,  DifferentialEquations
+
+@inbounds function syncoup(gi, S, V, Vrev)
+    Isyn = 0.0
+    for j = 1:length(gi)
+        Isyn += gi[j] * S * (V[j] - Vrev) 
+    end
+    return Isyn
+end
+
+
+@inbounds function hodgkinhuxley_coeffs(V)
+        αn = 0.032 * (-50 - V)/(exp(-(V+50)/5) - 1)
+        αm = 0.32 * (-52 -V)/(exp(-(V+52)/4) - 1)
+        αh = 0.128 * exp(-(V+48)/18.0 )
+        βn = 0.5 * exp(-(V+55)/40.0)
+        βm = 0.28 * (25+V) / (exp( (V+25)/5.0 ) -1 )
+        βh = 4.0/(1 + exp(-(V+25)/5))
+        return αn, αm, αh, βn, βm, βh
+end
+
+heaviside(x) = x > 0 ? 1 : 0
+mutable struct params
+    gs :: Matrix{Float64}
+    I :: Float64
+    Vna :: Float64
+    Vk :: Float64
+    Vl :: Float64
+    gna :: Float64
+    gk :: Float64
+    gl :: Float64
+    C :: Float64
+    Vrev :: Float64
+    κ :: Float64
+    Smax :: Float64
+    τ :: Float64
+    Vth :: Float64
+end
+
+@inbounds function hodgkinhuxley_rule!(du, u, p, t)
+        I = p.I; Vna = p.Vna; Vk=p.Vk; Vl=p.Vl; gna=p.gna; gk=p.gk; gl=p.gl; C=p.C; Vrev=p.Vrev; κ=p.κ; Smax=p.Smax; τ=p.τ; Vth=p.Vth; gs = p.gs;
+        N = size(gs, 1)    
+        for i=1:N
+            V, n, m, h, S, R = @view u[(i-1)*6 + 1 : i*6]
+            Vs = @view u[((1:N) .-1) .*6 .+ 1] 
+            αn, αm, αh, βn, βm, βh = hodgkinhuxley_coeffs(V)
+            gi = @view gs[i,:]
+            Isyn = syncoup(gi, S, Vs, Vrev)
+            # if i == 1 println("$(Isyn), $(S), $(R), $(V), $(n^4*gk*(V-Vk))") end
+            # Isyn = 0.0
+            du[(i-1)*6 + 1] = (-I -n^4*gk*(V-Vk) - m^3*h*gna*(V-Vna) - gl*(V-Vl) -Isyn)/C
+            du[(i-1)*6 + 2] = αn*(1-n) - βn*n
+            du[(i-1)*6 + 3] = αm*(1-m) - βm*m
+            du[(i-1)*6 + 4] = αh*(1-h) - βh*h
+            du[(i-1)*6 + 5] = ( (R - κ*S)*(Smax - S)/Smax ) / τ
+            du[(i-1)*6 + 6] = ( heaviside(V - Vth) - R ) / τ
+        end
+    return nothing
+end
+
+# u = du = rand(7*3)
+# t = 0.0
+# @btime hodgkinhuxley_rule!(du, u, p, t)
+# @code_warntype hodgkinhuxley_rule!(du, u, p, t)
+# @btime syncoup(gs[1,:], 1, rand(3), 1)
+# @code_warntype syncoup(gs[1,:], 1, rand(3), 1)
+# @btime hodgkinhuxley_coeffs(-50.0) 
+
+C = 0.143
+gl = 0.02672
+Vl = -63.563
+gna = 7.15 
+Vna = 50.
+gk = 1.43 
+Vk = -95.
+Vrev = -80.
+κ = 1/2
+Smax = 0.045
+τ = 50.
+Vth = -20.
+N = 3
+# g = 50.0
+# g = 10.0
+g = 0.5
+gs = [0 g g; g 0 g; g g 0]
+I = 0.08
+# I = -5.0 #nice spikes
+
+p = params(gs, I, Vna, Vk, Vl, gna, gk, gl, C, Vrev, κ, Smax, τ, Vth)
+T = 100
+Ttr = 0
+u0 = rand(3*6);
+
+tspan = (0, T);
+hcgh = ODEProblem(hodgkinhuxley_rule!, u0, tspan, p);
+# sol = solve(hcgh, Rosenbrock23()); t = sol.t;
+sol = solve(hcgh, Rodas5()); t = sol.t;
+# sol = solve(hcgh, Tsit5()); t = sol.t;
+# sol = solve(hcgh, AutoTsit5(Rosenbrock23()), saveat=0:0.01:T, abstol=1e-8, reltol=1e-8); t = sol.t;
+
+t = sol.t; tr=sol[:,:];
+Vs = @view tr[((1:N) .-1) .*6 .+ 1, :] 
+
+fig = Figure()
+ax = Axis(fig[1,1])
+for i=1:N lines!(ax, t, Vs[i,:]) end 

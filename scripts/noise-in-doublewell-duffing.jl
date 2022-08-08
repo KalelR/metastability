@@ -1,3 +1,5 @@
+using DrWatson
+@quickactivate "metastability"
 using GLMakie,  DifferentialEquations
 
 
@@ -20,12 +22,9 @@ end
 a=0.5
 b=8.0
 c=0.0
-
 d = 0.2
-
 f = 0.0
 ω = 1.0
-
 n = 2.5 #for applying to v
 # n = 0.15 #for applying to x
 
@@ -39,7 +38,7 @@ u0 = [0.0, 0]
 p =  [a, b, c, d, f, ω, n]
 tspan = (0, T)
 prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; seed=0)
-# sol = solve(prob_duffing, SOSRA(), saveat=0:Δt:T); t = sol.t #nonstiff, didnt test
+sol = solve(prob_duffing, SOSRA(), saveat=0:Δt:T); t = sol.t #nonstiff, didnt test
 sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T); t = sol.t #stiff, worked well but slow
 
 fig = Figure()
@@ -66,37 +65,8 @@ lines!(ax1, t, sol[1,:], color=[el > 0 ? c1 : c2 for el in sol[1,:]])
 save("../plots/noise/duffing-timeseries-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-viridiscolors.png", fig)
 
 
-# scaling 
-"""
-fluctuation_th = 0 allows no repetition
-"""
-function length_samevalues_allowfluctuations(v, num_fluctuations=0)
-    unique_vals = unique(v)
-    lens_values = Dict(unique_vals .=> [Int64[] for i=1:length(unique_vals)])
-    duration = 1
-    curr_val = v[1]
-    for i = 1:length(v)-(num_fluctuations+1)
-        if any(curr_val .== v[(i+1):(i+1)+num_fluctuations]) 
-            duration += 1
-        else 
-            push!(lens_values[curr_val], duration)
-            duration=1; curr_val = v[i+1]
-        end
-    end
-    if duration > 1 push!(lens_values[curr_val], duration-1) end
-    return lens_values 
-end
+#------------------------------------------------------------------SCALING
 laminarperiods(v) = v .> 0 #1 is positive, 0 is negative
-
-using StatsBase, LinearAlgebra
-function histogram(v, numbins)
-	bins = range(minimum(v), maximum(v), length=numbins)
-		a = StatsBase.fit(Histogram, v, bins)
-		normalize(a, mode=:pdf)
-		return a.weights, bins
-end
-
-
 T = 1e7
 Δt = 0.5
 u0 = [0.0, 0]
@@ -131,6 +101,21 @@ fig[2,1] = Legend(fig, ax, orientation= :horizontal, tellwidth = false, tellheig
 save("../plots/noise/duffing-doublwell-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp.png", fig)
 # save("../plots/noise/duffing-doublwell-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-noiseonx.png", fig)
 
+
+
+#---------------------------------------------------- Recurrence 
+include("utils.jl")
+T = 1e3
+Δt = 5.0
+Δt = 0.5
+u0 = [0.0, 0]
+p =  [a, b, c, d, f, ω, n]
+tspan = (0, T)
+prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; seed=0)
+sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T, maxiters=1e9); t = sol.t #stiff, worked well but slow
+tr = Dataset(sol[:,:]')
+fig = Figure(resolution = (1000,500))
+plot_RM!(fig, sol.t, tr, 0.1; tsmode="lines")
 
 
 #--------------------------------------------------- ANIMATION ---------------------------------

@@ -1,6 +1,10 @@
+using DrWatson
+@quickactivate "metastability"
 using GLMakie, DynamicalSystems
 
 # ----------------------------------------- Logistic map has interior crisis at the end of periodic windows ---------------------------------------- #
+dirname = "interiorcrisis"
+include("$(scriptsdir())/utils.jl")
 
 # Cobweb interactive
 # the second range is a convenience for intermittency example of logistic
@@ -37,7 +41,7 @@ for (i, r) ∈ enumerate([3.8567, 3.8569])
 	# scatterlines!(ax, t, x, color=(:black, 1.0), markersize=2)
 	scatter!(ax, t, x, color=(:black, 1.0), markersize=2)
 end
-save("interiorcrisis-logisticmap.png", fig, px_per_unit=4)
+save("$(plotsdir())/$(dirname)/interiorcrisis-logisticmap.png", fig, px_per_unit=4)
 
 
 # ---------------------------------------------------- Ikeda map also famous for interior crisis --------------------------------------------------- #
@@ -89,9 +93,59 @@ for (i, d) ∈ enumerate([7.1, 7.3])
 	xlims!(T-800, T)
 	ylims!(-1.8, 1.4)
 end
-save("interiorcrisis-ikedamap.png", fig, px_per_unit=4)
+save("$(plotsdir())/$(dirname)/interiorcrisis-ikedamap.png", fig, px_per_unit=4)
 
 
+# ------------------------------ Recurrence plot ----------------------------- #
+a = 0.84
+b = 0.9 
+c = 0.4 
+d = 7.3
+T = 800; Ttr = 1e6-800
+T = 800; Ttr = 0
+ϵ = 0.1
+u0 = [1.0, 1.0] #default
+u0 = [-3.0, -3.0]
+ik = Systems.ikedamap(;a, b, c, d)
+tr = trajectory(ik, T, u0; Ttr); ts = Ttr:Ttr+T
+fig = Figure(resolution=(1500, 500), fontsize=30, figure_padding=(5, 30, 5, 30))
+plot_RM!(fig, ts, tr, ϵ; tsmode="line")
+save("$(plotsdir())/$(dirname)/interiorcrisis-ikedamap-recurrenceplot-recurrenceth_$(ϵ)-u0_$(u0)-Ttr_$(Ttr).png", fig, px_per_unit=4)
+
+
+
+# ---------------------------- frequency analysis ---------------------------- #
+include("utils.jl")
+using FFTW
+
+a = 0.84
+b = 0.9 
+c = 0.4 
+d = 7.3
+T = 10000; Ttr = 1e6-800
+T=800
+# T = 800; Ttr = 0
+u0 = [1.0, 1.0] #default
+ik = Systems.ikedamap(;a, b, c, d)
+tr = trajectory(ik, T, u0; Ttr); ts = Ttr:Ttr+T
+
+
+# signal = tr[:,1]
+Ts = Δt = 1
+
+
+using GLMakie
+fig = Figure()
+for i=1:2
+	signal = tr[:,i]
+	variable = ["x", "y"][i]
+	F, freqs, periods, maxperiod = getspectrum(signal, ts, Ts)
+	ax = Axis(fig[1,i], title="Tmax = $maxperiod", ylabel="$variable", xlabel="t")
+	time_domain = lines!(ax, ts, signal, color=:black)
+	ax = Axis(fig[2,i], ylabel="FFT($variable)", xlabel="Frequency")
+	freq_domain = lines!(ax, freqs, abs.(F), color=:black) 
+end
+save("$(plotsdir())/$(savedir)/interiorcrisis-spectrumanalysis-d_$(d).png")
 
 
 

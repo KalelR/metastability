@@ -1,6 +1,17 @@
-using GLMakie, DynamicalSystems
+using DrWatson
+@quickactivate "metastability"
 
-# ------------------------------------------------------------------ Phenomenology ----------------------------------------------------------------- #
+using GLMakie, DynamicalSystems, Statistics
+include("utils.jl")
+
+# ---------------------------------------------------------------------------- #
+#                                   LOGISTIC                                   #
+# ---------------------------------------------------------------------------- #
+reduced_r(r, rc) = abs(r-rc)/rc
+reduced_to_normal(μ, rc) = rc*(1-μ)
+rc = 1+√8
+savedir="typeI"
+# ------------------------------- Phenomenology ------------------------------ #
 # Cobweb interactive
 # the second range is a convenience for intermittency example of logistic
 # rrange = 1:0.001:4.0
@@ -12,111 +23,118 @@ using GLMakie, DynamicalSystems
 # lo = Systems.logistic(0.4; r = rrange[1])
 # interactive_cobweb(lo, rrange, 5)
 
+#Time series
 T = 1000
+T = 5000
 Ttr = 0
-
-
-
 r = 3.8282
 lo = Systems.logistic(0.4; r); t = Ttr:Ttr+T 
 tr = trajectory(lo, T; Ttr)
-fig = Figure(resolution=(800, 250))
+fig = Figure(resolution=(800, 300), fontsize=30)
 ax = Axis(fig[1,1], ylabel="x", xlabel="t")
-scatterlines!(ax, t, tr, color=:black, markersize=4)
+scatterlines!(ax, t, tr, color=:black, markersize=6)
 ylims!(0, 1)
 xlims!(0, 150)
-save("../plots/typeI/logistic-timeseries-r_$(r)-uncoloured.png", fig)
+save("$(plotsdir())/$(savedir)/logistic-timeseries-r_$(r)-uncoloured.png", fig)
 
-
-
-
-#coloring the laminar and chaotic periods; not very good though
-win_size = 4
-std_th = 0.001;
-
-r = 3.8284
-lo = Systems.logistic(0.4; r); t = Ttr:Ttr+T 
-tr = trajectory(lo, T; Ttr)
-lam_periods_bool = laminarperiods(tr; win_size, std_th); tr = tr[1:end-3*win_size+1]; t = t[1:end-3*win_size+1];
-fig = Figure()
-ax = Axis(fig[1,1])
-# lines!(ax, t, tr)
-scatterlines!(ax, t, tr, color=lam_periods_bool)
-save("../plots/typeI/logistic-timeseries-r_$(r).png", fig)
-
-
-
-
-function moving_std(v, ws)
-    mv_average = zeros(length(v)-(ws-1))
-    for i=1:length(mv_average)
-        mv_average[i] = std(v[i:3:i+ws-1])
-    end
-    return mv_average 
-end
-
+# ------------------ Estimate dwell time on laminar periods ------------------ #
+"""
+Finds laminar periods by identifying the phases in which the windowed standard deviation
+of the f^3 map is small (er than a threshold). In the laminar period, f^3 is a fp,
+constant, so std is very small. In chaos, it's nonconstant so higher. Works quite well,
+but not perfectly, and needs some fine tuning of the parameters.
+"""
 function laminarperiods(tr; win_size=4, std_th)
-    std_tr3 = moving_std(tr, 3*win_size);
+    std_tr3 = moving_std(tr, 3*win_size, 3);
     laminar_period_bool = std_tr3 .< std_th #1s are laminar, 0s are nonlaminar
+end
+# # bool_fp_order = repetition_every_order([4, 1, 2, 3, 1,2,3, 1,2, 3, 3, 2, 1, 3, 2, 1], 3)
+# a,b=length_samevalues_allowfluctuations(bool_fp_order, 0)
+"""
+Finds laminar periods by identifying the phases that repeat every order=3 iterations
+"""
+function laminarperiods(tr, order; kwargs...)
+    bool_fp_order = repetition_every_order(tr, order; kwargs...)
+    T, bool_laminarperiods = length_samevalues_allowfluctuations(bool_fp_order, order)
+    return T[1], bool_laminarperiods
 end
 
 function estimate_laminarperiod_duration(tr; win_size=4, std_th, num_allowed_fluctuations=3)
     laminar_period_bool = laminarperiods(tr; win_size, std_th)
-    T = length_samevalues_allowfluctuations(laminar_period_bool, num_allowed_fluctuations)[1] #laminar period only for 1
+    T, corr_lpb = length_samevalues_allowfluctuations(laminar_period_bool, num_allowed_fluctuations) 
+    return T[1], corr_lpb ##laminar period only for 1
 end
 
-"""
-fluctuation_th = 0 allows no repetition
-"""
-function length_samevalues_allowfluctuations(v, num_fluctuations=0)
-    unique_vals = unique(v)
-    lens_values = Dict(unique_vals .=> [Int64[] for i=1:length(unique_vals)])
-    duration = 1
-    curr_val = v[1]
-    for i = 1:length(v)-(num_fluctuations+1)
-        if any(curr_val .== v[(i+1):(i+1)+num_fluctuations]) 
-            duration += 1
-        else 
-            push!(lens_values[curr_val], duration)
-            duration=1; curr_val = v[i+1]
-        end
-    end
-    if duration > 1 push!(lens_values[curr_val], duration-1) end
-    return lens_values 
+function chaoticperiods(tr, order; kwargs...)
+    bool_fp_order = repetition_every_order(tr, order; kwargs...)
+    T, bool_laminarperiods = length_samevalues_allowfluctuations(bool_fp_order, order)
+    return T[0], bool_laminarperiods
 end
+
+T = 1000
+T = 15000
+Ttr = 0
+
+#coloring the laminar and chaotic periods; not very good though
+# win_size = 2;# win_size = 5
+# std_th = 0.05;
+
+r = 3.8284
+# r = rc-1e-7
+lo = Systems.logistic(0.4; r); t = Ttr:Ttr+T 
+tr = trajectory(lo, T; Ttr);
+# lam_periods_bool = laminarperiods(tr; win_size, std_th); tr = tr[1:end-3*win_size+1]; t = t[1:end-3*win_size+1];
+# Ts, corr_lam_periods_bool = estimate_laminarperiod_duration(tr; win_size, std_th, num_allowed_fluctuations=5)
+
+Ts, corr_lam_periods_bool= laminarperiods(tr, 3; atol=0.0, rtol=0.02)
+t = t[1:length(corr_lam_periods_bool)];
+tr = tr[1:length(corr_lam_periods_bool)]
+fig = Figure(resolution=(800, 300), fontsize=30, figure_padding=(5, 30, 5, 30))
+ax = Axis(fig[1,1], ylabel="x", xlabel="t")
+# colors = [el > 0 ? :red : :black for el in lam_periods_bool];
+colors = [el > 0 ? :red : :black for el in corr_lam_periods_bool];
+scatterlines!(ax, t, tr, color=colors)
+ylims!(0, 1)
+xlims!(0, 500)
+# save("../plots/typeI/logistic-timeseries-r_$(r)-coloured-winsize_$(win_size)-stdth_$(std_th).png", fig)
+# save("$(plotsdir())/$(savedir)/logistic-timeseries-r_$(r)-colouredphases-patternmatching.png", fig, px_per_unit=3)
+save("$(plotsdir())/$(savedir)/logistic-timeseries-r_$(r)-colouredphases-patternmatching-stricter-rtol_$(0.02).png", fig, px_per_unit=3)
+# save("../plots/typeI/logistic-timeseries-r_$(r)-coloured-winsize_$(win_size)-stdth_$(std_th)-examplesmalllaminarperiodsinsidechaos.png", fig)
+
+
+
 
 # --------------------------------------------------------- Distribution of laminar period --------------------------------------------------------- #
-using Statistics
-reduced_r(r, rc) = abs(r-rc)/rc
-reduced_to_normal(μ, rc) = rc*(1-μ)
-r = rc-1e-4
-rc = 1+√8
 Ttr = 500
 T = 5e6
-win_size = 4
-std_th = 0.001;
+# win_size = 4; std_th = 0.05;
+
 r = rc-1e-7
-# for r ∈ [rc-1e-3, rc-1e-4, rc-1e-5, rc-1e-6, rc-1e-7, rc-1e-8]
+for r ∈ [rc-1e-3, rc-1e-4, rc-1e-5, rc-1e-6, rc-1e-7, rc-1e-8]
     lo = Systems.logistic(0.4; r)
     μ = reduced_r(r, rc)
-    println("$(μ^(-1/2))")
+    est_cutoff = μ^(-1/2)
 
     u0s = sort(rand(10))
     Ts_all = []
+    Ts_chaos_all = []
     for (idx,u0) ∈ enumerate(u0s) 
         tr = trajectory(lo, T, u0; Ttr); t_tr = Ttr:1:Ttr+T
-        Ts = estimate_laminarperiod_duration(tr; win_size, std_th)
+        Ts, corr_lam_periods_bool= laminarperiods(tr, 3; atol=0.0, rtol=0.02)
+        Ts_chaos, corr_lam_periods_bool= chaoticperiods(tr, 3; atol=0.0, rtol=0.02)
         Ts_all = vcat(Ts_all, Ts)
+        Ts_chaos_all = vcat(Ts_chaos_all, Ts_chaos)
     end
+    fig = Figure(resolution=(500, 300), fontsize=30, figure_padding=(5, 30, 5, 30))
+    ax = Axis(fig[1,1], title="|r-rc| = $(round(abs(r-rc), digits=10)), μ^(-1/2)=$(floor(Int, est_cutoff))", ylabel="P(τ)", xlabel="τ")
+    hist!(ax, Ts_all; bins=500, color=:black)
+    save("$(plotsdir())/$(savedir)/distributions-logistic/logistic-distribution-laminartimes-r_$(r)-estimatelaminarperiodviadirectcomparison.png", fig)
 
-    # tr = trajectory(lo, T, rand(); Ttr); t_tr = Ttr:1:Ttr+T
-    # Ts = estimate_laminarperiod_duration(tr; win_size, std_th, num_allowed_fluctuations=10)
-
-    fig = Figure()
-    ax = Axis(fig[1,1], title="r = $(r), rc = $(rc)")
-    hist!(ax, Ts_all; bins=50)
-    save("logistic-distribution-laminartimes-r_$(r).png", fig)
-# end
+    fig = Figure(resolution=(500, 300), fontsize=30, figure_padding=(5, 30, 5, 30))
+    ax = Axis(fig[1,1], title="|r-rc| = $(round(abs(r-rc), digits=10))", ylabel="P(τchaos)", xlabel="τchaos")
+    hist!(ax, Ts_chaos_all; bins=500, color=:black)
+    save("$(plotsdir())/$(savedir)/distributions-logistic/logistic-distribution-chaotictimes-r_$(r)-estimatelaminarperiodviadirectcomparison.png", fig)
+end
 
 
 
@@ -128,31 +146,50 @@ logrange(x1, x2; length) = (10^y for y in range(log10(x1), log10(x2), length=len
 
 Ttr = 500
 T = 1000000
-win_size = 4
-std_th = 0.001;
+# win_size = 4
+# std_th = 0.001;
 μs = collect(logrange(1e-9, 1e-5; length=30))
 rs = reduced_to_normal.(μs, rc)
 
 u0 = rand();
-T_means = zeros(Float64, length(rs));
+T_means = zeros(Float64, length(rs)); T_chaos_means = zeros(Float64, length(rs));
+T_maxs = zeros(Float64, length(rs)); T_chaos_maxs = zeros(Float64, length(rs));
 for (i, r) ∈ enumerate(rs)
     lo = Systems.logistic(u0; r)
     tr = trajectory(lo, T, u0; Ttr); t_tr = Ttr:1:Ttr+T
-    T_means[i] = mean(estimate_laminarperiod_duration(tr; win_size, std_th, num_allowed_fluctuations=10))
+    Ts, corr_lam_periods_bool= laminarperiods(tr, 3; atol=0.0, rtol=0.02)
+    Ts_chaos, corr_lam_periods_bool= chaoticperiods(tr, 3; atol=0.0, rtol=0.02)
+    T_means[i] = mean(Ts);  T_chaos_means[i] = mean(Ts_chaos)
+    T_maxs[i] = maximum(Ts);  T_chaos_maxs[i] = maximum(Ts_chaos)
 end
 
 using CurveFit 
 offset, exponent = linear_fit(log10.(μs), log10.(T_means))
-fig = Figure()
+fig = Figure(resolution=(500, 300), fontsize=30, figure_padding=(5, 30, 5, 30))
 ax = Axis(fig[1,1], yscale=log10, xscale=log10, title = "<τ> ~ μ^{$(round(exponent, digits=3))}")
 scatter!(ax, μs, T_means, color=:black)
 lines!(ax, μs, μs .^(exponent) .* 10^offset, color=:red )
 ax.ylabel="<τ>"; ax.xlabel="μ"
-save("logistic-scaling-with-r.png", fig)
+save("$(plotsdir())/$(savedir)/logistic-scaling-with-r-estimatelaminarperiodviadirectcomparison.png", fig)
+
+fig = Figure(resolution=(500, 300), fontsize=30, figure_padding=(5, 30, 5, 30))
+ax = Axis(fig[1,1], xscale=log10)
+scatter!(ax, μs, T_chaos_means, color=:black)
+ax.ylabel="<τchaos>"; ax.xlabel="μ"
+save("$(plotsdir())/$(savedir)/logistic-scaling-with-r-estimatechaoticperiodviadirectcomparison.png", fig)
+
+fig = Figure(resolution=(500, 300), fontsize=30, figure_padding=(5, 30, 5, 30))
+ax = Axis(fig[1,1], xscale=log10, yscale=log10)
+scatter!(ax, μs, T_means./T_chaos_means, color=:black)
+ax.ylabel="<τ>/<τchaos>"; ax.xlabel="μ"
+save("$(plotsdir())/$(savedir)/logistic-scaling-with-r-ratio-laminar-to-chaotic.png", fig)
 
 
-
-
+fig = Figure(resolution=(500, 300), fontsize=30, figure_padding=(5, 30, 5, 30))
+ax = Axis(fig[1,1], xscale=log10, yscale=log10)
+scatter!(ax, μs, T_maxs./T_chaos_maxs, color=:black)
+ax.ylabel="τmax/τchaosmax"; ax.xlabel="μ"
+save("$(plotsdir())/$(savedir)/logistic-scaling-with-r-ratio-maximumduration-laminar-to-chaotic.png", fig)
 
 # length_samevalues([1,1,1,0,0,0,1,1,1,0,1,0,1,1,0,0,0,0])
 # length_samevalues_allowfluctuations([1,1,1,0,0,0,1,1,1,0,1,0,1,1,0,0,0,0,0,0,0], 1)
@@ -160,7 +197,7 @@ save("logistic-scaling-with-r.png", fig)
 
 # ---------- Below: tried a few different ways: through finite-time lyapunovs (tried mean and min, its hard because they fluctuate a lot); --------- #
 #  and finally with std of f^3. This worked best.
-
+#=
 
 fig = Figure()
 ax = Axis(fig[1,1])
@@ -266,13 +303,88 @@ r = 3.83
 x = 0:0.01:1
 logistic_derivative = lo.jacobian.(x, r, 1)
 lines(x, logistic_derivative)
+=#
+
+#---------------------phase space discretization and count density of points --------------------------------------------------------------
+include("utils.jl")
+Δx = 0.01
+statespace_boxes = 0:Δx:1
+Ttr = 500
+T = 100000
+# μ = 1e-8 #mainly period
+μ = 1e-5 #mainly period
+r = reduced_to_normal(μ, rc)
+u0 = 0.3;
+lo = Systems.logistic(u0; r)
+tr = trajectory(lo, T, u0; Ttr); ts = Ttr:1:Ttr+T
+
+#won't really work for logistic
+# box_durs, boxes_ext = durationinboxes(tr, collect(statespace_boxes))
+# mean_box_durs = mean.(box_durs)
+#
+Δx = 0.001
+statespace_boxes = 0:Δx:1
+# ρ = densitypointsintraj(tr, Int(abs(log10(Δx))), statespace_boxes)
+ρ_pts = densitypointsintraj_inbins(tr, Int(abs(log10(Δx))), statespace_boxes)
+ρ_pts = densitypointsintraj_inpoints(tr, Int(abs(log10(Δx))))
+colors = vector_to_colors(ρ_pts)
+
+fig = Figure(resolution=(800, 400))
+ax = Axis(fig[1,1], ylabel="ρ(x)", xlabel="x")
+scatterlines!(statespace_boxes, ρ_pts, color=:black)
+ax = Axis(fig[2,1], ylabel="x", xlabel="t")
+scatterlines!(ts, tr, color=colors)
+xlims!(ax, Ttr, Ttr+500)
 
 
-#for lorenz maybe: ChaosTools.lyapunovspectrum_convergence(tinteg, T, 1, Ttr); tinteg = tangent_integrator(lo, 1)
+# ------------------- recurrence analysis ------------------------
+include("utils.jl")
+Ttr = 550
+T = 200
+# μ = 1e-8 #mainly period
+μ = 1e-5 #mainly period
+r = reduced_to_normal(μ, rc)
+u0 = 0.3;
+lo = Systems.logistic(u0; r)
+tr = trajectory(lo, T, u0; Ttr); ts = Ttr:1:Ttr+T
+ϵ=0.1
+ϵ=0.05
+fig = Figure(resolution=(1000, 500), fontsize=30, figure_padding=(5, 30, 5, 30))
+plot_RM!(fig, ts, tr, ϵ)
+save("$(plotsdir())/$(savedir)/logistic-recurrenceplot-r_$(r).png", fig, px_per_unit=3)
+
+
+# ---------------------------- frequency analysis ---------------------------- #
+include("utils.jl")
+using FFTW
+Ttr = 550
+T = 200
+Δt = 1
+# μ = 1e-8 #mainly period
+μ = 1e-5 #mainly period
+r = reduced_to_normal(μ, rc)
+u0 = 0.3;
+lo = Systems.logistic(u0; r)
+tr = trajectory(lo, T, u0; Ttr); ts = Ttr:Δt:Ttr+T
+signal = tr
+Ts = Δt = 1
+
+F, freqs, periods, maxperiod = getspectrum(signal, ts, Ts)
+
+
+using GLMakie
+fig = Figure()
+ax = Axis(fig[1,1], title="Tmax = $maxperiod", ylabel="x", xlabel="t")
+time_domain = lines!(ax, ts, signal, color=:black)
+ax = Axis(fig[2,1], ylabel="FFT(x)", xlabel="Frequency")
+freq_domain = lines!(ax, freqs, abs.(F), color=:black) 
+save("$(plotsdir())/$(savedir)/logistic-spectrumanalysis-r_$(r).png")
 
 
 
-#---------------------------------------------- LORENZ ---------------------------------------------
+# ---------------------------------------------------------------------------- #
+#                                    LORENZ                                    #
+# ---------------------------------------------------------------------------- #
 using OrdinaryDiffEq
 include("utils.jl")
 plotsdir() = "../plots/"
