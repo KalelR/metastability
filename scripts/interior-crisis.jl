@@ -102,7 +102,8 @@ b = 0.9
 c = 0.4 
 d = 7.3
 T = 800; Ttr = 1e6-800
-T = 800; Ttr = 0
+T=20
+# T = 800; Ttr = 0
 ϵ = 0.1
 u0 = [1.0, 1.0] #default
 u0 = [-3.0, -3.0]
@@ -112,20 +113,26 @@ fig = Figure(resolution=(1500, 500), fontsize=30, figure_padding=(5, 30, 5, 30))
 plot_RM!(fig, ts, tr, ϵ; tsmode="line")
 save("$(plotsdir())/$(dirname)/interiorcrisis-ikedamap-recurrenceplot-recurrenceth_$(ϵ)-u0_$(u0)-Ttr_$(Ttr).png", fig, px_per_unit=4)
 
-
-
+# RM = RecurrenceMatrix(tr, ϵ)
+# rqa(RM)
+# meanrecurrencetime(RM)
+# a = recurrencestructures(RM, recurrencetimes=true)
 # ---------------------------- frequency analysis ---------------------------- #
-include("utils.jl")
+include("$(scriptsdir())/utils.jl")
 using FFTW
 
 a = 0.84
 b = 0.9 
 c = 0.4 
-d = 7.3
-T = 10000; Ttr = 1e6-800
-T=800
+# d = 7.3
+d = 6.8 #periodic
+# d = 5.589
+T = 50000; Ttr = 1e6-800
+T=300; Ttr=1e6-800+100
+# T = 20
 # T = 800; Ttr = 0
 u0 = [1.0, 1.0] #default
+u0 = rand(2)
 ik = Systems.ikedamap(;a, b, c, d)
 tr = trajectory(ik, T, u0; Ttr); ts = Ttr:Ttr+T
 
@@ -135,17 +142,26 @@ Ts = Δt = 1
 
 
 using GLMakie
+axs = []
 fig = Figure()
 for i=1:2
 	signal = tr[:,i]
 	variable = ["x", "y"][i]
-	F, freqs, periods, maxperiod = getspectrum(signal, ts, Ts)
-	ax = Axis(fig[1,i], title="Tmax = $maxperiod", ylabel="$variable", xlabel="t")
-	time_domain = lines!(ax, ts, signal, color=:black)
-	ax = Axis(fig[2,i], ylabel="FFT($variable)", xlabel="Frequency")
-	freq_domain = lines!(ax, freqs, abs.(F), color=:black) 
+	F, freqs, periods, maxperiod, Fmax = getspectrum2(signal, ts, Ts)
+	ax1 = Axis(fig[1,i], title="Tmax = $maxperiod", ylabel="$variable", xlabel="t")
+	time_domain = lines!(ax1, ts, signal, color=:black)
+	# F .+= 1
+	# ax2 = Axis(fig[2,i], ylabel="FFT($variable)", xlabel="Frequency", yscale=log10)
+	ax2 = Axis(fig[2,i], ylabel="FFT($variable)", xlabel="Frequency")
+	freq_domain = lines!(ax2, freqs, abs.(F), color=:black) 
+	scatter!(ax2, [1/maxperiod], [Fmax], color=:red)
+	push!(axs, [ax1, ax2]...)
 end
-save("$(plotsdir())/$(savedir)/interiorcrisis-spectrumanalysis-d_$(d).png")
+linkxaxes!(axs[1], axs[3])
+linkaxes!(axs[2], axs[4])
+ylims!(axs[2], 1e-4, 1e6)
+
+save("$(plotsdir())/$(savedir)/interiorcrisis-spectrumanalysis-d_$(d)-all.png")
 
 
 

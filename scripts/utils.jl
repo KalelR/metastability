@@ -132,21 +132,31 @@ end
 
 
 
-function peakfrequency(F, freqs)
+function peakperiod(F, freqs)
     _, idxmax = findmax(abs.(F))
-    return 1 / abs(freqs[idxmax])
+    return 1 / abs(freqs[idxmax]), F[idxmax]
 end
 
 function getspectrum(signal, ts, Ts)
     newsize = Int(nextprod((2,), length(signal))/2)
-    signal = signal[1:newsize]
-    ts = ts[1:newsize]
+    signal = signal[1:newsize];    ts = ts[1:newsize]
     signal .-= mean(signal)
     F = fft(signal) |> fftshift
     freqs = fftfreq(length(ts), 1.0/Ts) |> fftshift
     periods = 1 ./ freqs
     maxperiod = peakfrequency(F, freqs)
     return F, freqs, periods, maxperiod
+end
+
+function getspectrum2(signal, ts, Ts)
+    newsize = Int(nextprod((2,), length(signal))/2)
+    signal = signal[1:newsize];    ts = ts[1:newsize]
+    signal .-= mean(signal)
+    F = abs2.(rfft(signal))
+    freqs = rfftfreq(length(signal))./Ts
+    periods = 1 ./ freqs
+    maxperiod, Fmax = peakperiod(F, freqs)
+    return F, freqs, periods, maxperiod, Fmax
 end
 
 # estimate_period(signal.-mean(signal), :mt)

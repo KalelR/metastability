@@ -116,6 +116,38 @@ sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T, maxiters=1e9); t = sol.t #
 tr = Dataset(sol[:,:]')
 fig = Figure(resolution = (1000,500))
 plot_RM!(fig, sol.t, tr, 0.1; tsmode="lines")
+RM = RecurrenceMatrix(tr, ϵ)
+rqa(RM)
+meanrecurrencetime(RM)
+a = recurrencestructures(RM, recurrencetimes=true)
+
+# ---------------------------- Frequency analysis ---------------------------- #
+include("utils.jl")
+T = 2e3
+T=400
+Δt = 0.5
+u0 = [0.0, 0]
+p =  [a, b, c, d, f, ω, n]
+tspan = (0, T)
+prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; seed=0)
+sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T, maxiters=1e9); t = sol.t #stiff, worked well but slow
+tr = sol[:,:]'; ts = sol.t
+
+signal = tr[140:end,1]; ts = ts[140:end]
+Ts = Δt
+F, freqs, periods, maxperiod, Fmax = getspectrum2(signal, ts, Ts)
+
+using GLMakie
+fig = Figure()
+ax = Axis(fig[1,1], title="Tmax = $maxperiod", ylabel="x", xlabel="t")
+time_domain = lines!(ax, ts, signal, color=:black)
+ax = Axis(fig[2,1], ylabel="FFT(x)", xlabel="Frequency")
+freq_domain = lines!(ax, freqs, abs.(F), color=:black) 
+scatter!(ax, [1/maxperiod], [Fmax], color=:red)
+save("$(plotsdir())/$(savedir)/noisydoublewell-spectrumanalysis-onewell.png")
+
+
+# τmean = (kt/eb)^2 * ν
 
 
 #--------------------------------------------------- ANIMATION ---------------------------------

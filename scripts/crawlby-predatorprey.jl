@@ -208,6 +208,68 @@ eigvals, eigvecs = eigen(J)
 J = get_jacobian_predatorprey(fp2, p)
 eigvals, eigvecs = eigen(J)
 
+
+
+
+
+
+
+# ---------------------------- frequency analysis ---------------------------- #
+include("$(scriptsdir())/utils.jl")
+using FFTW
+using GLMakie
+typename = "crawlby"
+ϵ = 1.0
+T = 2e2
+Ttr= 100
+Δt = 0.01
+Tplot = 300
+#state space  fig
+α =1.5 
+K = 10
+numbins = 80
+# time-series figs
+# α = 0.8 
+# K = 15 
+dirname=typename
+u0 = [0.1, 0.1]
+p = [α, γ, ϵ, ν, h, K, m]
+# pp = ContinuousDynamicalSystem(predator_prey, u0, p)
+# tr = trajectory(pp, T; Δt, Ttr); t = 0:Δt:T;
+solver = Tsit5()
+tspan = (0, T)
+prob = ODEProblem(predator_prey!, u0, tspan, p)
+sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8)
+ts = sol.t 
+tr = sol[:,:]'
+Ts = Δt
+
+axs = []
+fig = Figure()
+for i=1:2
+	signal = tr[:,i]
+	variable = ["x", "y"][i]
+	F, freqs, periods, maxperiod, Fmax = getspectrum2(signal, ts, Ts)
+	ax1 = Axis(fig[1,i], title="Tmax = $maxperiod", ylabel="$variable", xlabel="t")
+	time_domain = lines!(ax1, ts, signal, color=:black)
+	# F .+= 1
+	# ax2 = Axis(fig[2,i], ylabel="FFT($variable)", xlabel="Frequency", yscale=log10)
+	ax2 = Axis(fig[2,i], ylabel="FFT($variable)", xlabel="Frequency")
+	freq_domain = lines!(ax2, freqs, abs.(F), color=:black) 
+	scatter!(ax2, [1/maxperiod], [Fmax], color=:red)
+	push!(axs, [ax1, ax2]...)
+	# ylims!(ax2, 1e-4, 1.3*Fmax)
+end
+linkxaxes!(axs[1], axs[3])
+linkaxes!(axs[2], axs[4])
+save("$(plotsdir())/$(savedir)/crawlby-spectrumanalysis.png")
+
+
+
+
+
+
+
 #---------- MOVIE 
 # u0 = [0.1, 0.1]
 using ColorSchemes

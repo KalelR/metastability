@@ -369,7 +369,7 @@ tr = trajectory(lo, T, u0; Ttr); ts = Ttr:Δt:Ttr+T
 signal = tr
 Ts = Δt = 1
 
-F, freqs, periods, maxperiod = getspectrum(signal, ts, Ts)
+F, freqs, periods, maxperiod, Fmax = getspectrum2(signal, ts, Ts)
 
 
 using GLMakie
@@ -378,6 +378,7 @@ ax = Axis(fig[1,1], title="Tmax = $maxperiod", ylabel="x", xlabel="t")
 time_domain = lines!(ax, ts, signal, color=:black)
 ax = Axis(fig[2,1], ylabel="FFT(x)", xlabel="Frequency")
 freq_domain = lines!(ax, freqs, abs.(F), color=:black) 
+scatter!(ax, [1/maxperiod], [Fmax], color=:red)
 save("$(plotsdir())/$(savedir)/logistic-spectrumanalysis-r_$(r).png")
 
 
