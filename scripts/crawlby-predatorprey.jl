@@ -1,10 +1,7 @@
-# using DrWatson
-# @quickactivate "metastability"
-
-# using GLMakie, DynamicalSystems
+using DrWatson
+@quickactivate "metastability"
 using GLMakie, OrdinaryDiffEq
-include("utils.jl")
-plotsdir() = "../plots/"
+include("$(scriptsdir())/utils.jl")
 
 # """ prey = N; predator = P """
 @inbounds @inline function predator_prey!(du, u, p, t)
@@ -22,48 +19,54 @@ h = 1
 m = 0.4
 
 
-
 #crawlby (fast-slow dynamics) (due to saddle point)
-# typename = "crawlby"
-# ϵ = 1.0
+typename = "crawlby"
+ϵ = 1.0
 # T = 1e5
-# Ttr= 100
-# Δt = 0.01
+T = 2e3
+Ttr= 100
+Ttr=1e4; T = 15000 #for α=0.1
+Δt = 0.01
 # Tplot = 300
-##state space  fig
-# α =1.5 
-# K = 10
-# numbins = 80
+Tplot=1000
+#state space  fig
+α = 1.5 
+α = 1.0
+α = 0.5
+α = 0.3
+α = 0.1
+K = 10
+numbins = 80
 # time-series figs
 # α = 0.8 
 # K = 15 
-# dirname=typename
-#
-
-#fast-slow system 
-typename = "fastslowsystem"
-T = 1e5
-Ttr=500
-Δt = 0.01
-α = 1.5 
-K = 2.2 
-ϵ = 0.01
-Tplot = 2000
-numbins = 40
 dirname=typename
 #
 
-#regular LC
-typename = "regularLC"
-dirname = "not_metastable/$(typename)"
-ϵ = 1.0
+#fast-slow system 
+# typename = "fastslowsystem"
 # T = 1e5
-T = 300
-Ttr= 100
-Δt = 0.01
-α = 1.5 
-K = 2.2 
-Tplot=300
+# Ttr=500
+# Δt = 0.01
+# α = 1.5 
+# K = 2.2 
+# ϵ = 0.01
+# Tplot = 2000
+# numbins = 40
+# dirname=typename
+# #
+
+# #regular LC
+# typename = "regularLC"
+# dirname = "not_metastable/$(typename)"
+# ϵ = 1.0
+# # T = 1e5
+# T = 300
+# Ttr= 100
+# Δt = 0.01
+# α = 1.5 
+# K = 2.2 
+# Tplot=300
 #
 
 u0 = [0.1, 0.1]
@@ -96,7 +99,8 @@ ax2 = Axis(fig[1, 1:2], xlabel="t", ylabel="Predator", yticklabelcolor = c2, yla
 lines!(ax2, t_plot, tr_plot[:, 2], linewidth=1, color=c2)
 hidespines!(ax2)
 hidexdecorations!(ax2)
-linkxaxes!(ax1, ax2); xlims!(ax1, Ttr, Tplot)
+linkxaxes!(ax1, ax2); 
+xlims!(ax1, Ttr, Ttr+Tplot)
 
 ax3 = Axis(fig[2, 1][1,1], xlabel="Prey", ylabel="Predator")
 s=scatter!(ax3, tr_plot[:,1], tr_plot[:, 2], linewidth=1, color=log10.(ms_plot), marker=:circle)
@@ -274,42 +278,42 @@ save("$(plotsdir())/$(savedir)/crawlby-spectrumanalysis.png")
 # u0 = [0.1, 0.1]
 using ColorSchemes
 u0 = [5, 0.1]
+# α=0.1 #very slow, ̢o~-1
+α=0.1 #very slow, ̢o~-1
 p = [α, γ, ϵ, ν, h, K, m]
-solver = Tsit5()
-tspan = (0, T)
+solver = Tsit5();
+tspan = (0, T);
+Ttr=1e4; T = Ttr + 200 #for α=0.1
+Δt = 0.01
 prob = ODEProblem(predator_prey!, u0, tspan, p)
-sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8)
-t = sol.t 
-tr = sol[:,:]'
-speeds = norm.(timederivative(sol))
-Tplot= 44.1
-framerate=450
-tplot = Int64(Tplot/Δt);
-Δt_plot = Int64(0.01/Δt)
-t_plot = t[1:Δt_plot:tplot];
-tr_plot = tr[1:Δt_plot:tplot, :];
-speeds_plot = log10.(1 ./ speeds[1:Δt_plot:tplot])
-frames = 2:length(t_plot)
+sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8);
+t = sol.t; tr = sol[:,:]';
 
-#transform the vector with the info for the colors onto a Int vector going from 1 to 264; this is used to index the colormap (wihch has 264 colors); basically transforming it into an vector of indices
-v = (speeds_plot .- minimum(speeds_plot)) ./ (maximum(speeds_plot) .- minimum(speeds_plot)) .* 255 .+ 1
-v = round.(Int, v )
-colors = ColorSchemes.viridis[v]
+Tplot = 44.1
+Tplot = 200
+# framerate=450
+framerate=900
+Δtanimation = 0.01
+# Δtanimation = 1
+t_plot, tr_plot, speeds_plot, frames = animationdata(sol, Tplot, Δt)
+colors = pointspeed_as_colors(speeds_plot);
 
 points = Observable(Point2f[(tr[1,1], tr[1,2])])
 colors_ob = Observable([colors[1]])
+time = Observable(t_plot[1])
 fig = Figure(resolution=(800, 600))
-ax = Axis(fig[1,1], ylabel="Predator", xlabel="Prey")
+ax = Axis(fig[1,1], ylabel="Predator", xlabel="Prey",  title= @lift("t = $((round($time, digits=0)))"));
 # fig, ax = scatter(points, color=colors_obg)
 scatter!(ax, points, color=colors_ob)
 hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
-limits!(ax, -0.5, 10.5, -0.3, 6)
+limits!(ax, -0.3, 10.5, -0.15, 3.5)
 hidespines!(ax, :t, :r) 
-record(fig, "$(plotsdir())$(typename)/crawlby_animation.mp4", frames;
+record(fig, "$(plotsdir())/$(dirname)/crawlby_animation-alpha_$(α).mp4", frames;
         framerate) do frame
     new_point = Point2f(tr_plot[frame,1], tr_plot[frame,2])
     points[] = push!(points[], new_point)
 	colors_ob[] = push!(colors_ob[], colors[frame])
+    time[] = t_plot[frame]
 end
 
 

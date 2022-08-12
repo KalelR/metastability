@@ -166,8 +166,8 @@ save("$(plotsdir())/$(savedir)/interiorcrisis-spectrumanalysis-d_$(d)-all.png")
 
 
 ##--------------------------------------------------animations --------------------a = 0.84
-include("utils.jl")
-plotsdir() = "../plots/"
+# include("utils.jl")
+# plotsdir() = "../plots/"
 a = 0.84
 b = 0.9 
 c = 0.4 
@@ -184,6 +184,7 @@ x = tr[:,1]; y = tr[:,2]; t = Ttr:Ttr+T
 # sol = [ [tr[i,1], tr[i,2]] for i=1:length(tr)]
 p = [a, b, c, d]
 speeds = norm.([ik.jacobian([tr[i,1], tr[i,2]], p, 1) for i=1:length(tr)])
+
 
 Δt = 1.0
 Tplot= T-Ttr
@@ -204,24 +205,163 @@ colors = ColorSchemes.viridis[v];
 
 
 points = Observable(Point2f[(tr_plot[1,1], tr_plot[1,2])])
+points2 = Observable(Point2f[(t_plot[1], tr_plot[1,2])])
 colors_ob = Observable([colors[1]])
 time = Observable(t_plot[1])
-fig = Figure(resolution=(800, 600))
-ax = Axis(fig[1,1], title= @lift("t = $($time)"))
+fig = Figure(resolution=(700, 600))
+ax = Axis(fig[1:2,1], title= @lift("t = $($time)"), ylabel="y", xlabel="x")
 s=scatter!(ax, points, color=colors_ob, markersize=3)
+ax2 = Axis(fig[3,1], ylabel="x", xlabel="t")
+lines!(ax2, points2)
 hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
-xlims!(-0.6, 1.7)
-ylims!(-1.8, 1.4)
-record(fig, "../plots/interiorcrisis/ikedamap-animation-a_$(a)-b_$(b)-c_$(c)-d_$(d).mp4", frames;
+xmin = -0.6; xmax=1.7
+xlims!(ax, xmin, xmax); ylims!(ax, -1.8, 1.4)
+xlims!(ax2, t_plot[1], t_plot[end]); ylims!(ax2, xmin, xmax)
+record(fig, "$(plotsdir())/interiorcrisis/ikedamap-animation-withtimeseries-a_$(a)-b_$(b)-c_$(c)-d_$(d).mp4", frames;
         framerate) do frame
     time[] = t_plot[frame]
     new_point = Point2f(tr_plot[frame,1], tr_plot[frame,2])
+    new_point2 = Point2f(t_plot[frame,1], tr_plot[frame,1])
 	points[] = push!(points[], new_point)
+	points2[] = push!(points2[], new_point2)
 	colors_ob[] = push!(colors_ob[], colors[frame])
 end
 
 
 
+# ------------------------------ grey background ----------------------------- #
+Δt = 1.0
+Tplot= 1000
+framerate=15
+# framerate=400
+tplot = Int64(Tplot/Δt);
+Δt_plot = round(Int64, Δt/Δt);
+t_plot = t[1:Δt_plot:tplot];
+tr_plot = tr[1:Δt_plot:tplot, :];
+speeds_plot = log10.(1 ./ speeds[1:Δt_plot:tplot]);
+frames = 2:length(t_plot)
+duration = length(frames) / framerate
+
+points = Observable(Point2f[(tr_plot[1,1], tr_plot[1,2])])
+points2 = Observable(Point2f[(t_plot[1], tr_plot[1,2])])
+colors_ob = Observable([colors[1]])
+time = Observable(t_plot[1])
+# fig = Figure(resolution=(800, 600))
+fig = Figure(resolution=(700, 600))
+ax = Axis(fig[1:2,1], title= @lift("t = $($time)"), ylabel="y", xlabel="x")
+s=scatter!(ax, points, color=:orange, markersize=14)
+s=scatter!(ax, tr[:,1], tr[:,2,], color=(:black, 0.5), markersize=3)
+ax2 = Axis(fig[3,1], ylabel="x", xlabel="t")
+scatter!(ax2, points2, color=:orange, markersize=14)
+lines!(ax2, t_plot, tr_plot[:,1], color=(:gray, 1.0), markersize=5)
+hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
+xmin = -0.6; xmax=1.7
+xlims!(ax, xmin, xmax); ylims!(ax, -1.8, 1.4)
+xlims!(ax2, t_plot[1], t_plot[end]); ylims!(ax2, xmin, xmax)
+record(fig, "$(plotsdir())/interiorcrisis/ikedamap-animation-withtimeseries-graybackground-a_$(a)-b_$(b)-c_$(c)-d_$(d).mp4", frames;
+        framerate) do frame
+    time[] = t_plot[frame]
+    new_point = Point2f(tr_plot[frame,1], tr_plot[frame,2])
+    new_point2 = Point2f(t_plot[frame,1], tr_plot[frame,1])
+	points[] = [new_point]
+	points2[] = [new_point2]
+	# points2[] = push!(points2[], new_point2)
+	colors_ob[] = push!(colors_ob[], colors[frame])
+end
+
+
+# ------------------------ finding the period-5 saddle ----------------------- #
+a = 0.84
+b = 0.9 
+c = 0.4 
+d = 7.1
+# d = 7.3
+u0 = rand(2)
+p = [a, b, c, d]
+
+fp = periodicorbits(ik, 5, [rand(2) for i=1:100])
+scatter!(fp[:,1], fp[:,2], color=:red)
+
+@inbounds function ikedamap_rule(u, p, n)
+    a,b,c,d  = p
+    t = c - d/(1 + u[1]^2 + u[2]^2)
+    dx = a + b*(u[1]*cos(t) - u[2]*sin(t))
+    dy = b*( u[1]*sin(t) + u[2]*cos(t) )
+    return SVector{2}(dx, dy)
+end
+
+# @inbounds function ikedamap_5thorder_rule(u,p,n)
+# 	u_mapped = deepcopy(u)
+# 	for i=1:5 
+# 		u_mapped = Systems.ikedamap_rule(u_mapped, p, n)
+# 	end
+#     return SVector{2}(u_mapped[1], u_mapped[2])
+# end
+
+
+@inbounds function ikedamap_5thorder_rule(u,p,n)
+	for i=1:5 
+		u = Systems.ikedamap_rule(u, p, n)
+	end
+    return SVector{2}(u[1], u[2])
+end
+
+@inbounds function ikedamap_5thorder_rule!(du, u,p,n)
+	for i=1:5 
+		u = Systems.ikedamap_rule(u, p, n)
+	end
+	du[1] = u[1]; du[2] = u[2];
+end
+
+Ttr=0
+T=200
+ik = Systems.ikedamap(u0; a, b, c, d)
+ik_5order = DiscreteDynamicalSystem(ikedamap_5thorder_rule, u0, p)
+ik_5order_2 = DiscreteDynamicalSystem(ikedamap_5thorder_rule!, u0, p)
+tr = trajectory(ik, T, u0; Ttr); t = Ttr:Ttr+T
+tr_5th = trajectory(ik_5order, T, u0; Ttr); t_5th = Ttr:Ttr+T/5
+tr_5th2 = trajectory(ik_5order_2, T, u0; Ttr); t_5th = Ttr:Ttr+T/5
+
+tr = tr[1:5:end, :]; t = t[1:5:end]
+
+
+x = interval(-0.5, 1.5)
+y = interval(-2, 1); box = x × y
+fp2 = periodicorbits(ik_5order, 1, [rand(2) for i=1:100])
+
+# ikedamap_5thorder_rule(fp[1], p, 1)
+u0s = [rand(2) for i=1:500]
+T = 3e3
+Ttr = 1e3
+fig = Figure(resolution=(1920, 1080)) 
+axs = []
+for (i, d) ∈ enumerate([7.2, 7.1])
+	ik = Systems.ikedamap(;a, b, c, d)
+	tr = trajectory(ik, T; Ttr)
+	x = tr[:,1]; y = tr[:,2]; t = Ttr:Ttr+T
+	measure = :black
+	ax = Axis(fig[1,i], ylabel="y", xlabel="x", title="d=$(d)")
+	scatter!(ax, x, y, markersize=3, color=measure)
+	xlims!(-0.6, 1.7)
+	ylims!(-1.8, 1.4)
+	fps = periodicorbits(ik_5order, 1, u0s)
+	scatter!(fps[:,1], fps[:,2], color=:red, markersize=10)
+end
+
+
+
+# ax = Axis(fig[4, 1], ylabel="x")
+# lines!(t, tr[:,1], color=:black)
+# lines!(t_5th, tr_5th[:,1], color=:orange)
+# ax = Axis(fig[5, 1], ylabel="y", xlabel="t")
+# lines!(t, tr[:,2], color=:black)
+# lines!(t_5th, tr_5th[:,2], color=:orange)
+
+# grid = [[x,y] for x ∈ range(-0.5, 1.5, length=10) for y ∈ range(-2, 1, length=10)]
+# grid = reduce(hcat, grid)
+# z = mapslices(x->ikedamap_5thorder_rule(x, p, 1), grid, dims=1)
+
+# heatmap(grid[1,:], grid[2,:], z)
 
 
 
@@ -230,11 +370,5 @@ end
 
 
 
-
-
-
-
-
-
-ax = Axis(fig[1,1], ylabel="y", xlabel="x"); 
-scatter!(ax, x, y, markersize=3, color=measure)
+# ax = Axis(fig[1,1], ylabel="y", xlabel="x"); 
+# scatter!(ax, x, y, markersize=3, color=measure)

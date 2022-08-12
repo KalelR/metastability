@@ -1,5 +1,8 @@
 using DataStructures
 using ColorSchemes
+
+logrange(x1, x2; length) = (10^y for y in range(log10(x1), log10(x2), length=length))
+
 """
 for each point in trajectory, round it to number digits (sort of equivalent of getting the eps-neighborhood of each point, eps being 10^-numdigits), count number of occurrences of rounded point and divided by total amount of points to give the measure of each point. 
 """
@@ -177,3 +180,21 @@ function plot_RM!(fig, t, tr, ϵ; tsmode="scatterline")
 end 
 
 
+ function animationdata(sol, Tplot, Δt)
+	speeds = norm.(timederivative(sol))
+	tplot = Int64(Tplot/Δt);
+	Δt_plot = Int64(Δtanimation/Δt)
+    t = sol.t; tr = sol[:,:]'
+	t_plot = t[1:Δt_plot:tplot];
+	tr_plot = tr[1:Δt_plot:tplot, :];
+	speeds_plot = log10.(1 ./ speeds[1:Δt_plot:tplot])
+	frames = 2:length(t_plot)
+    return t_plot, tr_plot, speeds_plot, frames
+ end
+function pointspeed_as_colors(speeds_plot)
+	#transform the vector with the info for the colors onto a Int vector going from 1 to 264; this is used to index the colormap (wihch has 264 colors); basically transforming it into an vector of indices
+	v = (speeds_plot .- minimum(speeds_plot)) ./ (maximum(speeds_plot) .- minimum(speeds_plot)) .* 255 .+ 1
+	v = round.(Int, v)
+	colors = ColorSchemes.viridis[v]
+	return colors
+end

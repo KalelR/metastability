@@ -2,6 +2,7 @@ using DrWatson
 @quickactivate "metastability"
 using GLMakie,  DifferentialEquations
 
+include("$(scriptsdir())/utils.jl")
 
 # """
 # U(x) = ax^4/4 - bx 2/2 + cx (c: assymetry paramter); gamma: dissipation, f forcing omega forcing freq, n noise strength
@@ -14,9 +15,9 @@ using GLMakie,  DifferentialEquations
 end
 
 function noise_duffing(du,u,p,t)
-    a,b,c,d,f, ω, n = p
-    du[1] = 0 
-    du[2] = n
+    a,b,c,d,f, ω, n₁, n₂ = p
+    du[1] = n₁
+    du[2] = n₂
 end
 
 a=0.5
@@ -25,8 +26,7 @@ c=0.0
 d = 0.2
 f = 0.0
 ω = 1.0
-n = 2.5 #for applying to v
-# n = 0.15 #for applying to x
+n₁ = n₂ = n = 0.2
 
 T = 5000 #on v
 Ttr=0
@@ -35,10 +35,10 @@ Ttr=0
 
 u0 = [0.0, 0]
 
-p =  [a, b, c, d, f, ω, n]
+p =  [a, b, c, d, f, ω, n₁, n₂]
 tspan = (0, T)
 prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; seed=0)
-sol = solve(prob_duffing, SOSRA(), saveat=0:Δt:T); t = sol.t #nonstiff, didnt test
+# sol = solve(prob_duffing, SOSRA(), saveat=0:Δt:T); t = sol.t #nonstiff, didnt test
 sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T); t = sol.t #stiff, worked well but slow
 
 fig = Figure()
@@ -52,8 +52,7 @@ Us = U.(x, a, b, c)
 lines!(ax2, x, Us, color=:black, linewidth=4)
 scatter!(ax2, sol[1,:], U.(sol[1,:], a, b, c), color=(:orange, 0.5))
 
-save("duffing-doublwell-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-noiseonx.png", fig)
-barrier_height = minimum(Us)
+save("duffing-doublwell-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-noiseonboth.png", fig)
 
 
 #just the time series
@@ -64,31 +63,40 @@ ax1 = Axis(fig[1, 1], ylabel="x", xlabel="t")
 lines!(ax1, t, sol[1,:], color=[el > 0 ? c1 : c2 for el in sol[1,:]])
 save("../plots/noise/duffing-timeseries-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-viridiscolors.png", fig)
 
+#verifying kramers 
+U_peak = U(0, a, b, c)
+Uwell, idx = findmin(Us)
+Eb = U_peak - U_well
+ϵ = 4*n^2
+U²(x, a, b, c) = 3a*x^2 - b
+xwell = x[idx]
+prefactor = 2π/(sqrt(U²(xwell, a, b, c) * abs(U²(0, a, b, c)) ) )
+exponent = Eb/ϵ
 
 #------------------------------------------------------------------SCALING
 laminarperiods(v) = v .> 0 #1 is positive, 0 is negative
-T = 1e7
+T = 1e8
 Δt = 0.5
 u0 = [0.0, 0]
-p =  [a, b, c, d, f, ω, n]
+p =  [a, b, c, d, f, ω, n₁, n₂]
 tspan = (0, T)
 # u0s = [rand(2) for i=1:10]
 # all_τs = []
 # @Threads.threads for idx_u0 in 1:length(u0s)
 # u0 = u0s[idx_u0]
 prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; seed=0)
-sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T, maxiters=1e9); t = sol.t #stiff, worked well but slow
+sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T, maxiters=1e9, progress=true); t = sol.t #stiff, worked well but slow
 
 x = sol[1,:]
-τs = length_samevalues_allowfluctuations(laminarperiods(x), 1)
-τs_2 = length_samevalues_allowfluctuations(laminarperiods(x), 0)
+τs, _ = length_samevalues_allowfluctuations(laminarperiods(x), 1)
+τs_2, _ = length_samevalues_allowfluctuations(laminarperiods(x), 0)
 
 ws, bins = histogram(τs[1], 50); ws .+= 1
 ws2, bins2 = histogram(τs_2[1], 50); ws2 .+= 1
 fig = Figure()
 ax = Axis(fig[1,1], yscale=log10, ylabel="PDF(τ)", xlabel="τ")
 scatterlines!(ax, bins[1:end-1], ws, color=:black)
-scatterlines!(ax, bins2[1:end-1], ws2, color=:orange)
+# scatterlines!(ax, bins2[1:end-1], ws2, color=:orange)
 
 
 using CurveFit 
