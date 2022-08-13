@@ -184,11 +184,11 @@ fps_x = [[xpcoor(μ, a), 0, 0]];
 fps_y = [[0, xpcoor(μ, a), 0]];
 fps_z = [[0, 0, xpcoor(μ, a)]];
 fps = hcat([fps_x; fps_y; fps_z]...)'
-
-
-Ttr = 240
-T = 420
-Ttr = 0.0; T = 240; 
+u0 = [0.1, 0.2, 0.3] #off the coordinate plane or axis should be attracted towards HC
+# u0 = fps_x[1] .+ [0.1, 0.1, 0.1]
+Ttr = 255
+T = 480
+# Ttr = 0.0; T = 240; 
 Δt= 0.1
 tspan = (0, T)
 ff = ODEFunction(heteroclinic_cycle_gh!; jac=jac!)
@@ -196,6 +196,7 @@ hcgh = ODEProblem(ff, u0, tspan, p)
 sol = solve(hcgh, RK4(), dt=1/1000, saveat=Ttr:Δt:T); t = sol.t; tr = sol[:, :]';
 Tplot= T-Ttr
 framerate = 150 #166.3
+framerate = 100 #166.3
 
 
 t_plot, tr_plot, speeds_plot, frames = animationdata(sol, Tplot, Δt, Δt)
@@ -203,22 +204,38 @@ colors = pointspeed_as_colors(speeds_plot);
 
 az =0.7875222039230623 
 el =0.3190658503988664 
+c1 = :green 
+c2 = :cyan 
+c3 = :red
+alphalines = 0.8
+mksize=12
 
 points = Observable(Point3f[(tr_plot[1,1], tr_plot[1,2], tr_plot[1,3])])
+points2 = Observable(Point2f[(t_plot[1], tr_plot[1,1])])
+points3 = Observable(Point2f[(t_plot[1], tr_plot[1,2])])
+points4 = Observable(Point2f[(t_plot[1], tr_plot[1,3])])
 colors_ob = Observable([colors[1]])
 tanim = Observable(t_plot[1])
 
 fig = Figure(resolution=(800, 600))
-ax = Axis3(fig[1:2,1], azimuth = az, elevation = el, title= @lift("t = $($tanim)"))
-lines!(ax, tr_plot[:,1], tr_plot[:,2], tr_plot[:,3], color=colors)
-scatter!(ax, points, color=:orange)
-scatter!(ax, fps[:,1], fps[:,2], fps[:,3], color=:red, markersize=10)
+ax = Axis3(fig[1:2,1:3], azimuth = az, elevation = el, title= @lift("t = $($tanim)"))
+lines!(ax, tr_plot[:,1], tr_plot[:,2], tr_plot[:,3], color=(:black, 0.8))
+scatter!(ax, fps[:,1], fps[:,2], fps[:,3], color=[c1,c2,c3], markersize=18)
+scatter!(ax, points, color=:orange, markersize=mksize)
 limits!(ax, 0.0, 2.4, 0, 2.4, 0, 2.4)
 hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
 
-ax = Axis(fig[3,1])
-lines!(ax, t_plot, tr_plot[:,1], color=(:gray, 0.4))
-scatter!(ax, points2, color=(:orange, 1.0))
+ax = Axis(fig[3,1], xlabel="t", ylabel="x")
+lines!(ax, t_plot, tr_plot[:,1], color=(c1, alphalines))
+scatter!(ax, points2, color=(:orange, 1.0), markersize=mksize)
+hidespines!(ax, :t, :r) 
+ax = Axis(fig[3,2], xlabel="t", ylabel="y")
+lines!(ax, t_plot, tr_plot[:,2], color=(c2, alphalines))
+scatter!(ax, points3, color=(:orange, 1.0), markersize=mksize)
+hidespines!(ax, :t, :r) 
+ax = Axis(fig[3,3], xlabel="t", ylabel="z")
+lines!(ax, t_plot, tr_plot[:,3], color=(c3, alphalines))
+scatter!(ax, points4, color=(:orange, 1.0), markersize=mksize)
 hidespines!(ax, :t, :r) 
 
 
@@ -227,10 +244,14 @@ record(fig, "$(plotsdir())/heterocliniccycle/guckenheimerholmes-Ttr_$(Ttr)-grayb
     tanim[] = t_plot[frame]
     new_point = Point3f(tr_plot[frame,1], tr_plot[frame,2], tr_plot[frame,3])
     new_point2 = Point2f(t_plot[frame], tr_plot[frame,1])
+    new_point3 = Point2f(t_plot[frame], tr_plot[frame,2])
+    new_point4 = Point2f(t_plot[frame], tr_plot[frame,3])
     points[] = [new_point]
     points2[] = [new_point2]
+    points3[] = [new_point3]
+    points4[] = [new_point4]
 	# colors_ob[] = push!(colors_ob[], colors[frame])
-endz
+end
 
 
 

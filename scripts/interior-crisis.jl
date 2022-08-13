@@ -309,24 +309,32 @@ end
 
 # ------------------------------ color outside edge  ----------------------------- #
 T = 15e3; Ttr = 1e3
+T = 3e3; Ttr = 1e3
 a = 0.84; b = 0.9; c = 0.4 
 d = 7.22
 ik = Systems.ikedamap(;a, b, c, d)
-tr = trajectory(ik, T; Ttr); t = Ttr:Ttr+T
-measure = histmeasure(tr, 1)
-inner_threshold = minimum(measure)*10
+traj = trajectory(ik, T; Ttr); t = Ttr:Ttr+T
+innercore = deepcopy(Matrix(traj))
+# measure = histmeasure(tr, 1)
+# inner_threshold = minimum(measure)*10
+maxdist_threshold = 0.1
+maxdist_threshold = 0.04
 
-d = 7.248
+d = 7.22
+# d = 7.248
+# d = 7.3
 ik = Systems.ikedamap(;a, b, c, d)
-tr = trajectory(ik, T; Ttr); t = Ttr:Ttr+T
-measure = histmeasure(tr, 2)
+traj = trajectory(ik, T; Ttr); t = Ttr:Ttr+T
+# measure = histmeasure(tr, 2)
+arewithin = mapslices(x->withinset(x, innercore, maxdist_threshold), Matrix(traj), dims=2)[:,1]; #a bit expensive, have to compare each point to all other points in the set
 
 Δt = 1.0
 Tplot= 1000
 framerate=15
 
-t_plot, tr_plot, frames = animationdata_tr(tr, t, Tplot, Δt, Δt)
-measure_plot = histmeasure(tr_plot, 1)
+t_plot, tr_plot, frames = animationdata_tr(traj, t, Tplot, Δt, Δt)
+arewithin_plot = mapslices(x->withinset(x, innercore, maxdist_threshold), Matrix(tr_plot), dims=2)[:,1]; #a bit expensive, have to compare each point to all other points in the set
+# measure_plot = histmeasure(tr_plot, 1)
 # colors = pointspeed_as_colors(speeds_plot);
 
 #observables
@@ -338,17 +346,17 @@ tanim = Observable(t_plot[1])
 #plot
 fig = Figure(resolution=(700, 600))
 ax = Axis(fig[1:2,1], title= @lift("t = $($tanim)"), ylabel="y", xlabel="x")
-s=scatter!(ax, points, color=:orange, markersize=14)
-s=scatter!(ax, tr[:,1], tr[:,2,], color=[el > inner_threshold ? (:black,0.5) : (:red,0.5) for el in measure], markersize=3)
+s=scatter!(ax, traj[:,1], traj[:,2,], color=[el == 1  ? (:green, 0.6) : (:purple, 0.6) for el in arewithin], markersize=3)
+s=scatter!(ax, points, color=:orange, markersize=12)
 ax2 = Axis(fig[3,1], ylabel="x", xlabel="t")
-scatter!(ax2, points2, color=:orange, markersize=14)
-lines!(ax2, t_plot, tr_plot[:,1], color=[el > inner_threshold ? (:black,0.5) : (:red,0.5) for el in measure_plot], markersize=5)
+lines!(ax2, t_plot, tr_plot[:,1], color=[el == 1  ? (:green,0.8) : (:purple,0.8) for el in arewithin_plot], markersize=5)
+scatter!(ax2, points2, color=:orange, markersize=12)
 #decoration
 hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
 xmin = -0.6; xmax=1.7
 xlims!(ax, xmin, xmax); ylims!(ax, -1.8, 1.4)
 xlims!(ax2, t_plot[1], t_plot[end]); ylims!(ax2, xmin, xmax)
-record(fig, "$(plotsdir())/interiorcrisis/ikedamap-animation-withtimeseries-graybackground-a_$(a)-b_$(b)-c_$(c)-d_$(d).mp4", frames;
+record(fig, "$(plotsdir())/interiorcrisis/ikedamap-animation-withtimeseries-coloredbasedondistance-a_$(a)-b_$(b)-c_$(c)-d_$(d).mp4", frames;
         framerate) do frame
     tanim[] = t_plot[frame]
     new_point = Point2f(tr_plot[frame,1], tr_plot[frame,2])
@@ -356,7 +364,7 @@ record(fig, "$(plotsdir())/interiorcrisis/ikedamap-animation-withtimeseries-gray
 	points[] = [new_point]
 	points2[] = [new_point2]
 	# points2[] = push!(points2[], new_point2)
-	colors_ob[] = push!(colors_ob[], colors[frame])
+	# colors_ob[] = push!(colors_ob[], colors[frame])
 end
 
 

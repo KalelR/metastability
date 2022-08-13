@@ -164,6 +164,17 @@ end
 
 # estimate_period(signal.-mean(signal), :mt)
 
+
+using Distances
+"""
+Check if 'point` is within `set` by seeing if its minimum distance to the set is below an absolute threshold.
+"""
+function withinset(point, set, threshold)
+    mindist = minimum(mapslices(x->evaluate(Euclidean(), point, x), set, dims=2))
+    iswithin = mindist <= threshold ? true : false
+end
+
+
 # --------------------------------- PLOTTING --------------------------------- #
 using GLMakie
 using DynamicalSystems

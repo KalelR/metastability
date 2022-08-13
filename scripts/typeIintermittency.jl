@@ -82,18 +82,18 @@ Ttr = 0
 r = 3.8284
 # r = rc-1e-7
 lo = Systems.logistic(0.4; r); t = Ttr:Ttr+T 
-tr = trajectory(lo, T; Ttr);
+traj = trajectory(lo, T; Ttr);
 # lam_periods_bool = laminarperiods(tr; win_size, std_th); tr = tr[1:end-3*win_size+1]; t = t[1:end-3*win_size+1];
 # Ts, corr_lam_periods_bool = estimate_laminarperiod_duration(tr; win_size, std_th, num_allowed_fluctuations=5)
 
-Ts, corr_lam_periods_bool= laminarperiods(tr, 3; atol=0.0, rtol=0.02)
+Ts, corr_lam_periods_bool= laminarperiods(traj, 3; atol=0.0, rtol=0.02)
 t = t[1:length(corr_lam_periods_bool)];
-tr = tr[1:length(corr_lam_periods_bool)]
+traj = traj[1:length(corr_lam_periods_bool)]
 fig = Figure(resolution=(800, 300), fontsize=30, figure_padding=(5, 30, 5, 30))
 ax = Axis(fig[1,1], ylabel="x", xlabel="t")
 # colors = [el > 0 ? :red : :black for el in lam_periods_bool];
-colors = [el > 0 ? :red : :black for el in corr_lam_periods_bool];
-scatterlines!(ax, t, tr, color=colors)
+colors = [el > 0 ? :green : :purple for el in corr_lam_periods_bool];
+scatterlines!(ax, t, traj, color=colors)
 ylims!(0, 1)
 xlims!(0, 500)
 # save("../plots/typeI/logistic-timeseries-r_$(r)-coloured-winsize_$(win_size)-stdth_$(std_th).png", fig)
@@ -486,6 +486,10 @@ end
 
 
 #---------------------------------------movie with grey background--------------
+ρ = 166.06 #LC, just before SN
+p = [σ, ρ, β]; prob = ODEProblem(lorenz!, u0, tspan, p); sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8, maxiters=1e9); t = sol.t; traj = sol[:,:]'
+limitcycle=deepcopy(traj)
+
 # ρ = 166.1 #intermittency (CA) 
 ρ = 166.1 #intermittency (CA); a bit too slow
 # ρ = 166.2 #intermittency (CA); a bit too slow
@@ -496,13 +500,14 @@ Ttr = 780; T=850
 tspan = (0, T)
 Δt = 0.01
 prob = ODEProblem(lorenz!, u0, tspan, p)
-sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8, maxiters=1e9)
-
+sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8, maxiters=1e9); t = sol.t; traj = sol[:,:]'
+arewithin = mapslices(x->withinset(x, limitcycle, 2), traj, dims=2)[:,1]; #a bit expensive, have to compare each point to all other points in the set
 Tplot= T-Ttr
 # framerate=500 #166.3
 framerate=100 #166.3
 t_plot, tr_plot, speeds_plot, frames = animationdata(sol, Tplot, Δt, Δt)
-colors = pointspeed_as_colors(speeds_plot);
+# colors = pointspeed_as_colors(speeds_plot);
+arewithin_plot = mapslices(x->withinset(x, limitcycle, 2), tr_plot, dims=2)[:,1]; #a bit expensive, have to compare each point to all other points in the set
 
 az = -1.142477796076938
 el = 0.08906585039886639
@@ -514,19 +519,20 @@ tanim = Observable(t_plot[1])
 
 fig = Figure(resolution=(800, 600))
 ax = Axis3(fig[1:2,1], azimuth = az, elevation = el, title= @lift("t = $((round($tanim; digits=0)))"))
-scatter!(ax, points, color=(:orange, 1))
-scatter!(ax, sol[1,:], sol[2,:], sol[3,:], color=(:black, 0.2), markersize=3)
+scatter!(ax, sol[1,:], sol[2,:], sol[3,:], color=[el == 1 ? (:green,0.8) : (:purple,0.8) for el ∈ arewithin], markersize=3)
+scatter!(ax, points, color=(:orange, 1), markersize=15)
 # scatter!(ax, tr_plot[:,1], tr_plot[:,2], tr_plot[:,3], color=(:black, 0.2), markersize=4)
+
 hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
 limits!(ax, -50, 50, -100, 100, 50, 250)
 
 ax = Axis(fig[3,1], ylabel="x", xlabel="t")
-lines!(ax, t_plot, tr_plot[:,1], color=(:black, 0.4))
-scatter!(ax, points2, color=(:orange, 1))
+lines!(ax, t_plot, tr_plot[:,1], color=[el == 1 ? :green : :purple for el ∈ arewithin_plot])
+scatter!(ax, points2, color=(:orange, 1), markersize=12)
 hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
 hidespines!(ax, :t, :r) 
 
-record(fig, "$(plotsdir())/$(typename)/lorenz-rho_$(ρ)-graybackground.mp4", frames;
+record(fig, "$(plotsdir())/$(typename)/lorenz-rho_$(ρ)-colorghost.mp4", frames;
         framerate) do frame
     tanim[] = t_plot[frame]
     new_point = Point3f(tr_plot[frame,1], tr_plot[frame,2], tr_plot[frame,3])
@@ -535,6 +541,7 @@ record(fig, "$(plotsdir())/$(typename)/lorenz-rho_$(ρ)-graybackground.mp4", fra
     points2[] = [new_point2]
 end
 
+# -------- attempt at using lyapunovs exponents to identify the ghost -------- #
 using DynamicalSystems
 ds = Systems.lorenz(u0; ρ=ρ, σ, β)
 tinteg = tangent_integrator(ds, 3)
@@ -594,3 +601,31 @@ function lyapunovspectrum_convergence(integ, N, Δt::Real, Ttr::Real = 0.0, show
     popfirst!(λs); popfirst!(t); popfirst!(tr)
     return λs, tr, t
 end
+
+
+# -------------- trying to compare direcltty to points in ghost -------------- #
+Ttr = 780; T=850
+tspan = (0, T)
+Δt = 0.01
+ρ = 166.06 
+p = [σ, ρ, β]
+prob = ODEProblem(lorenz!, u0, tspan, p)
+sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8, maxiters=1e9)
+t = sol.t; traj = sol[:,:]'
+
+fig = Figure(resolution=(800,600), fontsize = 20)
+ax = Axis3(fig[1, 1])
+scatter!(ax, traj[:,1], traj[:,2], traj[:,3], markersize=5)
+limitcycle=deepcopy(traj)
+
+ρ = 166.1
+p = [σ, ρ, β]
+prob = ODEProblem(lorenz!, u0, tspan, p)
+sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8, maxiters=1e9)
+t = sol.t; traj = sol[:,:]'
+scatter!(ax, traj[:,1], traj[:,2], traj[:,3], markersize=5)
+
+arewithin = mapslices(x->withinset(x, limitcycle, 2), traj, dims=2)[:,1]
+fig = Figure(resolution=(800,600), fontsize = 20)
+ax = Axis3(fig[1, 1])
+scatter!(ax, traj[:,1], traj[:,2], traj[:,3], markersize=5, color=[el == 1 ? :red : :blue for el ∈ arewithin])
