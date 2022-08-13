@@ -1,4 +1,7 @@
-using GLMakie,  DifferentialEquations
+using DrWatson
+@quickactivate "metastability"
+using GLMakie, OrdinaryDiffEq
+include("$(scriptsdir())/utils.jl")
 
 
 @inbounds function heteroclinic_cycle_gh!(du, u, p, t)
@@ -174,6 +177,60 @@ record(fig, "../plots/heterocliniccycle/guckenheimerholmes-Ttr_$(Ttr).mp4", fram
     points[] = push!(points[], new_point)
 	colors_ob[] = push!(colors_ob[], colors[frame])
 end
+
+
+#------------------------movie gray background ---------------------------
+fps_x = [[xpcoor(μ, a), 0, 0]];
+fps_y = [[0, xpcoor(μ, a), 0]];
+fps_z = [[0, 0, xpcoor(μ, a)]];
+fps = hcat([fps_x; fps_y; fps_z]...)'
+
+
+Ttr = 240
+T = 420
+Ttr = 0.0; T = 240; 
+Δt= 0.1
+tspan = (0, T)
+ff = ODEFunction(heteroclinic_cycle_gh!; jac=jac!)
+hcgh = ODEProblem(ff, u0, tspan, p)
+sol = solve(hcgh, RK4(), dt=1/1000, saveat=Ttr:Δt:T); t = sol.t; tr = sol[:, :]';
+Tplot= T-Ttr
+framerate = 150 #166.3
+
+
+t_plot, tr_plot, speeds_plot, frames = animationdata(sol, Tplot, Δt, Δt)
+colors = pointspeed_as_colors(speeds_plot);
+
+az =0.7875222039230623 
+el =0.3190658503988664 
+
+points = Observable(Point3f[(tr_plot[1,1], tr_plot[1,2], tr_plot[1,3])])
+colors_ob = Observable([colors[1]])
+tanim = Observable(t_plot[1])
+
+fig = Figure(resolution=(800, 600))
+ax = Axis3(fig[1:2,1], azimuth = az, elevation = el, title= @lift("t = $($tanim)"))
+lines!(ax, tr_plot[:,1], tr_plot[:,2], tr_plot[:,3], color=colors)
+scatter!(ax, points, color=:orange)
+scatter!(ax, fps[:,1], fps[:,2], fps[:,3], color=:red, markersize=10)
+limits!(ax, 0.0, 2.4, 0, 2.4, 0, 2.4)
+hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
+
+ax = Axis(fig[3,1])
+lines!(ax, t_plot, tr_plot[:,1], color=(:gray, 0.4))
+scatter!(ax, points2, color=(:orange, 1.0))
+hidespines!(ax, :t, :r) 
+
+
+record(fig, "$(plotsdir())/heterocliniccycle/guckenheimerholmes-Ttr_$(Ttr)-graybackground.mp4", frames;
+        framerate) do frame
+    tanim[] = t_plot[frame]
+    new_point = Point3f(tr_plot[frame,1], tr_plot[frame,2], tr_plot[frame,3])
+    new_point2 = Point2f(t_plot[frame], tr_plot[frame,1])
+    points[] = [new_point]
+    points2[] = [new_point2]
+	# colors_ob[] = push!(colors_ob[], colors[frame])
+endz
 
 
 

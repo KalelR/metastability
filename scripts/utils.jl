@@ -180,7 +180,7 @@ function plot_RM!(fig, t, tr, ϵ; tsmode="scatterline")
 end 
 
 
- function animationdata(sol, Tplot, Δt)
+ function animationdata(sol, Tplot, Δt, Δtanimation)
 	speeds = norm.(timederivative(sol))
 	tplot = Int64(Tplot/Δt);
 	Δt_plot = Int64(Δtanimation/Δt)
@@ -191,6 +191,17 @@ end
 	frames = 2:length(t_plot)
     return t_plot, tr_plot, speeds_plot, frames
  end
+
+ function animationdata_tr(tr, t, Tplot, Δt, Δtanimation)
+	tplot = Int64(Tplot/Δt);
+	Δt_plot = Int64(Δtanimation/Δt)
+	t_plot = t[1:Δt_plot:tplot];
+	tr_plot = tr[1:Δt_plot:tplot, :];
+	frames = 2:length(t_plot)
+    return t_plot, tr_plot, frames
+ end
+
+
 function pointspeed_as_colors(speeds_plot)
 	#transform the vector with the info for the colors onto a Int vector going from 1 to 264; this is used to index the colormap (wihch has 264 colors); basically transforming it into an vector of indices
 	v = (speeds_plot .- minimum(speeds_plot)) ./ (maximum(speeds_plot) .- minimum(speeds_plot)) .* 255 .+ 1

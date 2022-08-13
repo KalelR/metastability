@@ -38,8 +38,17 @@ u0 = [0.0, 0]
 p =  [a, b, c, d, f, ω, n₁, n₂]
 tspan = (0, T)
 prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; seed=0)
-# sol = solve(prob_duffing, SOSRA(), saveat=0:Δt:T); t = sol.t #nonstiff, didnt test
-sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T); t = sol.t #stiff, worked well but slow
+# sol = @time solve(prob_duffing, SOSRA(), saveat=0:Δt:T); t = sol.t #nonstiff, didnt test# vert slow
+sol = @time solve(prob_duffing, SKenCarp(), saveat=0:Δt:T); t = sol.t #stiff, worked well but slow, 68secs **BEST
+# sol = @time solve(prob_duffing, ImplicitEM(), saveat=0:Δt:T); t = sol.t #stiff, worked well but slow 59secs
+# sol = @time solve(prob_duffing, STrapezoid(), saveat=0:Δt:T); t = sol.t #stiff, very fast but didnt have transitions
+# sol = @time solve(prob_duffing, ImplicitEulerHeun(), saveat=0:Δt:T); t = sol.t #stiff, 
+# sol = @time solve(prob_duffing, SROCK1(), dt=0.01, saveat=0:Δt:T); t = sol.t #stiff, 
+# sol = @time solve(prob_duffing, RKMil(), saveat=0:Δt:T); t = sol.t #nonstiff, 
+# choice_function(integrator) = (Int(integrator.dt<0.001) + 1)
+# alg_switch = StochasticCompositeAlgorithm((EM(), SKenCarp()),choice_function)
+# sol = @time solve(prob_duffing, alg_switch, saveat=0:Δt:T); t = sol.t #nonstiff, 
+
 
 fig = Figure()
 ax1 = Axis(fig[1, 1], ylabel="x", xlabel="t")
@@ -74,41 +83,51 @@ prefactor = 2π/(sqrt(U²(xwell, a, b, c) * abs(U²(0, a, b, c)) ) )
 exponent = Eb/ϵ
 
 #------------------------------------------------------------------SCALING
+using CurveFit 
 laminarperiods(v) = v .> 0 #1 is positive, 0 is negative
-T = 1e8
+T = 1e7
 Δt = 0.5
 u0 = [0.0, 0]
 p =  [a, b, c, d, f, ω, n₁, n₂]
 tspan = (0, T)
+prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; seed=0)
 # u0s = [rand(2) for i=1:10]
 # all_τs = []
 # @Threads.threads for idx_u0 in 1:length(u0s)
 # u0 = u0s[idx_u0]
-prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; seed=0)
-sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T, maxiters=1e9, progress=true); t = sol.t #stiff, worked well but slow
+# prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; seed=0)
+# sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T, maxiters=1e9, progress=true); t = sol.t #stiff, worked well but slow
+# sol = solve(prob_duffing, EM(), dt=0.01, saveat=0:Δt:T, maxiters=1e9, progress=true); t = sol.t #stiff, worked well but slow
+# sol = @time solve(prob_duffing, SROCK1(), dt=0.01, saveat=0:Δt:T, maxiters=1e9); t = sol.t #stiff, 
+# x = sol[1,:]
+# τs, _ = length_samevalues_allowfluctuations(laminarperiods(x), 1)
+# τs_2, _ = length_samevalues_allowfluctuations(laminarperiods(x), 0)
 
-x = sol[1,:]
-τs, _ = length_samevalues_allowfluctuations(laminarperiods(x), 1)
-τs_2, _ = length_samevalues_allowfluctuations(laminarperiods(x), 0)
 
-ws, bins = histogram(τs[1], 50); ws .+= 1
-ws2, bins2 = histogram(τs_2[1], 50); ws2 .+= 1
+ensembleprob = EnsembleProblem(prob_duffing)
+sols = solve(ensembleprob, SKenCarp(), EnsembleThreads(), trajectories=10, maxiters=1e9)
+τs_all = Int64[]
+for sol in sols 
+    x = sol[1,:]
+    τs, _ = length_samevalues_allowfluctuations(laminarperiods(x), 1)
+    push!(τs_all, τs[1]...)
+end
+ws, bins = histogram(τs_all, 50); ws .+= 1
+
+
+# ws, bins = histogram(τs[1], 50); ws .+= 1
+# ws2, bins2 = histogram(τs_2[1], 50); ws2 .+= 1
 fig = Figure()
 ax = Axis(fig[1,1], yscale=log10, ylabel="PDF(τ)", xlabel="τ")
 scatterlines!(ax, bins[1:end-1], ws, color=:black)
 # scatterlines!(ax, bins2[1:end-1], ws2, color=:orange)
 
-
-using CurveFit 
-xfit = bins[2:end-1]
-yfit = ws[2:end]
-a, b = exp_fit(xfit, yfit)
+xfit = bins[2:end-1]; yfit = ws[2:end]; a, b = exp_fit(xfit, yfit)
 l=lines!(ax, xfit, a .* exp.(b .* xfit), color=:red, label="y = $(a) exp($(b) x)" )
 fig[2,1] = Legend(fig, ax, orientation= :horizontal, tellwidth = false, tellheight = true)
 
 save("../plots/noise/duffing-doublwell-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp.png", fig)
 # save("../plots/noise/duffing-doublwell-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-noiseonx.png", fig)
-
 
 
 #---------------------------------------------------- Recurrence 

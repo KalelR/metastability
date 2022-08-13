@@ -317,6 +317,56 @@ record(fig, "$(plotsdir())/$(dirname)/crawlby_animation-alpha_$(α).mp4", frames
 end
 
 
+# -------------------------- Movie, gray background -------------------------- #
+u0 = [5, 0.1]
+α=0.1 #very slow, ̢o~-1
+p = [α, γ, ϵ, ν, h, K, m]
+solver = Tsit5();
+tspan = (0, T);
+Ttr=1e4; T = Ttr + 200 #for α=0.1
+Δt = 0.01
+prob = ODEProblem(predator_prey!, u0, tspan, p)
+sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8);
+t = sol.t; tr = sol[:,:]';
+
+Tplot = 44.1
+Tplot = 200
+framerate=900
+Δtanimation = 0.01
+t_plot, tr_plot, speeds_plot, frames = animationdata(sol, Tplot, Δt, Δt)
+colors = pointspeed_as_colors(speeds_plot);
+
+points = Observable(Point2f[(tr_plot[1,1], tr_plot[1,2])])
+points2 = Observable(Point2f[(t_plot[1,1], tr_plot[1,1])])
+tanim = Observable(t_plot[1])
+
+
+fig = Figure(resolution=(800, 600))
+ax = Axis(fig[1:2,1], ylabel="Predator", xlabel="Prey",  title= @lift("t = $((round($tanim, digits=0)))"));
+# scatter!(ax, tr_plot[:,1], tr_plot[:,2], color=(:black, 1.0))
+scatter!(ax, tr_plot[:,1], tr_plot[:,2], color=colors)
+scatter!(ax, [0.0, K], [0.0, 0.0], color=:red)
+scatter!(ax, points, color=(:orange, 1.0))
+hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
+limits!(ax, -0.3, 10.5, -0.15, 3.5)
+hidespines!(ax, :t, :r) 
+
+ax = Axis(fig[3, 1], ylabel="Predator", xlabel="t")
+lines!(ax, t_plot, tr_plot[:,1], color=(:black, 0.5))
+scatter!(ax, points2, color=(:orange, 1.0))
+hidespines!(ax, :t, :r) 
+
+record(fig, "$(plotsdir())/$(dirname)/crawlby_animation-alpha_$(α)-graybackground.mp4", frames;
+        framerate) do frame
+    new_point = Point2f(tr_plot[frame,1], tr_plot[frame,2])
+    new_point2 = Point2f(t_plot[frame,1], tr_plot[frame,1])
+    points[] = [new_point]
+    points2[] = [new_point2]
+    tanim[] = t_plot[frame]
+end
+
+
+
 
 
 

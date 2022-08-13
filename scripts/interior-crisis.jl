@@ -96,6 +96,84 @@ end
 save("$(plotsdir())/$(dirname)/interiorcrisis-ikedamap.png", fig, px_per_unit=4)
 
 
+# color red for low measure, blue for high measure : does not work well
+fig = Figure(resolution=(1920, 1080)) 
+axs = []
+ms_threshold = 
+for (i, d) ∈ enumerate([7.22, 7.24])
+	ik = Systems.ikedamap(;a, b, c, d)
+	tr = trajectory(ik, T; Ttr)
+	x = tr[:,1]; y = tr[:,2]; t = Ttr:Ttr+T
+	measure = histmeasure(tr, 1)
+	if i == 1 ms_threshold = minimum(measure) end
+	ax = Axis(fig[1:3,i], ylabel="y", xlabel="x", title=["Before interior crisis (d = $(d))", "After interior crisis (d = $(d))"][i]); push!(axs, ax)
+	scatter!(ax, x, y, markersize=3, color=[el > ms_threshold ? :blue : :red for el in measure])
+	xlims!(-0.6, 1.7)
+	ylims!(-1.8, 1.4)
+	ax = Axis(fig[4, i], ylabel="x")
+	lines!(t, x, color=:black)
+	xlims!(T-800, T)
+	ylims!(-0.6, 1.7)
+	ax = Axis(fig[5, i], ylabel="y", xlabel="t")
+	lines!(t, y, color=:black)
+	xlims!(T-800, T)
+	ylims!(-1.8, 1.4)
+end
+save("$(plotsdir())/$(dirname)/interiorcrisis-ikedamap-coloroutsidecoreaslowmeasure.png", fig, px_per_unit=4)
+
+#outside core based on box containing core before crisis
+# fig = Figure(resolution=(1920, 1080)) 
+# axs = []
+# ms_threshold = 
+# for (i, d) ∈ enumerate([7.1, 7.3])
+# 	ik = Systems.ikedamap(;a, b, c, d)
+# 	tr = trajectory(ik, T; Ttr)
+# 	x = tr[:,1]; y = tr[:,2]; t = Ttr:Ttr+T
+# 	measure = histmeasure(tr, 2)
+# 	if i == 1 box = [minimum(tr[:,1]), maximum()] end
+# 	ax = Axis(fig[1:3,i], ylabel="y", xlabel="x", title=["Before interior crisis (d = $(d))", "After interior crisis (d = $(d))"][i]); push!(axs, ax)
+# 	scatter!(ax, x, y, markersize=3, color=[el > ms_threshold ? :blue : :red for el in measure])
+# 	xlims!(-0.6, 1.7)
+# 	ylims!(-1.8, 1.4)
+# 	ax = Axis(fig[4, i], ylabel="x")
+# 	lines!(t, x, color=:black)
+# 	xlims!(T-800, T)
+# 	ylims!(-0.6, 1.7)
+# 	ax = Axis(fig[5, i], ylabel="y", xlabel="t")
+# 	lines!(t, y, color=:black)
+# 	xlims!(T-800, T)
+# 	ylims!(-1.8, 1.4)
+# end
+
+d=7.22
+ik = Systems.ikedamap(;a, b, c, d)
+tr = trajectory(ik, T; Ttr)
+x = tr[:,1]; y = tr[:,2]; t = Ttr:Ttr+T
+using GeometricalPredicates
+
+ll = [minimum(tr[:,1]), minimum(tr[:,2])]
+lr = [maximum(tr[:,1]), minimum(tr[:,2])]
+ul = [minimum(tr[:,1]), maximum(tr[:,2])]
+ur = [maximum(tr[:,1]), maximum(tr[:,2])]
+points = [ll, ul, ur, lr]
+poly = Polygon([GeometricalPredicates.Point(pt...) for pt in points]...)
+m_points = reduce(hcat, push!(points, points[1]))'
+
+fig = Figure() 
+ax = Axis(fig[1,1])
+scatter!(ax, x, y, markersize=3)
+scatterlines!(ax, m_points[:,1], m_points[:,2], color=:red, markersize=10)
+
+d = 7.24
+ik = Systems.ikedamap(;a, b, c, d)
+tr = trajectory(ik, T; Ttr)
+x = tr[:,1]; y = tr[:,2]; t = Ttr:Ttr+T
+fig = Figure() 
+ax = Axis(fig[1,1])
+scatter!(ax, x, y, markersize=3)
+scatterlines!(ax, m_points[:,1], m_points[:,2], color=:red, markersize=10)
+
+# inpolygon(poly, GeometricalPredicates.Point(1.1,1.1)) 
 # ------------------------------ Recurrence plot ----------------------------- #
 a = 0.84
 b = 0.9 
@@ -207,9 +285,9 @@ colors = ColorSchemes.viridis[v];
 points = Observable(Point2f[(tr_plot[1,1], tr_plot[1,2])])
 points2 = Observable(Point2f[(t_plot[1], tr_plot[1,2])])
 colors_ob = Observable([colors[1]])
-time = Observable(t_plot[1])
+tanim = Observable(t_plot[1])
 fig = Figure(resolution=(700, 600))
-ax = Axis(fig[1:2,1], title= @lift("t = $($time)"), ylabel="y", xlabel="x")
+ax = Axis(fig[1:2,1], title= @lift("t = $($tanim)"), ylabel="y", xlabel="x")
 s=scatter!(ax, points, color=colors_ob, markersize=3)
 ax2 = Axis(fig[3,1], ylabel="x", xlabel="t")
 lines!(ax2, points2)
@@ -219,7 +297,7 @@ xlims!(ax, xmin, xmax); ylims!(ax, -1.8, 1.4)
 xlims!(ax2, t_plot[1], t_plot[end]); ylims!(ax2, xmin, xmax)
 record(fig, "$(plotsdir())/interiorcrisis/ikedamap-animation-withtimeseries-a_$(a)-b_$(b)-c_$(c)-d_$(d).mp4", frames;
         framerate) do frame
-    time[] = t_plot[frame]
+    tanim[] = t_plot[frame]
     new_point = Point2f(tr_plot[frame,1], tr_plot[frame,2])
     new_point2 = Point2f(t_plot[frame,1], tr_plot[frame,1])
 	points[] = push!(points[], new_point)
@@ -229,38 +307,50 @@ end
 
 
 
-# ------------------------------ grey background ----------------------------- #
+# ------------------------------ color outside edge  ----------------------------- #
+T = 15e3; Ttr = 1e3
+a = 0.84; b = 0.9; c = 0.4 
+d = 7.22
+ik = Systems.ikedamap(;a, b, c, d)
+tr = trajectory(ik, T; Ttr); t = Ttr:Ttr+T
+measure = histmeasure(tr, 1)
+inner_threshold = minimum(measure)*10
+
+d = 7.248
+ik = Systems.ikedamap(;a, b, c, d)
+tr = trajectory(ik, T; Ttr); t = Ttr:Ttr+T
+measure = histmeasure(tr, 2)
+
 Δt = 1.0
 Tplot= 1000
 framerate=15
-# framerate=400
-tplot = Int64(Tplot/Δt);
-Δt_plot = round(Int64, Δt/Δt);
-t_plot = t[1:Δt_plot:tplot];
-tr_plot = tr[1:Δt_plot:tplot, :];
-speeds_plot = log10.(1 ./ speeds[1:Δt_plot:tplot]);
-frames = 2:length(t_plot)
-duration = length(frames) / framerate
 
+t_plot, tr_plot, frames = animationdata_tr(tr, t, Tplot, Δt, Δt)
+measure_plot = histmeasure(tr_plot, 1)
+# colors = pointspeed_as_colors(speeds_plot);
+
+#observables
 points = Observable(Point2f[(tr_plot[1,1], tr_plot[1,2])])
 points2 = Observable(Point2f[(t_plot[1], tr_plot[1,2])])
-colors_ob = Observable([colors[1]])
-time = Observable(t_plot[1])
-# fig = Figure(resolution=(800, 600))
+# colors_ob = Observable([colors[1]])
+tanim = Observable(t_plot[1])
+
+#plot
 fig = Figure(resolution=(700, 600))
-ax = Axis(fig[1:2,1], title= @lift("t = $($time)"), ylabel="y", xlabel="x")
+ax = Axis(fig[1:2,1], title= @lift("t = $($tanim)"), ylabel="y", xlabel="x")
 s=scatter!(ax, points, color=:orange, markersize=14)
-s=scatter!(ax, tr[:,1], tr[:,2,], color=(:black, 0.5), markersize=3)
+s=scatter!(ax, tr[:,1], tr[:,2,], color=[el > inner_threshold ? (:black,0.5) : (:red,0.5) for el in measure], markersize=3)
 ax2 = Axis(fig[3,1], ylabel="x", xlabel="t")
 scatter!(ax2, points2, color=:orange, markersize=14)
-lines!(ax2, t_plot, tr_plot[:,1], color=(:gray, 1.0), markersize=5)
+lines!(ax2, t_plot, tr_plot[:,1], color=[el > inner_threshold ? (:black,0.5) : (:red,0.5) for el in measure_plot], markersize=5)
+#decoration
 hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
 xmin = -0.6; xmax=1.7
 xlims!(ax, xmin, xmax); ylims!(ax, -1.8, 1.4)
 xlims!(ax2, t_plot[1], t_plot[end]); ylims!(ax2, xmin, xmax)
 record(fig, "$(plotsdir())/interiorcrisis/ikedamap-animation-withtimeseries-graybackground-a_$(a)-b_$(b)-c_$(c)-d_$(d).mp4", frames;
         framerate) do frame
-    time[] = t_plot[frame]
+    tanim[] = t_plot[frame]
     new_point = Point2f(tr_plot[frame,1], tr_plot[frame,2])
     new_point2 = Point2f(t_plot[frame,1], tr_plot[frame,1])
 	points[] = [new_point]

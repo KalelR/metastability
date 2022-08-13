@@ -2,7 +2,7 @@ using DrWatson
 @quickactivate "metastability"
 
 using GLMakie, DynamicalSystems, Statistics
-include("utils.jl")
+include("$(scriptsdir())/utils.jl")
 
 # ---------------------------------------------------------------------------- #
 #                                   LOGISTIC                                   #
@@ -485,3 +485,112 @@ record(fig, "$(plotsdir())$(typename)/lorenz-rho_$(ρ)-faster2.mp4", frames;
 end
 
 
+#---------------------------------------movie with grey background--------------
+# ρ = 166.1 #intermittency (CA) 
+ρ = 166.1 #intermittency (CA); a bit too slow
+# ρ = 166.2 #intermittency (CA); a bit too slow
+# ρ = 166.3 #intermittency (CA)
+# ρ = 166.5 #intermittency (CA)
+p = [σ, ρ, β]
+Ttr = 780; T=850
+tspan = (0, T)
+Δt = 0.01
+prob = ODEProblem(lorenz!, u0, tspan, p)
+sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8, maxiters=1e9)
+
+Tplot= T-Ttr
+# framerate=500 #166.3
+framerate=100 #166.3
+t_plot, tr_plot, speeds_plot, frames = animationdata(sol, Tplot, Δt, Δt)
+colors = pointspeed_as_colors(speeds_plot);
+
+az = -1.142477796076938
+el = 0.08906585039886639
+
+points = Observable(Point3f[(tr_plot[1,1], tr_plot[1,2], tr_plot[1,3])])
+points2 = Observable(Point2f[(t_plot[1], tr_plot[1,2])])
+colors_ob = Observable([colors[1]])
+tanim = Observable(t_plot[1])
+
+fig = Figure(resolution=(800, 600))
+ax = Axis3(fig[1:2,1], azimuth = az, elevation = el, title= @lift("t = $((round($tanim; digits=0)))"))
+scatter!(ax, points, color=(:orange, 1))
+scatter!(ax, sol[1,:], sol[2,:], sol[3,:], color=(:black, 0.2), markersize=3)
+# scatter!(ax, tr_plot[:,1], tr_plot[:,2], tr_plot[:,3], color=(:black, 0.2), markersize=4)
+hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
+limits!(ax, -50, 50, -100, 100, 50, 250)
+
+ax = Axis(fig[3,1], ylabel="x", xlabel="t")
+lines!(ax, t_plot, tr_plot[:,1], color=(:black, 0.4))
+scatter!(ax, points2, color=(:orange, 1))
+hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
+hidespines!(ax, :t, :r) 
+
+record(fig, "$(plotsdir())/$(typename)/lorenz-rho_$(ρ)-graybackground.mp4", frames;
+        framerate) do frame
+    tanim[] = t_plot[frame]
+    new_point = Point3f(tr_plot[frame,1], tr_plot[frame,2], tr_plot[frame,3])
+    new_point2 = Point2f(t_plot[frame,1], tr_plot[frame,1])
+    points[] = [new_point]
+    points2[] = [new_point2]
+end
+
+using DynamicalSystems
+ds = Systems.lorenz(u0; ρ=ρ, σ, β)
+tinteg = tangent_integrator(ds, 3)
+λs_vec, traj_vec, t= lyapunovspectrum_convergence(tinteg, Int(T/0.01), 0.01, Ttr)
+λs = reduce(hcat, λs_vec)'
+traj = reduce(hcat, traj_vec)'
+# mean(λs, dims=1)
+λmaxs = [maximum(λ) for λ in λs_vec]
+
+fig = Figure(resolution=(800, 600))
+ax = Axis3(fig[1:2,1], azimuth = az, elevation = el)
+# scatter!(ax, traj[:,1], traj[:,2], traj[:,3], color=λs[:,1], markersize=4)
+scatter!(ax, traj[:,1], traj[:,2], traj[:,3], color=λmaxs, markersize=4)
+
+ax2 = Axis(fig[3,1], ylabel="x", xlabel="t")
+# lines!(ax2, t, traj[:,1], color=λs[:,1])
+lines!(ax2, t, traj[:,1], color=λmaxs)
+ax3 = Axis(fig[4,1], ylabel="λmax", xlabel="t")
+lines!(ax3, t, λs[:,1], color=(:black, 0.4))
+lines!(ax3, t, λs[:,2], color=(:black, 0.4))
+lines!(ax3, t, λs[:,3], color=(:black, 0.4))
+# lines!(ax3, t, λmaxs, color=(:black, 0.4))
+linkxaxes!(ax2, ax3)
+save("$(plotsdir())/$(typename)/lorenz-rho_$(ρ)-lyapunovs.png", fig)
+using ChaosTools:get_deviations, stateeltype, _buffered_qr
+function lyapunovspectrum_convergence(integ, N, Δt::Real, Ttr::Real = 0.0, show_progress=false)
+    if show_progress
+        progress = ProgressMeter.Progress(N; desc = "Lyapunov Spectrum: ", dt = 1.0)
+    end
+    B = copy(get_deviations(integ)) # for use in buffer
+    if Ttr > 0
+        t0 = integ.t
+        while integ.t ≤ t0 + Ttr
+            step!(integ, Δt, true)
+            Q, R = _buffered_qr(B, get_deviations(integ))
+            set_deviations!(integ, Q)
+        end
+    end
+
+    k = size(get_deviations(integ))[2]
+    T = stateeltype(integ)
+    t0 = integ.t; t = zeros(T, N); t[1] = t0
+    λs = [zeros(T, k) for i in 1:N];
+    tr = [zeros(T, k) for i in 1:N];
+
+    for i in 2:N
+        step!(integ, Δt, true)
+        Q, R = _buffered_qr(B, get_deviations(integ))
+        for j in 1:k
+            @inbounds λs[i][j] = log(abs(R[j,j]))
+        end
+        t[i] = integ.t
+        tr[i] = integ.u[:,1]
+        set_deviations!(integ, Q)
+        show_progress && ProgressMeter.update!(progress, i)
+    end
+    popfirst!(λs); popfirst!(t); popfirst!(tr)
+    return λs, tr, t
+end
