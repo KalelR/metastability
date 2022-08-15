@@ -315,14 +315,17 @@ d = 7.22
 ik = Systems.ikedamap(;a, b, c, d)
 traj = trajectory(ik, T; Ttr); t = Ttr:Ttr+T
 innercore = deepcopy(Matrix(traj))
+fps_5 = [-0.149036 -0.111942; 0.6901164331310736 -0.07534279207228838; 0.7081550024831971 0.6107258394579234; 0.08793801081244812 -0.377787118392552; 1.0755007518118098 -0.25769927892208205]
+
 # measure = histmeasure(tr, 1)
 # inner_threshold = minimum(measure)*10
 maxdist_threshold = 0.1
 maxdist_threshold = 0.04
 
-d = 7.22
+# d = 7.22
 # d = 7.248
-# d = 7.3
+d = 7.3
+c1 = d <= 7.22 ? :black : :green
 ik = Systems.ikedamap(;a, b, c, d)
 traj = trajectory(ik, T; Ttr); t = Ttr:Ttr+T
 # measure = histmeasure(tr, 2)
@@ -346,12 +349,13 @@ tanim = Observable(t_plot[1])
 #plot
 fig = Figure(resolution=(700, 600))
 ax = Axis(fig[1:2,1], title= @lift("t = $($tanim)"), ylabel="y", xlabel="x")
-s=scatter!(ax, traj[:,1], traj[:,2,], color=[el == 1  ? (:green, 0.6) : (:purple, 0.6) for el in arewithin], markersize=3)
+s=scatter!(ax, traj[:,1], traj[:,2,], color=[el == 1  ? (c1, 0.6) : (:purple, 0.6) for el in arewithin], markersize=3)
 s=scatter!(ax, points, color=:orange, markersize=12)
 ax2 = Axis(fig[3,1], ylabel="x", xlabel="t")
-lines!(ax2, t_plot, tr_plot[:,1], color=[el == 1  ? (:green,0.8) : (:purple,0.8) for el in arewithin_plot], markersize=5)
+lines!(ax2, t_plot, tr_plot[:,1], color=[el == 1  ? (c1,0.8) : (:purple,0.8) for el in arewithin_plot], markersize=5)
 scatter!(ax2, points2, color=:orange, markersize=12)
 #decoration
+scatter!(ax, fps_5[:,1], fps_5[:,2], color=:red, markersize=10)
 hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
 xmin = -0.6; xmax=1.7
 xlims!(ax, xmin, xmax); ylims!(ax, -1.8, 1.4)
@@ -366,6 +370,11 @@ record(fig, "$(plotsdir())/interiorcrisis/ikedamap-animation-withtimeseries-colo
 	# points2[] = push!(points2[], new_point2)
 	# colors_ob[] = push!(colors_ob[], colors[frame])
 end
+
+
+
+
+
 
 
 # ------------------------ finding the period-5 saddle ----------------------- #
@@ -404,47 +413,62 @@ end
     return SVector{2}(u[1], u[2])
 end
 
-@inbounds function ikedamap_5thorder_rule!(du, u,p,n)
-	for i=1:5 
-		u = Systems.ikedamap_rule(u, p, n)
-	end
-	du[1] = u[1]; du[2] = u[2];
-end
 
-Ttr=0
-T=200
-ik = Systems.ikedamap(u0; a, b, c, d)
+#test if 5th iterate map works
+# Ttr=0
+# T=200
+# ik = Systems.ikedamap(u0; a, b, c, d)
+# ik_5order = DiscreteDynamicalSystem(ikedamap_5thorder_rule, u0, p)
+# tr = trajectory(ik, T, u0; Ttr); t = Ttr:Ttr+T
+# tr_5th = trajectory(ik_5order, T, u0; Ttr); t_5th = Ttr:Ttr+T/5
+# tr = tr[1:5:end, :]; t = t[1:5:end]
+
+#find fp: first look through 'periodicorbits`, which is faster. Give ics around fp by eyeballing. If it does indeed find a fp that is close, use that to give refined ics to `fixedpoints` which is then faster. 
+xs = range(-0.15, -0.148, length=25)
+ys = range(-0.112, -0.111, length=25)
+ics = [[x,y] for x ∈ xs for y ∈ ys]
 ik_5order = DiscreteDynamicalSystem(ikedamap_5thorder_rule, u0, p)
-ik_5order_2 = DiscreteDynamicalSystem(ikedamap_5thorder_rule!, u0, p)
-tr = trajectory(ik, T, u0; Ttr); t = Ttr:Ttr+T
-tr_5th = trajectory(ik_5order, T, u0; Ttr); t_5th = Ttr:Ttr+T/5
-tr_5th2 = trajectory(ik_5order_2, T, u0; Ttr); t_5th = Ttr:Ttr+T/5
+fps = periodicorbits(ik_5order, 1, ics)
+# fp_3 = [0.0879, -0.3778]
+tr = trajectory(ik_5order, 100, fp_leftmost) #not very good, escapes after ~2 iterates
+scatter!(ax, tr[:,1], tr[:,2], color=:orange, markersize=10)
+fp_leftmost = [ -0.149036, -0.111942]
+# fp_leftmost =  [-0.149, -0.1119]
+# fp_leftmost =  [-0.156, -0.2293]
 
-tr = tr[1:5:end, :]; t = t[1:5:end]
+#using fixedpoints
+x = interval(-0.14904, -0.14902)
+y = interval(-0.11195, -0.11194);
+box = x × y
+fps, eigs, stable = fixedpoints(ik_5order, box; tol=1e-20)
+tr = trajectory(ik_5order, 100, fps[1]) #much better!
+fps_5 = trajectory(ik, 4, fp_leftmost)
 
 
-x = interval(-0.5, 1.5)
-y = interval(-2, 1); box = x × y
-fp2 = periodicorbits(ik_5order, 1, [rand(2) for i=1:100])
 
-# ikedamap_5thorder_rule(fp[1], p, 1)
-u0s = [rand(2) for i=1:500]
+
 T = 3e3
 Ttr = 1e3
 fig = Figure(resolution=(1920, 1080)) 
 axs = []
-for (i, d) ∈ enumerate([7.2, 7.1])
-	ik = Systems.ikedamap(;a, b, c, d)
-	tr = trajectory(ik, T; Ttr)
-	x = tr[:,1]; y = tr[:,2]; t = Ttr:Ttr+T
-	measure = :black
-	ax = Axis(fig[1,i], ylabel="y", xlabel="x", title="d=$(d)")
-	scatter!(ax, x, y, markersize=3, color=measure)
-	xlims!(-0.6, 1.7)
-	ylims!(-1.8, 1.4)
-	fps = periodicorbits(ik_5order, 1, u0s)
-	scatter!(fps[:,1], fps[:,2], color=:red, markersize=10)
-end
+# for (i, d) ∈ enumerate([7.1, 7.2])
+d = 7.1
+p = [a, b, c, d]
+i = 1
+ik = Systems.ikedamap(;a, b, c, d)
+tr = trajectory(ik, T; Ttr)
+x = tr[:,1]; y = tr[:,2]; t = Ttr:Ttr+T
+measure = :black
+ax = Axis(fig[1,i], ylabel="y", xlabel="x", title="d=$(d)")
+scatter!(ax, x, y, markersize=3, color=measure)
+xlims!(-0.6, 1.7)
+ylims!(-1.8, 1.4)
+scatter!(ax, fps_5[:,1], fps_5[:,2], color=:red, markersize=10)
+# end
+
+save("$(plotsdir())/$(dirname)/interiorcrisis-ikedamap-period5saddle-d_$(d).png", fig)
+fps_5 = [-0.149036 -0.111942; 0.6901164331310736 -0.07534279207228838; 0.7081550024831971 0.6107258394579234; 0.08793801081244812 -0.377787118392552; 1.0755007518118098 -0.25769927892208205]
+ 
 
 
 
@@ -470,3 +494,48 @@ end
 
 # ax = Axis(fig[1,1], ylabel="y", xlabel="x"); 
 # scatter!(ax, x, y, markersize=3, color=measure)
+
+
+# --------------------- estimate durations in inner core --------------------- #
+# fps_5 = [-0.149036 -0.111942; 0.6901164331310736 -0.07534279207228838; 0.7081550024831971 0.6107258394579234; 0.08793801081244812 -0.377787118392552; 1.0755007518118098 -0.25769927892208205]
+using CurveFit
+T = 1000e3; Ttr = 1e3
+a = 0.84; b = 0.9; c = 0.4 
+#get inner core
+d = 7.22
+ik = Systems.ikedamap(;a, b, c, d)
+traj = trajectory(ik, T; Ttr); t = Ttr:Ttr+T
+innercore = deepcopy(Matrix(traj))
+#integrate real system
+d = 7.3
+ik = Systems.ikedamap(;a, b, c, d)
+traj = trajectory(ik, T; Ttr); t = Ttr:Ttr+T
+
+
+maxdist_threshold = 0.1
+maxdist_threshold = 0.04
+arewithin = mapslices(x->withinset(x, innercore, maxdist_threshold), Matrix(traj), dims=2)[:,1]; #a bit expensive, have to compare each point to all other points in the set
+
+T, bool_innercore = length_samevalues_allowfluctuations(arewithin)
+τs = T[1]
+numbins = 20; weights, bins = histogram(τs, numbins); 
+
+fig = Figure(resolution=(800, 600), fontsize=30,figure_padding=(5, 35, 5, 30))
+ax = Axis(fig[1,1], yscale=log10, ylabel="P(τ)", xlabel="τ")
+scatterlines!(ax, bins[1:end-1], weights, color=:black)
+
+xfit = bins[1:end-1]; yfit = weights[1:end]; A, B = exp_fit(xfit, yfit)
+l=lines!(ax, xfit, A .* exp.(B .* xfit), color=:red, label="P(τ) = $(round(A, digits=4)) exp($(round(B, digits=4)) τ)" )
+# fig[2,1] = Legend(fig, ax, orientation= :horizontal, tellwidth = false, tellheight = true)
+axislegend(ax)
+xlims!(ax, -20, 1500)
+save("$(plotsdir())/$(dirname)/interiorcrisis-ikedamap-period5saddle-d_$(d)-numbins_$(numbins).png", fig)
+using DelimitedFiles
+writedlm("$(plotsdir())/$(dirname)/durationininnercore-d_$(d).dat", τs)
+fig = Figure(resolution=(1920, 1080)) 
+ax = Axis(fig[1,1], ylabel="P(τ)", xlabel="τ", title="d=$(d)", xscale=log10)
+hist!(ax, durationinneredge, 50)
+ax = Axis(fig[1,1], ylabel="y", xlabel="x", title="d=$(d)")
+scatter!(ax, traj[:,1], traj[:,2], markersize=3, color=measure)
+ax = Axis(fig[2,1], ylabel="y", xlabel="x", title="d=$(d)")
+lines!(ax, traj[:,1])

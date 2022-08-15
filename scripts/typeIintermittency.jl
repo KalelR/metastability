@@ -566,42 +566,6 @@ lines!(ax3, t, λs[:,3], color=(:black, 0.4))
 # lines!(ax3, t, λmaxs, color=(:black, 0.4))
 linkxaxes!(ax2, ax3)
 save("$(plotsdir())/$(typename)/lorenz-rho_$(ρ)-lyapunovs.png", fig)
-using ChaosTools:get_deviations, stateeltype, _buffered_qr
-function lyapunovspectrum_convergence(integ, N, Δt::Real, Ttr::Real = 0.0, show_progress=false)
-    if show_progress
-        progress = ProgressMeter.Progress(N; desc = "Lyapunov Spectrum: ", dt = 1.0)
-    end
-    B = copy(get_deviations(integ)) # for use in buffer
-    if Ttr > 0
-        t0 = integ.t
-        while integ.t ≤ t0 + Ttr
-            step!(integ, Δt, true)
-            Q, R = _buffered_qr(B, get_deviations(integ))
-            set_deviations!(integ, Q)
-        end
-    end
-
-    k = size(get_deviations(integ))[2]
-    T = stateeltype(integ)
-    t0 = integ.t; t = zeros(T, N); t[1] = t0
-    λs = [zeros(T, k) for i in 1:N];
-    tr = [zeros(T, k) for i in 1:N];
-
-    for i in 2:N
-        step!(integ, Δt, true)
-        Q, R = _buffered_qr(B, get_deviations(integ))
-        for j in 1:k
-            @inbounds λs[i][j] = log(abs(R[j,j]))
-        end
-        t[i] = integ.t
-        tr[i] = integ.u[:,1]
-        set_deviations!(integ, Q)
-        show_progress && ProgressMeter.update!(progress, i)
-    end
-    popfirst!(λs); popfirst!(t); popfirst!(tr)
-    return λs, tr, t
-end
-
 
 # -------------- trying to compare direcltty to points in ghost -------------- #
 Ttr = 780; T=850

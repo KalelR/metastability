@@ -110,10 +110,111 @@ for (i, a) ∈ enumerate([0.997, 1.003])
 end
 
 
-##distribution of times in saddle 
 
+# ---------------------- distribution of times in saddle --------------------- #
+include("$(scriptsdir())/utils.jl")
+T = 2e5
+Ttr = 0
+b = 0.9 
+c = 0.4 
+d = 6.0
+# a = 1.0 # a=A=r varying
+a = 1.003
+u0 = [-2.0, -2.0]
+ik = Systems.ikedamap(u0;a, b, c, d)
+# traj = trajectory(ik, T, u0; Ttr);  ts = Ttr:Δt:Ttr+T
+using DynamicalSystems, ProgressMeter
+tinteg = tangent_integrator(ik, 2)
+λs_vec, traj_vec, t= lyapunovspectrum_convergence_discrete(tinteg, Int(T), 1, Ttr, true)
+λs = reduce(hcat, λs_vec)'
+traj = reduce(hcat, traj_vec)'
 
+fig = Figure()
+ax = Axis(fig[1,1])
+scatter!(ax, traj[:,1], traj[:,2])
+ax = Axis(fig[2,1])
+lines!(ax, t, traj[:,1])
+ax = Axis(fig[3,1])
+lines!(ax, t, λs[:,1])
+lines!(ax, t, λs[:,2])
 
+## just by trajectories entering neighborhood of FP; its NOT VERY ELEGANT! haha but a quick way to do it
+fp = [ 2.9715737943410305, 4.153134755539537 ]
+iswithinneighborhood(point, fp, threshold) = evaluate(Euclidean(), point, fp) ≤ threshold ? true : false  
+iswithinneighborhood([3.0, 3.0], fp, 0.1)
+
+using DynamicalSystemsBase:obtain_access, get_state
+function trajectory_discrete(integ, t, u0 = nothing;
+        Δt::Int = 1, Ttr = 0, a = nothing, diffeq = nothing, fp, threshold
+    )
+    !isnothing(u0) && reinit!(integ, u0)
+    Δt = round(Int, Δt)
+    T = eltype(get_state(integ))
+    t0 = current_time(integ)
+    tvec = (t0+Ttr):Δt:(t0+t+Ttr)
+    L = length(tvec)
+    T = eltype(get_state(integ))
+    X = isnothing(a) ? dimension(integ) : length(a)
+    data = Vector{SVector{X, T}}(undef, L)
+    Ttr ≠ 0 && step!(integ, Ttr)
+    data[1] = obtain_access(get_state(integ), a)
+	t_convergence = 0
+    for i in 2:L
+        step!(integ, Δt)
+		if iswithinneighborhood(integ.u, fp, threshold) for j=i:L data[j] = SVector{X, T}(fp) end; t_convergence=i; break end
+        data[i] = SVector{X, T}(obtain_access(get_state(integ), a))
+    end
+    return Dataset(data), t_convergence
+end
+
+function time_to_converge(integ, t, u0 = nothing;
+	Δt::Int = 1, Ttr = 0, a = nothing, diffeq = nothing, fp, threshold
+)
+	!isnothing(u0) && reinit!(integ, u0)
+	Δt = round(Int, Δt)
+	t0 = current_time(integ)
+	tvec = (t0+Ttr):Δt:(t0+t+Ttr)
+	L = length(tvec)
+	Ttr ≠ 0 && step!(integ, Ttr)
+	t_convergence = 0
+	for i in 2:L
+		step!(integ, Δt)
+		if iswithinneighborhood(integ.u, fp, threshold)  return i; break end
+	end
+	return L
+end
+
+T=1e6; Ttr=1e2
+threshold = 1
+xs = range(-0.0, 1.0, length=100)
+ys = range(-2.0, 0, length=100)
+u0s = [[x, y] for x ∈ xs for y ∈ ys]
+τs = zeros(Int, length(u0s))
+for (i, u0) ∈ enumerate(u0s)
+	integ = integrator(ik, u0) 
+	t_conv = time_to_converge(integ, T, u0; Ttr, fp, threshold)
+	τs[i] = t_conv
+end
+
+filter!(x->x>=10, τs)
+filter!(x->x<T, τs)
+# numbins = 10; weights, bins = histogram(τs, numbins); 
+numbins = 15;mode = :pdf
+bins = collect(range(minimum(τs), maximum(τs), length=numbins))
+ weights, bins = histogram(τs, bins; mode=mode); 
+
+fig = Figure(resolution=(800, 600), fontsize=30,figure_padding=(5, 35, 5, 30))
+ax = Axis(fig[1,1], yscale=log10, ylabel="P(τ)", xlabel="τ")
+scatterlines!(ax, bins[1:end-1], weights, color=:black)
+
+xfit = bins[1:end-1]; yfit = weights[1:end]; A, B = exp_fit(xfit, yfit)
+l=lines!(ax, xfit, A .* exp.(B .* xfit), color=:red, label="P(τ) = $(round(A, digits=6)) exp($(round(B, digits=6)) τ)" )
+axislegend(ax)
+# xlims!(ax, -20, 1500)
+save("$(plotsdir())/$(dirname)/boundarycrisis-ikedamap-distributiontimeschaoticsaddle-a_$(a)-b_$(b)-c_$(c)-d_$(d)-numbins_$(numbins).png", fig)
+
+using DelimitedFiles
+writedlm("$(plotsdir())/$(dirname)/durationinchaoticsaddle-d_$(d).dat", τs)
 
 #------------------------------------------- animation ----------
 include("utils.jl")

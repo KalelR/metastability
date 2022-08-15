@@ -95,38 +95,40 @@ prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; 
 # all_τs = []
 # @Threads.threads for idx_u0 in 1:length(u0s)
 # u0 = u0s[idx_u0]
-# prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; seed=0)
-# sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T, maxiters=1e9, progress=true); t = sol.t #stiff, worked well but slow
+prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; seed=0)
+sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T, maxiters=1e9, progress=true); t = sol.t #stiff, worked well but slow
 # sol = solve(prob_duffing, EM(), dt=0.01, saveat=0:Δt:T, maxiters=1e9, progress=true); t = sol.t #stiff, worked well but slow
 # sol = @time solve(prob_duffing, SROCK1(), dt=0.01, saveat=0:Δt:T, maxiters=1e9); t = sol.t #stiff, 
-# x = sol[1,:]
-# τs, _ = length_samevalues_allowfluctuations(laminarperiods(x), 1)
-# τs_2, _ = length_samevalues_allowfluctuations(laminarperiods(x), 0)
+x = sol[1,:]
+τs, _ = length_samevalues_allowfluctuations(laminarperiods(x), 1)
+τs_2, _ = length_samevalues_allowfluctuations(laminarperiods(x), 0)
+numbins=15
+ws, bins = histogram(τs[1], numbins); 
 
 
-ensembleprob = EnsembleProblem(prob_duffing)
-sols = solve(ensembleprob, SKenCarp(), EnsembleThreads(), trajectories=10, maxiters=1e9)
-τs_all = Int64[]
-for sol in sols 
-    x = sol[1,:]
-    τs, _ = length_samevalues_allowfluctuations(laminarperiods(x), 1)
-    push!(τs_all, τs[1]...)
-end
-ws, bins = histogram(τs_all, 50); ws .+= 1
+# ensembleprob = EnsembleProblem(prob_duffing)
+# sols = solve(ensembleprob, SKenCarp(), EnsembleThreads(), trajectories=1, maxiters=1e9)
+# τs_all = Int64[]
+# for sol in sols 
+#     x = sol[1,:]
+#     τs, _ = length_samevalues_allowfluctuations(laminarperiods(x), 1)
+#     push!(τs_all, τs[1]...)
+# end
+# ws, bins = histogram(τs_all, 50); 
 
 
 # ws, bins = histogram(τs[1], 50); ws .+= 1
 # ws2, bins2 = histogram(τs_2[1], 50); ws2 .+= 1
-fig = Figure()
-ax = Axis(fig[1,1], yscale=log10, ylabel="PDF(τ)", xlabel="τ")
+fig = Figure(resolution=(800, 600), fontsize=30,figure_padding=(5, 35, 5, 30))
+ax = Axis(fig[1,1], yscale=log10, ylabel="P(τ)", xlabel="τ")
 scatterlines!(ax, bins[1:end-1], ws, color=:black)
 # scatterlines!(ax, bins2[1:end-1], ws2, color=:orange)
 
-xfit = bins[2:end-1]; yfit = ws[2:end]; a, b = exp_fit(xfit, yfit)
-l=lines!(ax, xfit, a .* exp.(b .* xfit), color=:red, label="y = $(a) exp($(b) x)" )
-fig[2,1] = Legend(fig, ax, orientation= :horizontal, tellwidth = false, tellheight = true)
+xfit = bins[1:end-1]; yfit = ws[1:end]; a, b = exp_fit(xfit, yfit)
+l=lines!(ax, xfit, a .* exp.(b .* xfit), color=:red, label="P(τ) = $(round(a, digits=4)) exp($(round(b, digits=4)) τ)" )
+axislegend(ax)
 
-save("../plots/noise/duffing-doublwell-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp.png", fig)
+save("$(plotsdir())/noise/duffing-doublwell-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-numbins_$(numbins).png", fig)
 # save("../plots/noise/duffing-doublwell-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-noiseonx.png", fig)
 
 

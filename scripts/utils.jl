@@ -33,11 +33,16 @@ end
 using StatsBase, LinearAlgebra
 function histogram(v, numbins)
 	bins = range(minimum(v), maximum(v), length=numbins)
-		a = fit(Histogram, v, bins)
-		normalize(a, mode=:pdf)
-		return a.weights, bins
+    a = fit(Histogram, v, bins, closed=:right)
+    b = normalize(a, mode=:pdf)
+    return b.weights, bins
 end
 
+function histogram(v, bins::Vector; mode=:pdf)
+    a = fit(Histogram, v, bins, closed=:right)
+    b = normalize(a, mode=mode)
+    return b.weights, bins
+end
 
 timederivative(sol) = [sol(t, Val{1}) for t ∈ sol.t]
 norm(v) = sum(v.^2)
@@ -173,6 +178,89 @@ function withinset(point, set, threshold)
     mindist = minimum(mapslices(x->evaluate(Euclidean(), point, x), set, dims=2))
     iswithin = mindist <= threshold ? true : false
 end
+
+function withinset(point, set, threshold)
+    for setpoint ∈ eachrow(set)
+        dist = evaluate(Euclidean(), point, setpoint)
+        if dist <= threshold return true end
+    end
+    return false
+end
+
+# withinset([1.0, 1.0], [0.9 0.9; 1.1 1.1; 1.3 1.3], 0.1)
+
+using ChaosTools:get_deviations, stateeltype, _buffered_qr
+function lyapunovspectrum_convergence(integ, N, Δt::Real, Ttr::Real = 0.0, show_progress=false)
+    if show_progress
+        progress = ProgressMeter.Progress(N; desc = "Lyapunov Spectrum: ", dt = 1.0)
+    end
+    B = copy(get_deviations(integ)) # for use in buffer
+    if Ttr > 0
+        t0 = integ.t
+        while integ.t ≤ t0 + Ttr
+            step!(integ, Δt, true)
+            Q, R = _buffered_qr(B, get_deviations(integ))
+            set_deviations!(integ, Q)
+        end
+    end
+
+    k = size(get_deviations(integ))[2]
+    T = stateeltype(integ)
+    t0 = integ.t; t = zeros(T, N); t[1] = t0
+    λs = [zeros(T, k) for i in 1:N];
+    tr = [zeros(T, k) for i in 1:N];
+
+    for i in 2:N
+        step!(integ, Δt, true)
+        Q, R = _buffered_qr(B, get_deviations(integ))
+        for j in 1:k
+            @inbounds λs[i][j] = log(abs(R[j,j]))
+        end
+        t[i] = integ.t
+        tr[i] = integ.u[:,1]
+        set_deviations!(integ, Q)
+        show_progress && ProgressMeter.update!(progress, i)
+    end
+    popfirst!(λs); popfirst!(t); popfirst!(tr)
+    return λs, tr, t
+end
+
+function lyapunovspectrum_convergence_discrete(integ, N, Δt::Real, Ttr::Real = 0.0, show_progress=false)
+    if show_progress
+        progress = ProgressMeter.Progress(N; desc = "Lyapunov Spectrum: ", dt = 1.0)
+    end
+    B = copy(get_deviations(integ)) # for use in buffer
+    if Ttr > 0
+        t0 = integ.t
+        while integ.t ≤ t0 + Ttr
+            step!(integ, Δt, true)
+            Q, R = _buffered_qr(B, get_deviations(integ))
+            set_deviations!(integ, Q)
+        end
+    end
+
+    k = size(get_deviations(integ))[2]
+    T = stateeltype(integ)
+    t0 = integ.t; t = zeros(T, N); t[1] = t0
+    λs = [zeros(T, k) for i in 1:N];
+    tr = [zeros(T, k) for i in 1:N];
+
+    for i in 2:N
+        step!(integ, Δt, true)
+        Q, R = _buffered_qr(B, get_deviations(integ))
+        for j in 1:k
+            @inbounds λs[i][j] = log(abs(R[j,j]))
+        end
+        t[i] = integ.t
+        tr[i] = integ.u
+        set_deviations!(integ, Q)
+        show_progress && ProgressMeter.update!(progress, i)
+    end
+    popfirst!(λs); popfirst!(t); popfirst!(tr)
+    return λs, tr, t
+end
+
+
 
 
 # --------------------------------- PLOTTING --------------------------------- #
