@@ -8,7 +8,7 @@ include("$(scriptsdir())/utils.jl")
 # U(x) = ax^4/4 - bx 2/2 + cx (c: assymetry paramter); gamma: dissipation, f forcing omega forcing freq, n noise strength
 # """
 @inbounds function duffing_assymetric_rule(du, u, p, t)
-    a,b,c,d,f, ω, n = p
+    a,b,c,d,f, ω, n₁, n₂ = p
     x, v = u
     du[1] = v
     du[2] = (-a*x^3 + b*x - c) - d*v + f*cos(ω*t)
@@ -26,9 +26,9 @@ c=0.0
 d = 0.2
 f = 0.0
 ω = 1.0
-n₁ = n₂ = n = 0.2
+n₁ = n₂ = n = 0.18
 
-T = 5000 #on v
+T = 5000 
 Ttr=0
 # T = 15000
 Δt = 0.5
@@ -50,18 +50,18 @@ sol = @time solve(prob_duffing, SKenCarp(), saveat=0:Δt:T); t = sol.t #stiff, w
 # sol = @time solve(prob_duffing, alg_switch, saveat=0:Δt:T); t = sol.t #nonstiff, 
 
 
-fig = Figure()
-ax1 = Axis(fig[1, 1], ylabel="x", xlabel="t")
-ax2 = Axis(fig[2, 1], ylabel="U(x)", xlabel="x")
-lines!(ax1, t, sol[1,:], color=[el > 0 ? :red : :black for el in sol[1,:]])
+# fig = Figure()
+# ax1 = Axis(fig[1, 1], ylabel="x", xlabel="t")
+# ax2 = Axis(fig[2, 1], ylabel="U(x)", xlabel="x")
+# lines!(ax1, t, sol[1,:], color=[el > 0 ? :red : :black for el in sol[1,:]])
 
-U(x, a, b, c) = (a/4)*x^4 - (b/2) * x^2 + c*x
-x = -6.5:0.1:6.5
-Us = U.(x, a, b, c)
-lines!(ax2, x, Us, color=:black, linewidth=4)
-scatter!(ax2, sol[1,:], U.(sol[1,:], a, b, c), color=(:orange, 0.5))
+# U(x, a, b, c) = (a/4)*x^4 - (b/2) * x^2 + c*x
+# x = -6.5:0.1:6.5
+# Us = U.(x, a, b, c)
+# lines!(ax2, x, Us, color=:black, linewidth=4)
+# scatter!(ax2, sol[1,:], U.(sol[1,:], a, b, c), color=(:orange, 0.5))
 
-save("duffing-doublwell-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-noiseonboth.png", fig)
+# save("duffing-doublwell-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-noiseonboth.png", fig)
 
 
 #just the time series
@@ -70,7 +70,7 @@ c2 = "#FDE725FF"
 fig = Figure(resolution=(800,250))
 ax1 = Axis(fig[1, 1], ylabel="x", xlabel="t")
 lines!(ax1, t, sol[1,:], color=[el > 0 ? c1 : c2 for el in sol[1,:]])
-save("../plots/noise/duffing-timeseries-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-viridiscolors.png", fig)
+save("$(plotsdir())/noise/duffing-timeseries-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-viridiscolors.png", fig)
 
 #verifying kramers 
 U_peak = U(0, a, b, c)
@@ -142,10 +142,10 @@ p =  [a, b, c, d, f, ω, n]
 tspan = (0, T)
 prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; seed=0)
 sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T, maxiters=1e9); t = sol.t #stiff, worked well but slow
-tr = Dataset(sol[:,:]')
+traj = Dataset(sol[:,:]')
 fig = Figure(resolution = (1000,500))
-plot_RM!(fig, sol.t, tr, 0.1; tsmode="lines")
-RM = RecurrenceMatrix(tr, ϵ)
+plot_RM!(fig, sol.t, traj, 0.1; tsmode="lines")
+RM = RecurrenceMatrix(traj, ϵ)
 rqa(RM)
 meanrecurrencetime(RM)
 a = recurrencestructures(RM, recurrencetimes=true)
@@ -160,9 +160,9 @@ p =  [a, b, c, d, f, ω, n]
 tspan = (0, T)
 prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; seed=0)
 sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T, maxiters=1e9); t = sol.t #stiff, worked well but slow
-tr = sol[:,:]'; ts = sol.t
+traj = sol[:,:]'; ts = sol.t
 
-signal = tr[140:end,1]; ts = ts[140:end]
+signal = traj[140:end,1]; ts = ts[140:end]
 Ts = Δt
 F, freqs, periods, maxperiod, Fmax = getspectrum2(signal, ts, Ts)
 
@@ -180,27 +180,36 @@ save("$(plotsdir())/$(savedir)/noisydoublewell-spectrumanalysis-onewell.png")
 
 
 #--------------------------------------------------- ANIMATION ---------------------------------
-include("utils.jl")
-plotsdir() = "../plots/"
-T = 400
+include("$(scriptsdir())/utils.jl")
+# plotsdir() = "../plots/"
+T = 200
+Ttr=0
+# T = 800
+# T = 900
 # Δt = 0.5
 Δt = 0.1
 u0 = [-3.0, 0]
-p =  [a, b, c, d, f, ω, n]
+n₁ = n₂ = n = 0.25
+# n₁ = n₂ = n = 0.2
+# n₁ = n₂ = n = 0.18
+# n₁ = n₂ = n = 0.16
+p =  [a, b, c, d, f, ω, n₁, n₂]
 tspan = (0, T)
 prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; seed=0)
-sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T, maxiters=1e9); t = sol.t #stiff, worked well but slow
+sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T, maxiters=1e9, seed=0); t = sol.t #stiff, worked well but slow
 t = sol.t ;
-tr = sol[:,:]';
+traj = sol[:,:]';
 speeds = norm.(timederivative(sol));
 
 Tplot= T-Ttr
-framerate=25
-# framerate=50
+# framerate=25
+# framerate=100
+# framerate=150
+framerate=75
 tplot = Int64(Tplot/Δt);
 Δt_plot = round(Int64, Δt/Δt);
 t_plot = t[1:Δt_plot:tplot];
-tr_plot = tr[1:Δt_plot:tplot, :];
+tr_plot = traj[1:Δt_plot:tplot, :];
 speeds_plot = log10.(1 ./ speeds[1:Δt_plot:tplot]);
 frames = 2:length(t_plot)
 duration = length(frames) / framerate
@@ -209,44 +218,10 @@ duration = length(frames) / framerate
 v = (speeds_plot .- minimum(speeds_plot)) ./ (maximum(speeds_plot) .- minimum(speeds_plot)) .* 255 .+ 1;
 v = round.(Int, v );
 colors = ColorSchemes.viridis[v];
-
-# points = Observable(Point2f[(tr[1,1], tr[1,2])])
-# colors_ob = Observable([colors[1]])
-# fig = Figure(resolution=(800, 600))
-# ax = Axis(fig[1,1])
-# scatter!(ax, points, color=colors_ob)
-# hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
-# # limits!(ax, -50, 50, -100, 100, 50, 250)
-# record(fig, "../plots/noise/duffing-doublewell-animation-statespace-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp.mp4", frames;
-#         framerate) do frame
-#     new_point = Point2f(tr_plot[frame,1], tr_plot[frame,2])
-#     points[] = push!(points[], new_point)
-# 	colors_ob[] = push!(colors_ob[], colors[frame])
-# end
-
-# scatter(tr_plot[:,1], tr_plot[:,2])
-
 doublewell(x, a, b, c) = (a/4)*x^4 - (b/2) * x^2 + c*x
 x = -6.5:0.1:6.5
 Us = doublewell.(x, a, b, c)
 
-
-# #all points
-# points = Observable(Point2f[(tr_plot[1,1], doublewell.(tr_plot[1,1], a, b, c))])
-# colors_ob = Observable([colors[1]])
-# fig = Figure(resolution=(800, 600))
-# ax = Axis(fig[1,1])
-# lines!(ax, x, Us, color=:black, linewidth=4)
-# scatter!(ax, points, color=colors_ob)
-# # hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
-# # limits!(ax, -50, 50, -100, 100, 50, 250)
-# record(fig, "../plots/noise/duffing-doublewell-animation-statespace-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp.mp4", frames;
-#         framerate) do frame
-#     new_point = Point2f(tr_plot[frame,1], doublewell.(tr_plot[frame,1], a, b, c))
-#     points[] = push!(points[], new_point)
-# 	colors_ob[] = push!(colors_ob[], colors[frame])
-# end
-# lines!(ax, t, x, color=[el > 0 ? :red : :black for el in x], label="initial condition on the left")
 
 c1 = "#440154FF"
 c2 = "#FDE725FF"
@@ -255,15 +230,46 @@ points = Observable(Point2f[(tr_plot[1,1], doublewell.(tr_plot[1,1], a, b, c))])
 colors_ob = Observable([colors[1]])
 time = Observable(t_plot[1])
 fig = Figure(resolution=(800, 600))
-ax = Axis(fig[1,1], title= @lift("t = $($time)"))
+ax = Axis(fig[1,1])
 lines!(ax, x, Us, linewidth=4, color=[el > 0 ? c1 : c2 for el in x])
-s=scatter!(ax, points, color=cball, markersize=35)
+s=scatter!(ax, points, color=cball, markersize=30)
 # hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
 # limits!(ax, -50, 50, -100, 100, 50, 250)
-record(fig, "../plots/noise/duffing-doublewell-animation-singlepoint-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-faster-viridiscolors.mp4", frames;
+record(fig, "$(plotsdir())/noise/duffing-doublewell-animation-singlepoint-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-faster-viridiscolors.mp4", frames;
         framerate) do frame
-    time[] = frame
     new_point = Point2f(tr_plot[frame,1], doublewell.(tr_plot[frame,1], a, b, c))
     points[] = [new_point]
+	# colors_ob[] = push!(colors_ob[], colors[frame])
+end
+
+
+# --------------------------- Well and time-series --------------------------- #
+
+c1 = "#440154FF"
+c2 = "#FDE725FF"
+cball = "#FF1400"
+points = Observable(Point2f[(tr_plot[1,1], doublewell.(tr_plot[1,1], a, b, c))])
+# colors_ob = Observable([colors[1]])
+time = Observable(t_plot[1])
+points2 = Observable(Point2f[(t_plot[1], tr_plot[1,1])])
+fig = Figure(resolution=(800, 600))
+ax = Axis(fig[1,1], title= @lift("t = $($time)"))
+lines!(ax, x, Us, linewidth=4, color=[el > 0 ? c1 : c2 for el in x])
+s=scatter!(ax, points, color=cball, markersize=20)
+
+
+ax = Axis(fig[2, 1], ylabel="x", xlabel="t")
+lines!(ax, t_plot, tr_plot[:,1], color=[el > 0 ? c1 : c2 for el in tr_plot[:,1]])
+scatter!(ax, points2, color=cball, markersize=20)
+
+# hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
+# limits!(ax, -50, 50, -100, 100, 50, 250)
+record(fig, "$(plotsdir())/noise/duffing-doublewell-animation-timeseries-singlepoint-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-faster-viridiscolors-framerate_$(framerate).mp4", frames;
+        framerate) do frame
+    time[] = t_plot[frame]
+    new_point = Point2f(tr_plot[frame,1], doublewell.(tr_plot[frame,1], a, b, c))
+    new_point2 = Point2f(t_plot[frame,1], tr_plot[frame,1])
+    points[] = [new_point]
+	points2[] = [new_point2]
 	# colors_ob[] = push!(colors_ob[], colors[frame])
 end

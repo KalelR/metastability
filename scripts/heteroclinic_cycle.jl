@@ -411,3 +411,100 @@ Vs = @view tr[((1:N) .-1) .*6 .+ 1, :]
 fig = Figure()
 ax = Axis(fig[1,1])
 for i=1:N lines!(ax, t, Vs[i,:]) end 
+
+
+
+# ------------------------------ via rate model ------------------------------ #
+using DrWatson
+@quickactivate "metastability"
+using GLMakie,  DifferentialEquations
+
+include("$(scriptsdir())/utils.jl")
+
+
+@inbounds function ratecoup(gi, ss)
+    Isyn = 0.0
+    for j = 1:length(ss)
+        Isyn += gi[j] * ss[j] 
+    end
+    return Isyn
+end
+
+function F(x, ϵ, α) 
+    if x ≤ 0 return 0.0 end
+    return exp(-ϵ/x) * x^α
+end
+
+@inbounds function ratemodel_rule!(du, u, p, t)
+    Smax = p.Smax; x₀ = p.x₀; I = p.I; gs = p.gs; τ = p.τ; ϵ = p.ϵ; α = p.α
+    N = size(gs, 1)    
+    for i=1:N
+        s, r = @view u[(i-1)*2 + 1 : i*2]
+        ss = @view u[((1:N) .-1) .*2 .+ 1] 
+        gi = @view gs[i,:]
+        du[(i-1)*2 + 1] = (1/τ) * (r - s/2) * (Smax - s)/Smax 
+        du[(i-1)*2 + 2] = x₀ * F(I - ratecoup(gi, ss), ϵ, α) - r/τ
+    end
+return nothing
+end 
+
+# @time ratemodel_rule!(rand(6), rand(6), p, t)
+# @btime ratecoup($gs[1,:], $rand(3))
+
+mutable struct params
+    gs :: Matrix{Float64}
+    I :: Float64
+    ϵ :: Float64
+    Smax :: Float64
+    τ :: Float64
+    x₀ :: Float64
+    α :: Float64
+end
+
+N = 3
+
+τ = 50.
+ϵ = 1e-3
+I = 0.145
+Smax = 0.045
+g₁ = 3.0 
+g₂ = 0.7
+x₀ = 2.57e-3
+α = 0.564
+
+gs = zeros(Float64, (3,3))
+gs[2,1] = gs[3,2] = gs[1,3] = g₁
+gs[1,2] = gs[2,3] = gs[3,1] = g₂
+gs[1,1] = gs[2,2] = gs[3,3] = 0.
+
+p = params(gs, I, ϵ, Smax, τ, x₀, α)
+T = 1e6
+# T=10
+Ttr = 0
+Δt = 0.1
+u0 = rand(3*2) .* 0.01;
+
+tspan = (0, T);
+hcgh = ODEProblem(ratemodel_rule!, u0, tspan, p);
+# sol = solve(hcgh, Rosenbrock23(), maxiters=1e9, saveat=Ttr:Δt:T); t = sol.t;
+# sol = @time solve(hcgh, Rodas5(), maxiters=1e9, abstol=1e-15, reltol=1e-15); t = sol.t;
+# sol = @time solve(hcgh, KenCarp4(), maxiters=1e9, abstol=1e-20, reltol=1e-20); t = sol.t;
+sol = @time solve(hcgh, Vern9(), maxiters=1e9, abstol=1e-20, reltol=1e-20); t = sol.t;
+# using ODEInterfaceDiffEq
+# sol = @time solve(hcgh, radau(), maxiters=1e9, abstol=1e-10, reltol=1e-10); t = sol.t;
+u0 = [BigFloat("0.02"), BigFloat("0.02"), BigFloat("0.01"), BigFloat("0.01"), BigFloat("0.03"), BigFloat("0.03")]
+sol = @time solve(hcgh, KenCarp4(), maxiters=1e9, abstol=1e-15, reltol=1e-15); t = sol.t;
+# sol = @time solve(hcgh, Kvaerno5(), maxiters=1e9, abstol=1e-15, reltol=1e-15); t = sol.t; #does not work
+
+
+ss = @view sol[((1:N) .-1) .*2 .+ 1, :];
+
+fig = Figure()
+ax = Axis3(fig[1:2, 1])
+lines!(ax, ss[1,:], ss[2,:], ss[3,:])
+axs=[]
+for i=1:3
+    ax = Axis(fig[2+i,1]); push!(axs, ax)
+    lines!(ax, t, ss[i,:])
+end
+linkxaxes!(axs...)

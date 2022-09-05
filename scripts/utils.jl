@@ -268,14 +268,16 @@ using GLMakie
 using DynamicalSystems
 function plot_RM!(fig, t, tr, ϵ; tsmode="scatterline")
     RM = RecurrenceMatrix(tr, ϵ)
-    ax = Axis(fig[1,1], ylabel="j", xlabel="i")
+    axs = []
+    ax = Axis(fig[1,1], ylabel="j", xlabel="i"); push!(axs, ax)
     xs, ys = coordinates(RM)
     scatter!(ax, xs, ys; color = :black, markersize = 3)
     ax.limits = ((0, size(RM, 1)+1), (0, size(RM, 2)+1));
     ax.aspect = 1
-    ax = Axis(fig[1,2], ylabel="x", xlabel="t")
+    ax = Axis(fig[1,2], ylabel="x", xlabel="t"); push!(axs, ax)
     if tsmode == "scatterline" scatterlines!(ax, t, tr[:,1], color=:black)
     else lines!(ax, t, tr[:,1], color=:black) end
+    return axs
 end 
 
 
