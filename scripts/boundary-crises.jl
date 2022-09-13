@@ -78,7 +78,8 @@ for (i, a) ∈ enumerate([0.997, 1.003])
 	ik = Systems.ikedamap(;a, b, c, d)
 	traj = trajectory(ik, T, u0; Ttr)
 	x = traj[:,1]; y = traj[:,2]; t = Ttr:Ttr+T
-	measure = histmeasure(traj, 2)
+	# measure = histmeasure(traj, 2)
+	measure = :black
 	ax = Axis(fig[1:3,i], ylabel="y", xlabel="x", title=["Before boundary crisis (a = $(a))", "After boundary crisis (a = $(a))"][i]); push!(axs, ax)
 	scatter!(ax, x, y, markersize=3, color=measure)
 	xlims!(-0.6, 6.2)
@@ -109,7 +110,7 @@ for (i, a) ∈ enumerate([0.997, 1.003])
 	# lines!(t, y, color=:black)
 	# xlims!(0, 20000)
 	# ylims!(-0.6, 6.2)
-	save("../plots/boundarycrisis/boundarycrisis-ikedamap-timeseries-a_$(a).png", fig, px_per_unit=4)
+	# save("../plots/boundarycrisis/boundarycrisis-ikedamap-timeseries-a_$(a).png", fig, px_per_unit=4)
 
 end
 
