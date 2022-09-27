@@ -30,13 +30,15 @@ end
 
 
 # T = 5000
+Ttr = 9600
 T = 10000
-μ = 1.0 
+Δt=1.0
+μ = 1.0
 
 ##GH - stable HC!!!!!
 a = -0.2
 b = -0.1
-# a = -0.3 
+# a = -0.3
 # b = -0.2
 # a = -0.5
 # b = -0.01
@@ -45,34 +47,34 @@ c = -1 - a - b
 #inpisred by ashwin (with fps being (1,0,0)) but does not work
 # a = -1.0
 # b = -1.0
-# c = -1.0 
+# c = -1.0
 
-# ##or 
-# μ = 0.2 
+# ##or
+# μ = 0.2
 # a = b = c = -μ
 
 ## stabilitizes and becomes node apparently
 # T = 1500
 # a = -1
 # b = -1.5
-# c = (2a - b) - 0.1 #unstable ## 
-# c = (2a - b) + 0.1#not even a HC 
+# c = (2a - b) - 0.1 #unstable ##
+# c = (2a - b) + 0.1#not even a HC
 
 
 ## parameters from scholarpedia (adapted so c>a>b); unstable
-# c = -0.55 
+# c = -0.55
 # a = -1.0
 # b = -1.5
 
 ## directly from scholarpedia; unstable
-# a = -1.0 
-# b = -0.55 
+# a = -1.0
+# b = -0.55
 # c = -1.5
 
-@warn c > a > b #Krupa exists if true 
+@warn c > a > b #Krupa exists if true
 @warn 2a > b + c #Krupa stable if true
 @warn a + b + c == -1 #GH
-@warn -1/3 < a < 0 #GH 
+@warn -1/3 < a < 0 #GH
 @warn c < a < b < 0 #GH
 
 
@@ -90,7 +92,7 @@ fps = hcat([fps_x; fps_y; fps_z]...)'
 u0 = [0.1, 0.2, 0.3] #off the coordinate plane or axis should be attracted towards HC
 # u0 = 5 .* rand(3)
 # u0 = [5.3, 5.2, 5.4]
-# u0 = [-0.1, -0.2, -0.3] 
+# u0 = [-0.1, -0.2, -0.3]
 # u0 = [10,10,10] #goes to a node
 # u0 = [10,-10,10] #goes to a node
 
@@ -102,17 +104,30 @@ hcgh = ODEProblem(ff, u0, tspan, p)
 # sol = solve(hcgh, AutoTsit5(Rosenbrock23()), saveat=0:0.01:T, abstol=1e-8, reltol=1e-8); t = sol.t;
 # sol = solve(hcgh, Rodas5(), saveat=0:0.01:T, abstol=1e-10, reltol=1e-10, maxiters=1e9); t = sol.t;
 # sol = solve(hcgh, VCABM(), saveat=0:0.01:T, abstol=1e-10, reltol=1e-10, maxiters=1e9); t = sol.t;
-sol = solve(hcgh, RK4(), dt=1/1000); t = sol.t;
+sol = solve(hcgh, RK4(), dt=1/1000, saveat=Ttr:Δt:T); ts = sol.t;
 # sol = solve(hcgh, saveat=0:0.01:T); t = sol.t;
 # sol = solve(hcgh, RadauIIA3(), saveat=0:0.01:T, abstol=1e-10, reltol=1e-10, maxiters=1e9); t = sol.t;
 
 
 fig = Figure()
-ax1 = Axis(fig[1, 1])
-lines!(ax1, t, sol[1,:])
-lines!(ax1, t, sol[2,:])
-lines!(ax1, t, sol[3,:])
-save("../plots/heterocliniccycle/guckenheimerholmes.png", fig)
+ax1 = Axis(fig[1, 1], ylabel="x,y,z", xlabel="t")
+lines!(ax1, ts, sol[1,:])
+lines!(ax1, ts, sol[2,:])
+lines!(ax1, ts, sol[3,:])
+ax2 = Axis3(fig[2:3, 1])
+lines!(ax2, sol[1,:], sol[2,:], sol[3,:])
+save("$(plotsdir())/heterocliniccycle/guckenheimerholmes/timeseries-statespace-RK4.png", fig)
+
+
+# ------------------- recurrence analysis ------------------------
+include("$(scriptsdir())/utils.jl")
+tr = sol[:,:]'
+ϵ=0.1
+ϵ=0.05
+fig = Figure(resolution=(1000, 500), fontsize=30, figure_padding=(5, 30, 5, 30))
+plot_RM!(fig, ts, tr, ϵ)
+save("$(plotsdir())/heterocliniccycle/guckenheimerholmes/recurrenceplot-RK4.png", fig, px_per_unit=3)
+
 
 # fig2 = Figure()
 ax2 = Axis3(fig[1,2])
@@ -133,7 +148,7 @@ include("utils.jl")
 plotsdir() = "../plots/"
 Ttr = 240
 T = 420
-Ttr = 0.0; T = 240; 
+Ttr = 0.0; T = 240;
 Δt= 0.1
 tspan = (0, T)
 ff = ODEFunction(heteroclinic_cycle_gh!; jac=jac!)
@@ -149,8 +164,8 @@ speeds = norm.(timederivative(sol))
 speeds_plot = log10.(1 ./ speeds[1:Δt_plot:tplot]);
 frames = 2:length(t_plot);
 
-az =0.7875222039230623 
-el =0.3190658503988664 
+az =0.7875222039230623
+el =0.3190658503988664
 
 #transform the vector with the info for the colors onto a Int vector going from 1 to 264; this is used to index the colormap (wihch has 264 colors); basically transforming it into an vector of indices
 # v = (speeds_plot .- minimum(speeds_plot)) ./ (maximum(speeds_plot) .- minimum(speeds_plot)) .* 255 .+ 1;
@@ -169,7 +184,7 @@ scatter!(ax, fps[:,1], fps[:,2], fps[:,3], color=:red, markersize=10)
 # scatter!(ax, [0], [0], [0], color=:blue, markersize=13)
 hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
 limits!(ax, 0.0, 2.4, 0, 2.4, 0, 2.4)
-# hidespines!(ax, :t, :r) 
+# hidespines!(ax, :t, :r)
 record(fig, "../plots/heterocliniccycle/guckenheimerholmes-Ttr_$(Ttr).mp4", frames;
         framerate) do frame
     time_p[] = t_plot[frame]
@@ -188,7 +203,7 @@ u0 = [0.1, 0.2, 0.3] #off the coordinate plane or axis should be attracted towar
 # u0 = fps_x[1] .+ [0.1, 0.1, 0.1]
 Ttr = 255
 T = 480
-# Ttr = 0.0; T = 240; 
+# Ttr = 0.0; T = 240;
 Δt= 0.1
 tspan = (0, T)
 ff = ODEFunction(heteroclinic_cycle_gh!; jac=jac!)
@@ -202,10 +217,10 @@ framerate = 100 #166.3
 t_plot, tr_plot, speeds_plot, frames = animationdata(sol, Tplot, Δt, Δt)
 colors = pointspeed_as_colors(speeds_plot);
 
-az =0.7875222039230623 
-el =0.3190658503988664 
-c1 = :green 
-c2 = :cyan 
+az =0.7875222039230623
+el =0.3190658503988664
+c1 = :green
+c2 = :cyan
 c3 = :red
 alphalines = 0.8
 mksize=12
@@ -228,15 +243,15 @@ hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
 ax = Axis(fig[3,1], xlabel="t", ylabel="x")
 lines!(ax, t_plot, tr_plot[:,1], color=(c1, alphalines))
 scatter!(ax, points2, color=(:orange, 1.0), markersize=mksize)
-hidespines!(ax, :t, :r) 
+hidespines!(ax, :t, :r)
 ax = Axis(fig[3,2], xlabel="t", ylabel="y")
 lines!(ax, t_plot, tr_plot[:,2], color=(c2, alphalines))
 scatter!(ax, points3, color=(:orange, 1.0), markersize=mksize)
-hidespines!(ax, :t, :r) 
+hidespines!(ax, :t, :r)
 ax = Axis(fig[3,3], xlabel="t", ylabel="z")
 lines!(ax, t_plot, tr_plot[:,3], color=(c3, alphalines))
 scatter!(ax, points4, color=(:orange, 1.0), markersize=mksize)
-hidespines!(ax, :t, :r) 
+hidespines!(ax, :t, :r)
 
 
 record(fig, "$(plotsdir())/heterocliniccycle/guckenheimerholmes-Ttr_$(Ttr)-graybackground.mp4", frames;
@@ -275,7 +290,7 @@ evals, evecs = eigen(J)
 end
 function noise_hc_gh(du,u,p,t)
 	μ, a, b, c, n = p
-    du[1] = abs(n) 
+    du[1] = abs(n)
     du[2] = abs(n)
     du[3] = abs(n)
 end
@@ -305,12 +320,14 @@ scatter!(ax2, [0], [0], [0], color=:blue, markersize=8000)
 
 
 #--------------------------------------------3 COUPLED HODGKIN-HUXLEY NEURONS----------------------------------------------------------------
+using DrWatson
+@quickactivate "metastability"
 using GLMakie,  DifferentialEquations
 
 @inbounds function syncoup(gi, S, V, Vrev)
     Isyn = 0.0
     for j = 1:length(gi)
-        Isyn += gi[j] * S * (V[j] - Vrev) 
+        Isyn += gi[j] * S * (V[j] - Vrev)
     end
     return Isyn
 end
@@ -346,10 +363,10 @@ end
 
 @inbounds function hodgkinhuxley_rule!(du, u, p, t)
         I = p.I; Vna = p.Vna; Vk=p.Vk; Vl=p.Vl; gna=p.gna; gk=p.gk; gl=p.gl; C=p.C; Vrev=p.Vrev; κ=p.κ; Smax=p.Smax; τ=p.τ; Vth=p.Vth; gs = p.gs;
-        N = size(gs, 1)    
+        N = size(gs, 1)
         for i=1:N
             V, n, m, h, S, R = @view u[(i-1)*6 + 1 : i*6]
-            Vs = @view u[((1:N) .-1) .*6 .+ 1] 
+            Vs = @view u[((1:N) .-1) .*6 .+ 1]
             αn, αm, αh, βn, βm, βh = hodgkinhuxley_coeffs(V)
             gi = @view gs[i,:]
             Isyn = syncoup(gi, S, Vs, Vrev)
@@ -371,14 +388,14 @@ end
 # @code_warntype hodgkinhuxley_rule!(du, u, p, t)
 # @btime syncoup(gs[1,:], 1, rand(3), 1)
 # @code_warntype syncoup(gs[1,:], 1, rand(3), 1)
-# @btime hodgkinhuxley_coeffs(-50.0) 
+# @btime hodgkinhuxley_coeffs(-50.0)
 
 C = 0.143
 gl = 0.02672
 Vl = -63.563
-gna = 7.15 
+gna = 7.15
 Vna = 50.
-gk = 1.43 
+gk = 1.43
 Vk = -95.
 Vrev = -80.
 κ = 1/2
@@ -401,16 +418,16 @@ u0 = rand(3*6);
 tspan = (0, T);
 hcgh = ODEProblem(hodgkinhuxley_rule!, u0, tspan, p);
 # sol = solve(hcgh, Rosenbrock23()); t = sol.t;
-sol = solve(hcgh, Rodas5()); t = sol.t;
+# sol = solve(hcgh, Rodas5()); t = sol.t;
 # sol = solve(hcgh, Tsit5()); t = sol.t;
-# sol = solve(hcgh, AutoTsit5(Rosenbrock23()), saveat=0:0.01:T, abstol=1e-8, reltol=1e-8); t = sol.t;
+sol = solve(hcgh, AutoTsit5(Rosenbrock23()), saveat=0:0.01:T, abstol=1e-8, reltol=1e-8); t = sol.t;
 
 t = sol.t; tr=sol[:,:];
-Vs = @view tr[((1:N) .-1) .*6 .+ 1, :] 
+Vs = @view tr[((1:N) .-1) .*6 .+ 1, :]
 
 fig = Figure()
 ax = Axis(fig[1,1])
-for i=1:N lines!(ax, t, Vs[i,:]) end 
+for i=1:N lines!(ax, t, Vs[i,:]) end
 
 
 
@@ -425,28 +442,28 @@ include("$(scriptsdir())/utils.jl")
 @inbounds function ratecoup(gi, ss)
     Isyn = 0.0
     for j = 1:length(ss)
-        Isyn += gi[j] * ss[j] 
+        Isyn += gi[j] * ss[j]
     end
     return Isyn
 end
 
-function F(x, ϵ, α) 
+function F(x, ϵ, α)
     if x ≤ 0 return 0.0 end
     return exp(-ϵ/x) * x^α
 end
 
 @inbounds function ratemodel_rule!(du, u, p, t)
     Smax = p.Smax; x₀ = p.x₀; I = p.I; gs = p.gs; τ = p.τ; ϵ = p.ϵ; α = p.α
-    N = size(gs, 1)    
+    N = size(gs, 1)
     for i=1:N
         s, r = @view u[(i-1)*2 + 1 : i*2]
-        ss = @view u[((1:N) .-1) .*2 .+ 1] 
+        ss = @view u[((1:N) .-1) .*2 .+ 1]
         gi = @view gs[i,:]
-        du[(i-1)*2 + 1] = (1/τ) * (r - s/2) * (Smax - s)/Smax 
+        du[(i-1)*2 + 1] = (1/τ) * (r - s/2) * (Smax - s)/Smax
         du[(i-1)*2 + 2] = x₀ * F(I - ratecoup(gi, ss), ϵ, α) - r/τ
     end
 return nothing
-end 
+end
 
 # @time ratemodel_rule!(rand(6), rand(6), p, t)
 # @btime ratecoup($gs[1,:], $rand(3))
@@ -467,7 +484,7 @@ N = 3
 ϵ = 1e-3
 I = 0.145
 Smax = 0.045
-g₁ = 3.0 
+g₁ = 3.0
 g₂ = 0.7
 x₀ = 2.57e-3
 α = 0.564
@@ -489,11 +506,11 @@ hcgh = ODEProblem(ratemodel_rule!, u0, tspan, p);
 # sol = solve(hcgh, Rosenbrock23(), maxiters=1e9, saveat=Ttr:Δt:T); t = sol.t;
 # sol = @time solve(hcgh, Rodas5(), maxiters=1e9, abstol=1e-15, reltol=1e-15); t = sol.t;
 # sol = @time solve(hcgh, KenCarp4(), maxiters=1e9, abstol=1e-20, reltol=1e-20); t = sol.t;
-sol = @time solve(hcgh, Vern9(), maxiters=1e9, abstol=1e-20, reltol=1e-20); t = sol.t;
+# sol = @time solve(hcgh, Vern9(), maxiters=1e9, abstol=1e-20, reltol=1e-20); t = sol.t;
 # using ODEInterfaceDiffEq
 # sol = @time solve(hcgh, radau(), maxiters=1e9, abstol=1e-10, reltol=1e-10); t = sol.t;
 u0 = [BigFloat("0.02"), BigFloat("0.02"), BigFloat("0.01"), BigFloat("0.01"), BigFloat("0.03"), BigFloat("0.03")]
-sol = @time solve(hcgh, KenCarp4(), maxiters=1e9, abstol=1e-15, reltol=1e-15); t = sol.t;
+sol = @time solve(hcgh, KenCarp4(), maxiters=1e9, abstol=1e-12, reltol=1e-12); t = sol.t;
 # sol = @time solve(hcgh, Kvaerno5(), maxiters=1e9, abstol=1e-15, reltol=1e-15); t = sol.t; #does not work
 
 
@@ -508,3 +525,24 @@ for i=1:3
     lines!(ax, t, ss[i,:])
 end
 linkxaxes!(axs...)
+
+
+u0 = rand(3*2) .* 0.01;
+@inbounds function noise_ratemodel!(du, u, p, t)
+    du .= p.n
+end
+mutable struct params_noise
+    gs :: Matrix{Float64}
+    I :: Float64
+    ϵ :: Float64
+    Smax :: Float64
+    τ :: Float64
+    x₀ :: Float64
+    α :: Float64
+    n :: Float64
+end
+
+n = 0.1
+p = params_noise(gs, I, ϵ, Smax, τ, x₀, α, n)
+hcgh = SDEProblem(ratemodel_rule!, noise_ratemodel!, u0, tspan, p);
+sol = solve(hcgh, SOSRA(), saveat=0:Δt:T); t = sol.t #nonstiff, didnt test

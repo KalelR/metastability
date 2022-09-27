@@ -1,7 +1,8 @@
 using DrWatson
 @quickactivate "metastability"
 
-using GLMakie, DynamicalSystems, Statistics
+# using GLMakie
+using DynamicalSystems, Statistics
 include("$(scriptsdir())/utils.jl")
 
 # ---------------------------------------------------------------------------- #
@@ -18,7 +19,7 @@ savedir="typeI"
 # rrange = (rc = 1 + sqrt(8); [rc, rc - 1e-5, rc - 1e-3])
 # rrange = 3.8248:0.00001:3.8249
 # rrange = 3.7:0.0001:3.845
-# using InteractiveDynamics, 
+# using InteractiveDynamics,
 # rrange = 3.8:0.00001:3.84
 # lo = Systems.logistic(0.4; r = rrange[1])
 # interactive_cobweb(lo, rrange, 5)
@@ -28,7 +29,7 @@ T = 1000
 T = 5000
 Ttr = 0
 r = 3.8282
-lo = Systems.logistic(0.4; r); t = Ttr:Ttr+T 
+lo = Systems.logistic(0.4; r); t = Ttr:Ttr+T
 tr = trajectory(lo, T; Ttr)
 fig = Figure(resolution=(800, 300), fontsize=30)
 ax = Axis(fig[1,1], ylabel="x", xlabel="t")
@@ -61,7 +62,7 @@ end
 
 function estimate_laminarperiod_duration(tr; win_size=4, std_th, num_allowed_fluctuations=3)
     laminar_period_bool = laminarperiods(tr; win_size, std_th)
-    T, corr_lpb = length_samevalues_allowfluctuations(laminar_period_bool, num_allowed_fluctuations) 
+    T, corr_lpb = length_samevalues_allowfluctuations(laminar_period_bool, num_allowed_fluctuations)
     return T[1], corr_lpb ##laminar period only for 1
 end
 
@@ -81,7 +82,7 @@ Ttr = 0
 
 r = 3.8284
 # r = rc-1e-7
-lo = Systems.logistic(0.4; r); t = Ttr:Ttr+T 
+lo = Systems.logistic(0.4; r); t = Ttr:Ttr+T
 traj = trajectory(lo, T; Ttr);
 # lam_periods_bool = laminarperiods(tr; win_size, std_th); tr = tr[1:end-3*win_size+1]; t = t[1:end-3*win_size+1];
 # Ts, corr_lam_periods_bool = estimate_laminarperiod_duration(tr; win_size, std_th, num_allowed_fluctuations=5)
@@ -118,7 +119,7 @@ for r ∈ [rc-1e-3, rc-1e-4, rc-1e-5, rc-1e-6, rc-1e-7, rc-1e-8]
     u0s = sort(rand(10))
     Ts_all = []
     Ts_chaos_all = []
-    for (idx,u0) ∈ enumerate(u0s) 
+    for (idx,u0) ∈ enumerate(u0s)
         tr = trajectory(lo, T, u0; Ttr); t_tr = Ttr:1:Ttr+T
         Ts, corr_lam_periods_bool= laminarperiods(tr, 3; atol=0.0, rtol=0.02)
         Ts_chaos, corr_lam_periods_bool= chaoticperiods(tr, 3; atol=0.0, rtol=0.02)
@@ -163,7 +164,7 @@ for (i, r) ∈ enumerate(rs)
     T_maxs[i] = maximum(Ts);  T_chaos_maxs[i] = maximum(Ts_chaos)
 end
 
-using CurveFit 
+using CurveFit
 offset, exponent = linear_fit(log10.(μs), log10.(T_means))
 fig = Figure(resolution=(500, 300), fontsize=30, figure_padding=(5, 30, 5, 30))
 ax = Axis(fig[1,1], yscale=log10, xscale=log10, title = "<τ> ~ μ^{$(round(exponent, digits=3))}")
@@ -234,7 +235,7 @@ function moving_average(v, ws)
     for i=1:length(mv_average)
         mv_average[i] = mean(v[i:i+ws-1])
     end
-    return mv_average 
+    return mv_average
 end
 
 
@@ -243,14 +244,14 @@ function moving_maximum(v, ws)
     for i=1:length(mv_average)
         mv_average[i] = maximum(v[i:i+ws-1])
     end
-    return mv_average 
+    return mv_average
 end
 
 tr = trajectory(lo, T; Ttr); t_tr = Ttr:1:Ttr+T
 λt, t = lyapunovspectrum_instantaneous(lo, T; Ttr)
 win_size = 12
-λt_fs = moving_average(λt, win_size); 
-# λt_fs = moving_maximum(λt, win_size); 
+λt_fs = moving_average(λt, win_size);
+# λt_fs = moving_maximum(λt, win_size);
 t_fs = t[1:end-(win_size-1)]
 t_tr = t_tr[1:end-(win_size-1)]
 tr = tr[1:end-(win_size-1)]
@@ -269,7 +270,7 @@ ax2 = Axis(fig[2,1])
 lines!(ax2, t_tr, tr, color=λt_fs .> λ_th, colormap=[:blue, :red])
 linkxaxes!(ax, ax2)
 
-## trying with f3 
+## trying with f3
 
 # tr3 = tr[1:3:end]
 # t_tr3 = t[1:3:end]
@@ -338,7 +339,8 @@ xlims!(ax, Ttr, Ttr+500)
 
 
 # ------------------- recurrence analysis ------------------------
-include("utils.jl")
+include("$(scriptsdir())/utils.jl")
+using CairoMakie
 Ttr = 550
 T = 200
 # μ = 1e-8 #mainly period
@@ -346,13 +348,28 @@ T = 200
 r = reduced_to_normal(μ, rc)
 u0 = 0.3;
 lo = Systems.logistic(u0; r)
-tr = trajectory(lo, T, u0; Ttr); ts = Ttr:1:Ttr+T
+traj = trajectory(lo, T, u0; Ttr); ts = Ttr:1:Ttr+T
 ϵ=0.1
 ϵ=0.05
 fig = Figure(resolution=(1000, 500), fontsize=30, figure_padding=(5, 30, 5, 30))
-plot_RM!(fig, ts, tr, ϵ)
+plot_RM!(fig, ts, traj, ϵ)
+fig
 save("$(plotsdir())/$(savedir)/logistic-recurrenceplot-r_$(r).png", fig, px_per_unit=3)
 
+# statistics of recurrence matrix
+RM = RecurrenceMatrix(traj, ϵ)
+a = RM[1:10, 1:10]
+rs = recurrencestructures(a; lmin=1, theiler=0)
+
+tchaos = 98:145
+RM_chaos = RM[tchaos, tchaos]
+rs = recurrencestructures(RM_chaos; lmin=1, theiler=0)
+hist = rs["recurrencetimes"]
+fig = Figure()
+ax = Axis(fig[1,1])
+scatterlines!(ax, 1:length(hist), hist, color=:black)
+hlines!(ax, mean(hist))
+fig
 
 # ---------------------------- frequency analysis ---------------------------- #
 include("utils.jl")
@@ -377,7 +394,7 @@ fig = Figure()
 ax = Axis(fig[1,1], title="Tmax = $maxperiod", ylabel="x", xlabel="t")
 time_domain = lines!(ax, ts, signal, color=:black)
 ax = Axis(fig[2,1], ylabel="FFT(x)", xlabel="Frequency")
-freq_domain = lines!(ax, freqs, abs.(F), color=:black) 
+freq_domain = lines!(ax, freqs, abs.(F), color=:black)
 scatter!(ax, [1/maxperiod], [Fmax], color=:red)
 save("$(plotsdir())/$(savedir)/logistic-spectrumanalysis-r_$(r).png")
 
@@ -407,8 +424,8 @@ u0 = [0.1, 0.1, 0.1]
 # ρ = 166.06 #LC
 # ρ = 166.062 #intermittency (CA) GOOD
 # ρ = 166.063 #intermittency (CA) GOOD
-ρ = 166.1 #intermittency (CA) 
-# ρ = 166.2 #intermittency (CA) 
+ρ = 166.1 #intermittency (CA)
+# ρ = 166.2 #intermittency (CA)
 # ρ = 166.3 #intermittency (CA) GOOD
 # ρ = 166.3 #intermittency (CA)
 p = [σ, ρ, β]
@@ -417,7 +434,7 @@ tspan = (0, T)
 typename = "typeI/lorenz"
 prob = ODEProblem(lorenz!, u0, tspan, p)
 sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8, maxiters=1e9)
-t = sol.t 
+t = sol.t
 tr = sol[:,:]'
 speeds = norm.(timederivative(sol))
 
@@ -476,7 +493,7 @@ ax = Axis3(fig[1,1], azimuth = az, elevation = el)
 scatter!(ax, points, color=colors_ob)
 hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
 limits!(ax, -50, 50, -100, 100, 50, 250)
-# hidespines!(ax, :t, :r) 
+# hidespines!(ax, :t, :r)
 record(fig, "$(plotsdir())$(typename)/lorenz-rho_$(ρ)-faster2.mp4", frames;
         framerate) do frame
     new_point = Point3f(tr_plot[frame,1], tr_plot[frame,2], tr_plot[frame,3])
@@ -490,7 +507,7 @@ end
 p = [σ, ρ, β]; prob = ODEProblem(lorenz!, u0, tspan, p); sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8, maxiters=1e9); t = sol.t; traj = sol[:,:]'
 limitcycle=deepcopy(traj)
 
-# ρ = 166.1 #intermittency (CA) 
+# ρ = 166.1 #intermittency (CA)
 ρ = 166.1 #intermittency (CA); a bit too slow
 # ρ = 166.2 #intermittency (CA); a bit too slow
 # ρ = 166.3 #intermittency (CA)
@@ -530,7 +547,7 @@ ax = Axis(fig[3,1], ylabel="x", xlabel="t")
 lines!(ax, t_plot, tr_plot[:,1], color=[el == 1 ? :green : :purple for el ∈ arewithin_plot])
 scatter!(ax, points2, color=(:orange, 1), markersize=12)
 hidedecorations!(ax, ticks=false, label=false, ticklabels=false)
-hidespines!(ax, :t, :r) 
+hidespines!(ax, :t, :r)
 
 record(fig, "$(plotsdir())/$(typename)/lorenz-rho_$(ρ)-colorghost.mp4", frames;
         framerate) do frame
@@ -571,7 +588,7 @@ save("$(plotsdir())/$(typename)/lorenz-rho_$(ρ)-lyapunovs.png", fig)
 Ttr = 780; T=850
 tspan = (0, T)
 Δt = 0.01
-ρ = 166.06 
+ρ = 166.06
 p = [σ, ρ, β]
 prob = ODEProblem(lorenz!, u0, tspan, p)
 sol = solve(prob, solver, saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8, maxiters=1e9)

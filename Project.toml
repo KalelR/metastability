@@ -2,16 +2,20 @@ name = "metastability"
 authors = ["kalelrossi"]
 
 [deps]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+ColorSchemes = "35d6a980-a343-548e-a6ea-1d62b119f2f4"
 CurveFit = "5a033b19-8c74-5913-a970-47c3779ef25c"
 DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
 DiffEqBase = "2b5f629d-d688-5b77-993f-72d75c75574e"
 DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
+Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
 DrWatson = "634d3b9d-ee7a-5ddf-bec9-22491ea816e1"
 DynamicalSystems = "61744808-ddfa-5f27-97ff-6e42cc95d634"
 DynamicalSystemsBase = "6e36e845-645a-534a-86f2-f5d4aa5a06b4"
 GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
 GeometricalPredicates = "fd0ad045-b25c-564e-8f9c-8ef5c5f21267"
 ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
+RecurrenceAnalysis = "639c3291-70d9-5ea2-8c5b-839eba1ee399"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 Symbolics = "0c5d862f-8b57-4792-8d23-62f2024744c7"
 

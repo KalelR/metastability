@@ -4,7 +4,7 @@ using ColorSchemes
 logrange(x1, x2; length) = (10^y for y in range(log10(x1), log10(x2), length=length))
 
 """
-for each point in trajectory, round it to number digits (sort of equivalent of getting the eps-neighborhood of each point, eps being 10^-numdigits), count number of occurrences of rounded point and divided by total amount of points to give the measure of each point. 
+for each point in trajectory, round it to number digits (sort of equivalent of getting the eps-neighborhood of each point, eps being 10^-numdigits), count number of occurrences of rounded point and divided by total amount of points to give the measure of each point.
 """
 function histmeasure(tr, numdigits)
 	v = [[tr[i,1], tr[i,2]] for i=1:length(tr)]
@@ -50,7 +50,7 @@ norm(v) = sum(v.^2)
 findbox(x, boxes) = searchsortedfirst.(Ref(boxes), x) #index of value inside (box[i], box[i+1]]
 
 """
-count the number of adjacent (subsequent) permanences of each point in xs inside a box in boxes 
+count the number of adjacent (subsequent) permanences of each point in xs inside a box in boxes
 """
 function durationinboxes(xs, boxes)
     boxes_durations = [Float64[] for i=1:length(boxes)+1]
@@ -59,14 +59,14 @@ function durationinboxes(xs, boxes)
     secondbox_time_id = 0; box_id = 1; box_dur = 0; prev_box_id = 1;
     for i=2:length(xs)-1
         box_id = findbox(xs[i], boxes)
-        if box_id != initial_box_id 
-            secondbox_time_id = i 
+        if box_id != initial_box_id
+            secondbox_time_id = i
             prev_box_id = box_id
             box_dur = 1
-            break 
-        end 
+            break
+        end
     end
-    if secondbox_time_id == 0 boxes_durations[initial_box_id] = [length(x)]; return boxes_durations end#stayed whole series in initial box; 
+    if secondbox_time_id == 0 boxes_durations[initial_box_id] = [length(x)]; return boxes_durations end#stayed whole series in initial box;
     for (i, x) in enumerate(xs[secondbox_time_id+1:end])
         box_id = findbox(x, boxes)
         if box_id == prev_box_id
@@ -78,7 +78,7 @@ function durationinboxes(xs, boxes)
         end
     end
     push!(boxes_durations[prev_box_id], box_dur)
-    #create bins w same size as boxes_durs 
+    #create bins w same size as boxes_durs
     boxes_extended = deepcopy(boxes)
     push!(boxes_extended, boxes_extended[end] + (boxes_extended[end]-boxes_extended[end-1]))
     return boxes_durations, boxes_extended
@@ -102,9 +102,9 @@ function length_samevalues_allowfluctuations(v, num_fluctuations=0)
     corrected_v = zeros(length(v)); #corrected_v[1] = curr_val
     for i = 1:length(v)-(num_fluctuations+1)
         corrected_v[i] = curr_val
-        if any(curr_val .== v[(i+1):(i+1)+num_fluctuations]) 
+        if any(curr_val .== v[(i+1):(i+1)+num_fluctuations])
             duration += 1
-        else 
+        else
             push!(lens_values[curr_val], duration)
             duration=1; curr_val = v[i+1]
         end
@@ -122,7 +122,7 @@ function repetition_every_order(v, order; rtol=0.05, atol=0.0)
             vbool[i] = 1
          end
     end
-    return vbool 
+    return vbool
 end
 
 """
@@ -134,7 +134,7 @@ function moving_std(v, ws, order=1)
     for i=1:length(mv_average)
         mv_average[i] = std(v[i:order:i+ws-1])
     end
-    return mv_average 
+    return mv_average
 end
 
 
@@ -264,10 +264,11 @@ end
 
 
 # --------------------------------- PLOTTING --------------------------------- #
-using GLMakie
+# using GLMakie
 using DynamicalSystems
 function plot_RM!(fig, t, tr, ϵ; tsmode="scatterline")
     RM = RecurrenceMatrix(tr, ϵ)
+    # RM = skeletonize(RM)
     axs = []
     ax = Axis(fig[1,1], ylabel="j", xlabel="i"); push!(axs, ax)
     xs, ys = coordinates(RM)
@@ -278,7 +279,7 @@ function plot_RM!(fig, t, tr, ϵ; tsmode="scatterline")
     if tsmode == "scatterline" scatterlines!(ax, t, tr[:,1], color=:black)
     else lines!(ax, t, tr[:,1], color=:black) end
     return axs
-end 
+end
 
 
  function animationdata(sol, Tplot, Δt, Δtanimation)
