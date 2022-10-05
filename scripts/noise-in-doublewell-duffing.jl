@@ -1,6 +1,7 @@
 using DrWatson
 @quickactivate "metastability"
-using GLMakie,  DifferentialEquations
+using GLMakie
+using DifferentialEquations
 
 include("$(scriptsdir())/utils.jl")
 
@@ -28,7 +29,7 @@ f = 0.0
 ω = 1.0
 n₁ = n₂ = n = 0.18
 
-T = 5000 
+T = 5000
 Ttr=0
 # T = 15000
 Δt = 0.5
@@ -42,12 +43,12 @@ prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; 
 sol = @time solve(prob_duffing, SKenCarp(), saveat=0:Δt:T); t = sol.t #stiff, worked well but slow, 68secs **BEST
 # sol = @time solve(prob_duffing, ImplicitEM(), saveat=0:Δt:T); t = sol.t #stiff, worked well but slow 59secs
 # sol = @time solve(prob_duffing, STrapezoid(), saveat=0:Δt:T); t = sol.t #stiff, very fast but didnt have transitions
-# sol = @time solve(prob_duffing, ImplicitEulerHeun(), saveat=0:Δt:T); t = sol.t #stiff, 
-# sol = @time solve(prob_duffing, SROCK1(), dt=0.01, saveat=0:Δt:T); t = sol.t #stiff, 
-# sol = @time solve(prob_duffing, RKMil(), saveat=0:Δt:T); t = sol.t #nonstiff, 
+# sol = @time solve(prob_duffing, ImplicitEulerHeun(), saveat=0:Δt:T); t = sol.t #stiff,
+# sol = @time solve(prob_duffing, SROCK1(), dt=0.01, saveat=0:Δt:T); t = sol.t #stiff,
+# sol = @time solve(prob_duffing, RKMil(), saveat=0:Δt:T); t = sol.t #nonstiff,
 # choice_function(integrator) = (Int(integrator.dt<0.001) + 1)
 # alg_switch = StochasticCompositeAlgorithm((EM(), SKenCarp()),choice_function)
-# sol = @time solve(prob_duffing, alg_switch, saveat=0:Δt:T); t = sol.t #nonstiff, 
+# sol = @time solve(prob_duffing, alg_switch, saveat=0:Δt:T); t = sol.t #nonstiff,
 
 
 # fig = Figure()
@@ -72,7 +73,7 @@ ax1 = Axis(fig[1, 1], ylabel="x", xlabel="t")
 lines!(ax1, t, sol[1,:], color=[el > 0 ? c1 : c2 for el in sol[1,:]])
 save("$(plotsdir())/noise/duffing-timeseries-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-viridiscolors.png", fig)
 
-#verifying kramers 
+#verifying kramers
 U_peak = U(0, a, b, c)
 Uwell, idx = findmin(Us)
 Eb = U_peak - U_well
@@ -83,7 +84,7 @@ prefactor = 2π/(sqrt(U²(xwell, a, b, c) * abs(U²(0, a, b, c)) ) )
 exponent = Eb/ϵ
 
 #------------------------------------------------------------------SCALING
-using CurveFit 
+using CurveFit
 laminarperiods(v) = v .> 0 #1 is positive, 0 is negative
 T = 1e7
 Δt = 0.5
@@ -98,23 +99,23 @@ prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; 
 prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; seed=0)
 sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T, maxiters=1e9, progress=true); t = sol.t #stiff, worked well but slow
 # sol = solve(prob_duffing, EM(), dt=0.01, saveat=0:Δt:T, maxiters=1e9, progress=true); t = sol.t #stiff, worked well but slow
-# sol = @time solve(prob_duffing, SROCK1(), dt=0.01, saveat=0:Δt:T, maxiters=1e9); t = sol.t #stiff, 
+# sol = @time solve(prob_duffing, SROCK1(), dt=0.01, saveat=0:Δt:T, maxiters=1e9); t = sol.t #stiff,
 x = sol[1,:]
 τs, _ = length_samevalues_allowfluctuations(laminarperiods(x), 1)
 τs_2, _ = length_samevalues_allowfluctuations(laminarperiods(x), 0)
 numbins=15
-ws, bins = histogram(τs[1], numbins); 
+ws, bins = histogram(τs[1], numbins);
 
 
 # ensembleprob = EnsembleProblem(prob_duffing)
 # sols = solve(ensembleprob, SKenCarp(), EnsembleThreads(), trajectories=1, maxiters=1e9)
 # τs_all = Int64[]
-# for sol in sols 
+# for sol in sols
 #     x = sol[1,:]
 #     τs, _ = length_samevalues_allowfluctuations(laminarperiods(x), 1)
 #     push!(τs_all, τs[1]...)
 # end
-# ws, bins = histogram(τs_all, 50); 
+# ws, bins = histogram(τs_all, 50);
 
 
 # ws, bins = histogram(τs[1], 50); ws .+= 1
@@ -132,23 +133,23 @@ save("$(plotsdir())/noise/duffing-doublwell-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n
 # save("../plots/noise/duffing-doublwell-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-noiseonx.png", fig)
 
 
-#---------------------------------------------------- Recurrence 
-include("utils.jl")
-T = 1e3
-Δt = 5.0
+#---------------------------------------------------- Recurrence
+include("$(scriptsdir())/utils.jl")
+T = 2e3
+T = 4e2
 Δt = 0.5
 u0 = [0.0, 0]
-p =  [a, b, c, d, f, ω, n]
+p =  [a, b, c, d, f, ω, n₁, n₂]
 tspan = (0, T)
 prob_duffing = SDEProblem(duffing_assymetric_rule, noise_duffing, u0, tspan, p; seed=0)
 sol = solve(prob_duffing, SKenCarp(), saveat=0:Δt:T, maxiters=1e9); t = sol.t #stiff, worked well but slow
 traj = Dataset(sol[:,:]')
 fig = Figure(resolution = (1000,500))
-plot_RM!(fig, sol.t, traj, 0.1; tsmode="lines")
-RM = RecurrenceMatrix(traj, ϵ)
-rqa(RM)
-meanrecurrencetime(RM)
-a = recurrencestructures(RM, recurrencetimes=true)
+plot_RM!(fig, sol.t, traj, 0.1; tsmode="lines", recurrencetimes=true,  logy=true)
+fig
+save("$(plotsdir())/noise/duffing-doublewell-recurrences-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp.png", fig, px_per_unit=3)
+
+
 
 # ---------------------------- Frequency analysis ---------------------------- #
 include("utils.jl")
@@ -171,7 +172,7 @@ fig = Figure()
 ax = Axis(fig[1,1], title="Tmax = $maxperiod", ylabel="x", xlabel="t")
 time_domain = lines!(ax, ts, signal, color=:black)
 ax = Axis(fig[2,1], ylabel="FFT(x)", xlabel="Frequency")
-freq_domain = lines!(ax, freqs, abs.(F), color=:black) 
+freq_domain = lines!(ax, freqs, abs.(F), color=:black)
 scatter!(ax, [1/maxperiod], [Fmax], color=:red)
 save("$(plotsdir())/$(savedir)/noisydoublewell-spectrumanalysis-onewell.png")
 

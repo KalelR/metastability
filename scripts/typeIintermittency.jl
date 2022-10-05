@@ -39,38 +39,6 @@ xlims!(0, 150)
 save("$(plotsdir())/$(savedir)/logistic-timeseries-r_$(r)-uncoloured.png", fig)
 
 # ------------------ Estimate dwell time on laminar periods ------------------ #
-"""
-Finds laminar periods by identifying the phases in which the windowed standard deviation
-of the f^3 map is small (er than a threshold). In the laminar period, f^3 is a fp,
-constant, so std is very small. In chaos, it's nonconstant so higher. Works quite well,
-but not perfectly, and needs some fine tuning of the parameters.
-"""
-function laminarperiods(tr; win_size=4, std_th)
-    std_tr3 = moving_std(tr, 3*win_size, 3);
-    laminar_period_bool = std_tr3 .< std_th #1s are laminar, 0s are nonlaminar
-end
-# # bool_fp_order = repetition_every_order([4, 1, 2, 3, 1,2,3, 1,2, 3, 3, 2, 1, 3, 2, 1], 3)
-# a,b=length_samevalues_allowfluctuations(bool_fp_order, 0)
-"""
-Finds laminar periods by identifying the phases that repeat every order=3 iterations
-"""
-function laminarperiods(tr, order; kwargs...)
-    bool_fp_order = repetition_every_order(tr, order; kwargs...)
-    T, bool_laminarperiods = length_samevalues_allowfluctuations(bool_fp_order, order)
-    return T[1], bool_laminarperiods
-end
-
-function estimate_laminarperiod_duration(tr; win_size=4, std_th, num_allowed_fluctuations=3)
-    laminar_period_bool = laminarperiods(tr; win_size, std_th)
-    T, corr_lpb = length_samevalues_allowfluctuations(laminar_period_bool, num_allowed_fluctuations)
-    return T[1], corr_lpb ##laminar period only for 1
-end
-
-function chaoticperiods(tr, order; kwargs...)
-    bool_fp_order = repetition_every_order(tr, order; kwargs...)
-    T, bool_laminarperiods = length_samevalues_allowfluctuations(bool_fp_order, order)
-    return T[0], bool_laminarperiods
-end
 
 T = 1000
 T = 15000
@@ -341,11 +309,12 @@ xlims!(ax, Ttr, Ttr+500)
 # ------------------- recurrence analysis ------------------------
 include("$(scriptsdir())/utils.jl")
 using CairoMakie
-Ttr = 550
-T = 200
+Ttr = 550; T = 200
+Ttr = 550; T = 2000
 # μ = 1e-8 #mainly period
 μ = 1e-5 #mainly period
 r = reduced_to_normal(μ, rc)
+r = 4
 u0 = 0.3;
 lo = Systems.logistic(u0; r)
 traj = trajectory(lo, T, u0; Ttr); ts = Ttr:1:Ttr+T
@@ -357,19 +326,25 @@ fig
 save("$(plotsdir())/$(savedir)/logistic-recurrenceplot-r_$(r).png", fig, px_per_unit=3)
 
 # statistics of recurrence matrix
+include("$(srcdir())/recurrences.jl")
 RM = RecurrenceMatrix(traj, ϵ)
-a = RM[1:10, 1:10]
-rs = recurrencestructures(a; lmin=1, theiler=0)
-
 tchaos = 98:145
 RM_chaos = RM[tchaos, tchaos]
-rs = recurrencestructures(RM_chaos; lmin=1, theiler=0)
-hist = rs["recurrencetimes"]
+times, count = histrecurrencetimes(RM)
 fig = Figure()
-ax = Axis(fig[1,1])
-scatterlines!(ax, 1:length(hist), hist, color=:black)
-hlines!(ax, mean(hist))
+ax = Axis(fig[1,1], ylabel="Count", xlabel="recurrence times")
+# xlims!(ax, low=4); ylims!(ax, 0, maximum(count[4:end]))
+scatterlines!(ax, times, count, color=:black)
+hlines!(ax, mean(count))
 fig
+save("$(plotsdir())/$(savedir)/logisticrecurrencetimes-longerts-r_$(r).png", fig, px_per_unit=3)
+
+fig = Figure(resolution=(1000, 800), fontsize=30, figure_padding=(5, 30, 5, 30))
+plot_RM!(fig, ts, traj, ϵ; recurrencetimes=true)
+fig
+save("$(plotsdir())/$(savedir)/logistic-recurrenceplot-recurrencetimes-r_$(r).png", fig, px_per_unit=3)
+
+
 
 # ---------------------------- frequency analysis ---------------------------- #
 include("utils.jl")

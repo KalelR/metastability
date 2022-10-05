@@ -30,7 +30,8 @@ end
 
 
 # T = 5000
-Ttr = 9600
+# Ttr = 9600
+Ttr = 6000
 T = 10000
 Δt=1.0
 μ = 1.0
@@ -104,9 +105,10 @@ hcgh = ODEProblem(ff, u0, tspan, p)
 # sol = solve(hcgh, AutoTsit5(Rosenbrock23()), saveat=0:0.01:T, abstol=1e-8, reltol=1e-8); t = sol.t;
 # sol = solve(hcgh, Rodas5(), saveat=0:0.01:T, abstol=1e-10, reltol=1e-10, maxiters=1e9); t = sol.t;
 # sol = solve(hcgh, VCABM(), saveat=0:0.01:T, abstol=1e-10, reltol=1e-10, maxiters=1e9); t = sol.t;
-sol = solve(hcgh, RK4(), dt=1/1000, saveat=Ttr:Δt:T); ts = sol.t;
+# sol = solve(hcgh, RK4(), dt=1/1000, saveat=Ttr:Δt:T); ts = sol.t;
 # sol = solve(hcgh, saveat=0:0.01:T); t = sol.t;
 # sol = solve(hcgh, RadauIIA3(), saveat=0:0.01:T, abstol=1e-10, reltol=1e-10, maxiters=1e9); t = sol.t;
+sol = solve(hcgh, RK4(), dt=1/100000000, saveat=Ttr:0.00001:T); ts = sol.t;
 
 
 fig = Figure()
@@ -468,7 +470,7 @@ end
 # @time ratemodel_rule!(rand(6), rand(6), p, t)
 # @btime ratecoup($gs[1,:], $rand(3))
 
-mutable struct params
+mutable struct rateparams
     gs :: Matrix{Float64}
     I :: Float64
     ϵ :: Float64
@@ -494,11 +496,11 @@ gs[2,1] = gs[3,2] = gs[1,3] = g₁
 gs[1,2] = gs[2,3] = gs[3,1] = g₂
 gs[1,1] = gs[2,2] = gs[3,3] = 0.
 
-p = params(gs, I, ϵ, Smax, τ, x₀, α)
-T = 1e6
+p = rateparams(gs, I, ϵ, Smax, τ, x₀, α)
+T = 5e5
 # T=10
 Ttr = 0
-Δt = 0.1
+Δt = 1.0
 u0 = rand(3*2) .* 0.01;
 
 tspan = (0, T);
@@ -509,22 +511,19 @@ hcgh = ODEProblem(ratemodel_rule!, u0, tspan, p);
 # sol = @time solve(hcgh, Vern9(), maxiters=1e9, abstol=1e-20, reltol=1e-20); t = sol.t;
 # using ODEInterfaceDiffEq
 # sol = @time solve(hcgh, radau(), maxiters=1e9, abstol=1e-10, reltol=1e-10); t = sol.t;
-u0 = [BigFloat("0.02"), BigFloat("0.02"), BigFloat("0.01"), BigFloat("0.01"), BigFloat("0.03"), BigFloat("0.03")]
-sol = @time solve(hcgh, KenCarp4(), maxiters=1e9, abstol=1e-12, reltol=1e-12); t = sol.t;
+# u0 = [BigFloat("0.02"), BigFloat("0.02"), BigFloat("0.01"), BigFloat("0.01"), BigFloat("0.03"), BigFloat("0.03")]
+# sol = @time solve(hcgh, KenCarp4(), maxiters=1e9, abstol=1e-12, reltol=1e-12); t = sol.t;
 # sol = @time solve(hcgh, Kvaerno5(), maxiters=1e9, abstol=1e-15, reltol=1e-15); t = sol.t; #does not work
+sol = solve(hcgh, RK4(), dt=1/10, saveat=Ttr:Δt:T); ts = sol.t;
 
 
 ss = @view sol[((1:N) .-1) .*2 .+ 1, :];
 
 fig = Figure()
-ax = Axis3(fig[1:2, 1])
+ax = Axis3(fig[1, 1])
 lines!(ax, ss[1,:], ss[2,:], ss[3,:])
-axs=[]
-for i=1:3
-    ax = Axis(fig[2+i,1]); push!(axs, ax)
-    lines!(ax, t, ss[i,:])
-end
-linkxaxes!(axs...)
+ax = Axis(fig[2,1]);
+for i=1:3 lines!(ax, ts, ss[i,:]) end
 
 
 u0 = rand(3*2) .* 0.01;

@@ -8,10 +8,10 @@ include("$(scriptsdir())/utils.jl")
 
 # Cobweb interactive
 # the second range is a convenience for intermittency example of logistic
-using InteractiveDynamics 
+using InteractiveDynamics
 n = 2000
 Ttr = 2000
-rrange = 3.4:0.0005:4.0; #interesting part of the diagram 
+rrange = 3.4:0.0005:4.0; #interesting part of the diagram
 rrange = 3.82:0.00001:3.88; #period 3
 rrange = 3.855:0.000001:3.859; #to find the boundary crisis point; critical value around 3.8568; can pick before 3.8567 and after at 3.8569
 lo = Systems.logistic(0.4; r = rrange[1]);
@@ -31,7 +31,7 @@ fig, ax = scatter(x, y; axis = (xlabel = L"r", ylabel = L"x"),
 )
 
 T = 2000
-fig = Figure(resolution=(1920, 1080)) 
+fig = Figure(resolution=(1920, 1080))
 axs = []
 for (i, r) ∈ enumerate([4.0, 4.00001])
 	lo = Systems.logistic(0.4; r);
@@ -46,9 +46,9 @@ save("boundarycrisis-logisticmap.png", fig, px_per_unit=4)
 
 
 # ---------------------------------------------------- Ikeda map also famous for boundary crisis --------------------------------------------------- #
-# translation from ds to my own notation: t = χ, c=C, d=K (= a in Alligood), a=A(=r in Alligood), b=B 
-b = 0.9 
-c = 0.4 
+# translation from ds to my own notation: t = χ, c=C, d=K (= a in Alligood), a=A(=r in Alligood), b=B
+b = 0.9
+c = 0.4
 d = 6.0
 a = 1.0 # a=A=r varying
 a = 1.003
@@ -62,7 +62,7 @@ traj = trajectory(ik, T; Ttr); t = Ttr:Ttr+T
 x = traj[:,1]; y = traj[:,2]
 measure = histmeasure(traj, 2)
 
-fig = Figure() 
+fig = Figure()
 ax = Axis(fig[1:3,1])
 scatter!(ax, x, y, markersize=2, color=measure)
 
@@ -72,7 +72,7 @@ save("$(plotsdir())/boundarycrisis/boundarycrisis-ikedamap-statespace-timeseries
 
 
 
-fig = Figure(resolution=(1920, 1080)) 
+fig = Figure(resolution=(1920, 1080))
 axs = []
 for (i, a) ∈ enumerate([0.997, 1.003])
 	ik = Systems.ikedamap(;a, b, c, d)
@@ -120,8 +120,8 @@ end
 include("$(scriptsdir())/utils.jl")
 T = 2e5
 Ttr = 0
-b = 0.9 
-c = 0.4 
+b = 0.9
+c = 0.4
 d = 6.0
 # a = 1.0 # a=A=r varying
 a = 1.003
@@ -143,70 +143,9 @@ ax = Axis(fig[3,1])
 lines!(ax, t, λs[:,1])
 lines!(ax, t, λs[:,2])
 
-## just by trajectories entering neighborhood of FP; its NOT VERY ELEGANT! haha but a quick way to do it
 fp = [ 2.9715737943410305, 4.153134755539537 ]
-iswithinneighborhood(point, fp, threshold) = evaluate(Euclidean(), point, fp) ≤ threshold ? true : false  
-iswithinneighborhood([3.0, 3.0], fp, 0.1)
+bins, weights = distribution_times_chaotic_saddle(; Ttr=1e2, T=1e6, threshold=1)
 
-using DynamicalSystemsBase:obtain_access, get_state
-function trajectory_discrete(integ, t, u0 = nothing;
-        Δt::Int = 1, Ttr = 0, a = nothing, diffeq = nothing, fp, threshold
-    )
-    !isnothing(u0) && reinit!(integ, u0)
-    Δt = round(Int, Δt)
-    T = eltype(get_state(integ))
-    t0 = current_time(integ)
-    tvec = (t0+Ttr):Δt:(t0+t+Ttr)
-    L = length(tvec)
-    T = eltype(get_state(integ))
-    X = isnothing(a) ? dimension(integ) : length(a)
-    data = Vector{SVector{X, T}}(undef, L)
-    Ttr ≠ 0 && step!(integ, Ttr)
-    data[1] = obtain_access(get_state(integ), a)
-	t_convergence = 0
-    for i in 2:L
-        step!(integ, Δt)
-		if iswithinneighborhood(integ.u, fp, threshold) for j=i:L data[j] = SVector{X, T}(fp) end; t_convergence=i; break end
-        data[i] = SVector{X, T}(obtain_access(get_state(integ), a))
-    end
-    return Dataset(data), t_convergence
-end
-
-function time_to_converge(integ, t, u0 = nothing;
-	Δt::Int = 1, Ttr = 0, a = nothing, diffeq = nothing, fp, threshold
-)
-	!isnothing(u0) && reinit!(integ, u0)
-	Δt = round(Int, Δt)
-	t0 = current_time(integ)
-	tvec = (t0+Ttr):Δt:(t0+t+Ttr)
-	L = length(tvec)
-	Ttr ≠ 0 && step!(integ, Ttr)
-	t_convergence = 0
-	for i in 2:L
-		step!(integ, Δt)
-		if iswithinneighborhood(integ.u, fp, threshold)  return i; break end
-	end
-	return L
-end
-
-T=1e6; Ttr=1e2
-threshold = 1
-xs = range(-0.0, 1.0, length=100)
-ys = range(-2.0, 0, length=100)
-u0s = [[x, y] for x ∈ xs for y ∈ ys]
-τs = zeros(Int, length(u0s))
-for (i, u0) ∈ enumerate(u0s)
-	integ = integrator(ik, u0) 
-	t_conv = time_to_converge(integ, T, u0; Ttr, fp, threshold)
-	τs[i] = t_conv
-end
-
-filter!(x->x>=10, τs)
-filter!(x->x<T, τs)
-# numbins = 10; weights, bins = histogram(τs, numbins); 
-numbins = 15;mode = :pdf
-bins = collect(range(minimum(τs), maximum(τs), length=numbins))
- weights, bins = histogram(τs, bins; mode=mode); 
 
 fig = Figure(resolution=(800, 600), fontsize=30,figure_padding=(5, 35, 5, 30))
 ax = Axis(fig[1,1], yscale=log10, ylabel="P(τ)", xlabel="τ")
@@ -303,6 +242,3 @@ record(fig, "$(plotsdir())/boundarycrisis/ikedamap-animation-timeseries-a_$(a)-b
 	points[] = [new_point]
 	points2[] = [new_point2]
 end
-
-
-
