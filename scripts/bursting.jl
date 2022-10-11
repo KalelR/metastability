@@ -19,21 +19,20 @@ function classify_points_in_burst(zs)
     count_min = count_max = 1
     state = 0 #silence
     states = zeros(Bool, length(zs));
-    idxs_min = Peaks.minima(zs);
-    idxs_max = Peaks.maxima(zs);
+    idxs_min = Peaks.findminima(zs)[1];
+    idxs_max = Peaks.findmaxima(zs)[1];
+    println(idxs_max)
     for idx in eachindex(zs)
         if count_min ≤ length(idxs_min)
             if idx == idxs_min[count_min]
             state = 1
             count_min += 1;
-            # if count_min > length(idxs_min) break end
             end
         end
         if count_max ≤ length(idxs_max)
             if idx == idxs_max[count_max]
                 state = 0
                 count_max += 1;
-            # if count_max > length(idxs_max) states[idx:end] .= 0; break end
             end
         end
         states[idx] = state
@@ -43,60 +42,40 @@ end
 
 u0 = [-1.0, 0, 0];
 a=1; b=3; c=1; d=5; xr=-8/5; s=4; r=0.001; I=2.0;
-p = @strdict a b c d xr s r I
-T = 3000; Ttr=1000; Δt = 0.1
-prob = ODEProblem(hindmarshrose_rule!, u0, (0.0, T), p)
-sol = solve(prob, AutoTsit5(Rosenbrock23()); saveat=Ttr:Δt:T, maxiters=1e9)
+p = @strdict a b c d xr s r I;
+T = 3000; Ttr=1000; Δt = 0.1;
+prob = ODEProblem(hindmarshrose_rule!, u0, (0.0, T), p);
+sol = solve(prob, AutoTsit5(Rosenbrock23()); saveat=Ttr:Δt:T, maxiters=1e9);
 
 
 
-azi = 4.735530633327
-ele = 0.41269908169872416
+# azi = 4.735530633327; ele = 0.41269908169872416;
+azi = 7.635530633326996; ele = 0.3526990816987241;
 
-# fig = Figure(resolution=(columnsize_pt, 0.50*width_pt), figure_padding=20)
-# fig = Figure(resolution=(columnsize_pt, 0.50*width_pt))
-# gab = fig[1:3,1] = GridLayout()
-# ga = gab[1,1] = GridLayout()
-# gb = gab[2:3, 1] = GridLayout()
-
-# ax1 = Axis(ga[1,1], ylabel="V", xlabel="t", title="Bursting")
-# lines!(ax1, sol.t,  sol[1,:], color=speeds);
-# xlims!(ax1, high=2900)
-# ax2 = Axis3(gb[1,1:2], xlabel="V", ylabel="y", zlabel="z", xlabeloffset=20, ylabeloffset=20, zlabeloffset=30, azimuth=azi, elevation=ele)
-# l=lines!(ax2, sol[1,:], sol[2,:], sol[3, :], color=speeds, colormap=:viridis);
-# cb=Colorbar(gb[1,3], l, label="normalized speed", tellheight=true)
-# colgap!(gb, 0)
-# cb.alignmode = Mixed(right = 0)
-# cb.width=10
-# rowgap!(gab, -20)
-# fig
-# resize_to_layout!(fig)
-# save("$(plotsdir())/paper/bursting-hindmarshrose.png", fig, px_per_unit=3)
-
-
-states = classify_points_in_burst(sol[3,:])
-colors = [el == 1 ? :green : :purple for el in states]
+states = classify_points_in_burst(sol[3,:]);
+colors = [el == 1 ? :green : :purple for el in states];
+dwelltimes, _ = length_samevalues_allowfluctuations(states);
+xs = range(dwelltimes[1][1]-200, dwelltimes[1][1]+200, length=21); dist = zeros(length(xs)); dist[11] = 1.0;
 
 fig = Figure(resolution=(columnsize_pt, 1.0*width_pt))
-ax1 = Axis(fig[1,1], ylabel="V", xlabel="t", title="Bursting")
+ax1 = Axis(fig[1,1], ylabel="V", xlabel="t")
 lines!(ax1, sol.t,  sol[1,:], color=colors);
 xlims!(ax1, high=2900)
-ax2 = Axis3(fig[2,1], xlabel="V", ylabel="y", zlabel="z", xlabeloffset=20, ylabeloffset=20, zlabeloffset=30, azimuth=azi, elevation=ele, width=0.9*width_pt, tellwidth=false)
-hidedecorations!(ax2); hidespines!(ax2);
+ax2 = Axis3(fig[2,1], xlabel="V", ylabel="y", zlabel="z", xlabeloffset=20, ylabeloffset=20, zlabeloffset=30, azimuth=azi, elevation=ele, protrusions=0, viewmode=:stretch)
 l=lines!(ax2, sol[1,:], sol[2,:], sol[3, :], color=colors, colormap=:viridis);
-# cb.height=10
-# cb.valign=:top
-# cb.alignmode = Mixed(right=0)
+ax3 = Axis(fig[3,1], ylabel="PDF(τ)", xlabel="τ")
+lines!(ax3, xs, dist, color=:green)
 rowsize!(fig.layout, 2, Relative(0.6))
-rowgap!(fig.layout, -40)
-resize_to_layout!(fig)
-save("$(plotsdir())/paper/bursting-hindmarshrose.png", fig, px_per_unit=3)
-
+# rowgap!(fig.layout, -40)
+# resize_to_layout!(fig)
+# save("$(plotsdir())/paper/bursting-hindmarshrose.png", fig, px_per_unit=3)
+# using CairoMakie
+save("$(plotsdir())/paper/bursting-hindmarshrose.pdf", fig)
 
 
 
 # TESTING BURST START AND END ALG
-
+#=
 fig = Figure()
 ax = Axis(fig[1,1])
 lines!(ax, sol.t, sol[1,:])
@@ -114,3 +93,4 @@ l=lines!(ax2, sol[1,:], sol[2,:], sol[3, :], color=speeds, colormap=:viridis);
 scatter!(ax2, [-1.618 for i=1:100], [-12.09 for i=1:100], range(1.7, 2.15, length=100))
 # Colorbar(fig[2:3,1][1,2], l, label="normalized speed", tellheight=true)
 fig
+=#

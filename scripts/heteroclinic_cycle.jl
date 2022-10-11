@@ -466,6 +466,25 @@ end
     end
 return nothing
 end
+@inbounds function ratecoup_Z(gi, Zs, Smax)
+    Isyn = 0.0
+    for j = 1:length(Zs)
+        Isyn += gi[j] * (Smax - exp(Zs[j]))
+    end
+    return Isyn
+end
+@inbounds function ratemodel_rule_Z!(du, u, p, t)
+    Smax = p.Smax; x₀ = p.x₀; I = p.I; gs = p.gs; τ = p.τ; ϵ = p.ϵ; α = p.α
+    N = size(gs, 1)
+    for i=1:N
+        Z, r = @view u[(i-1)*2 + 1 : i*2]
+        Zs = @view u[((1:N) .-1) .*2 .+ 1]
+        gi = @view gs[i,:]
+        du[(i-1)*2 + 1] = (1/(τ*Smax)) * ( ((Smax - exp(Z))/2) - r)
+        du[(i-1)*2 + 2] = x₀ * F(I - ratecoup_Z(gi, Zs, Smax), ϵ, α) - r/τ
+    end
+return nothing
+end
 
 # @time ratemodel_rule!(rand(6), rand(6), p, t)
 # @btime ratecoup($gs[1,:], $rand(3))
@@ -508,7 +527,7 @@ hcgh = ODEProblem(ratemodel_rule!, u0, tspan, p);
 # sol = solve(hcgh, Rosenbrock23(), maxiters=1e9, saveat=Ttr:Δt:T); t = sol.t;
 # sol = @time solve(hcgh, Rodas5(), maxiters=1e9, abstol=1e-15, reltol=1e-15); t = sol.t;
 # sol = @time solve(hcgh, KenCarp4(), maxiters=1e9, abstol=1e-20, reltol=1e-20); t = sol.t;
-# sol = @time solve(hcgh, Vern9(), maxiters=1e9, abstol=1e-20, reltol=1e-20); t = sol.t;
+sol = @time solve(hcgh, Vern9(), maxiters=1e9, abstol=1e-20, reltol=1e-20); t = sol.t;
 # using ODEInterfaceDiffEq
 # sol = @time solve(hcgh, radau(), maxiters=1e9, abstol=1e-10, reltol=1e-10); t = sol.t;
 # u0 = [BigFloat("0.02"), BigFloat("0.02"), BigFloat("0.01"), BigFloat("0.01"), BigFloat("0.03"), BigFloat("0.03")]
@@ -524,6 +543,55 @@ ax = Axis3(fig[1, 1])
 lines!(ax, ss[1,:], ss[2,:], ss[3,:])
 ax = Axis(fig[2,1]);
 for i=1:3 lines!(ax, ts, ss[i,:]) end
+
+
+#plot s and r
+fig = Figure(resolution=(columnsize_pt, 1.0*width_pt))
+ax1 = Axis(fig[1, 1], ylabel="x,y,z", xlabel="t")
+for i=1:3 lines!(ax1, t_plot, ss_plot[i,:], label=["x", "y", "z"][i], color=traj_colors) end
+ax1 = Axis(fig[1, 2], ylabel="x,y,z", xlabel="t")
+for i=1:3 lines!(ax1, t_plot, rs_plot[i,:], label=["x", "y", "z"][i], color=traj_colors) end
+ax2 = Axis3(fig[2, 1], azimuth=azim, elevation=elev, xlabeloffset=20, ylabeloffset=20, zlabeloffset=30)
+lines!(ax2, ss_plot[1,:], ss_plot[2,:], ss_plot[3,:], color=traj_colors)
+scatter!(ax2, fps[1:2:end, :][:,1], fps[1:2:end, :][:, 2], fps[1:2:end, :][:, 3], color=fp_colors, markersize=10)
+ax2 = Axis3(fig[2, 2], azimuth=azim, elevation=elev, xlabeloffset=20, ylabeloffset=20, zlabeloffset=30)
+lines!(ax2, rs_plot[1,:], rs_plot[2,:], rs_plot[3,:], color=traj_colors)
+scatter!(ax2, fps[2:2:end, :][:,1], fps[2:2:end, :][:, 2], fps[2:2:end, :][:, 3], color=fp_colors, markersize=10)
+
+
+
+
+# --------------------------- Trying the Z version --------------------------- #
+T = 1e6
+Ttr = 1000
+Δt = 1.0
+u0 = rand(3*2) #.* 0.01; # NOT THE SAME ICS
+# u0 = [0.01, -20, 0.02, -25, 0.03, -30]
+tspan = (0, T);
+hcgh = ODEProblem(ratemodel_rule_Z!, u0, tspan, p);
+# sol = solve(hcgh, Rosenbrock23(), maxiters=1e9, saveat=Ttr:Δt:T); ts = sol.t;
+sol = solve(hcgh, Vern9(), maxiters=1e9, saveat=Ttr:Δt:T); ts = sol.t;
+
+z_to_s(z, Smax) = Smax - exp(z);
+zs = @view sol[((1:N) .-1) .*2 .+ 1, :];
+ss = map(x->z_to_s(x, Smax), zs);
+az = 6.995530633326985
+elev = 0.3926990816987241
+fig = Figure()
+ax1 = Axis3(fig[1, 1], title="new variables Zi = log(Smax - si)", azimuth=az, elevation=elev);
+lines!(ax1, zs[1,:], zs[2,:], zs[3,:]);
+ax2 = Axis(fig[2,1]);
+for i=1:3 lines!(ax2, ts, zs[i,:]) end
+
+ax3 = Axis3(fig[1, 2], title="old variables si", azimuth=az, elevation=elev);
+lines!(ax3, ss[1,:], ss[2,:], ss[3,:]);
+ax4 = Axis(fig[2,2]);
+for i=1:3 lines!(ax4, ts, ss[i,:]) end
+
+save("$(plotsdir())/heterocliniccycle/ratemodel-newvariable.png", fig)
+
+
+
 
 
 u0 = rand(3*2) .* 0.01;

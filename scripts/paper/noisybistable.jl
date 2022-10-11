@@ -42,12 +42,13 @@ function distribution_times_noisywell(xs, numbins, side=0) #0 is left, 1 is righ
     τs, _  = length_samevalues_allowfluctuations(bistable_laminarperiods(xs_sol), side)
     ws, bins = histogram(τs[1], numbins);
 end
-τs_l = readdlm("$(datadir())/noisybistable-dwelltimes-left-n_0.18.dat")[:,1]
-τs_r = readdlm("$(datadir())/noisybistable-dwelltimes-right-n_0.18.dat")[:,1]
+τs_l = readdlm("$(datadir())/noisybistable-dwelltimes-left-n_0.18.dat")[:,1];
+τs_r = readdlm("$(datadir())/noisybistable-dwelltimes-right-n_0.18.dat")[:,1];
 weights_l, bins_l =  histogram(τs_l, numbins);
 weights_r, bins_r = histogram(τs_r, numbins);
-xfit_l = bins_l; yfit_l = weights_l; A_l, B_l = CurveFit.exp_fit(xfit_l, yfit_l .+ 1e-7)
-xfit_r = bins_r; yfit_r = weights_r; A_r, B_r = CurveFit.exp_fit(xfit_r, yfit_r .+ 1e-7)
+xfit_l = bins_l; yfit_l = weights_l; A_l, B_l = CurveFit.exp_fit(xfit_l, yfit_l .+ 1e-7);
+xfit_r = bins_r; yfit_r = weights_r; A_r, B_r = CurveFit.exp_fit(xfit_r, yfit_r .+ 1e-7);
+yfit_l .+= 1e-8; #small value so log10 doesnt break
 
 c1 = :green; c2 = :purple
 
@@ -64,7 +65,8 @@ lines!(ax3, xfit_l, yfit_l, color=:green, label="P(τ) = $(trunc(A_l, sigdigits=
 rowsize!(fig.layout, 2, Relative(0.6))
 axislegend(ax3, position=:rt; framevisible=false, labelsize=8,orientation = :horizontal, margin=(-8,-8,-8,-8))
 # tit = Label(fig[0,1], "Noisy bistable"; textsize=14, tellwidth=false)
-save("$(plotsdir())/paper/noisybistable.png", fig, px_per_unit=4)
+# save("$(plotsdir())/paper/noisybistable.png", fig, px_per_unit=4)
+save("$(plotsdir())/paper/noisybistable.pdf", fig)
 
 
 
