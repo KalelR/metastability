@@ -68,9 +68,6 @@ sol = @time solve(prob_duffing, SKenCarp(), saveat=0:Δt:T); t = sol.t #stiff, w
 #just the time series
 c1 = "#440154FF"
 c2 = "#FDE725FF"
-fig = Figure(resolution=(800,250))
-ax1 = Axis(fig[1, 1], ylabel="x", xlabel="t")
-lines!(ax1, t, sol[1,:], color=[el > 0 ? c1 : c2 for el in sol[1,:]])
 save("$(plotsdir())/noise/duffing-timeseries-a_$(a)-b_$(b)-c_$(c)-d_$(d)-f_$(f)-n_$(n)-solver_SKenCarp-viridiscolors.png", fig)
 
 #verifying kramers
@@ -85,7 +82,6 @@ exponent = Eb/ϵ
 
 #------------------------------------------------------------------SCALING
 using CurveFit
-laminarperiods(v) = v .> 0 #1 is positive, 0 is negative
 T = 1e7
 Δt = 0.5
 u0 = [0.0, 0]
