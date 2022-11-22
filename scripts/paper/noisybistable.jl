@@ -82,7 +82,8 @@ function  integrate_and_plot_noisybistable(; T=1e4, obtaindwelltime="readfromfil
     return fig, [ax1, ax2, ax3]
 end
 
-fig, axs = integrate_and_plot_noisybistable(T=1e7; obtaindwelltime="generate"); #from the paper, takes a while to integrate this long
+# fig, axs = integrate_and_plot_noisybistable(T=1e7; obtaindwelltime="generate"); #from the paper, takes a while to integrate this long
+fig, axs = integrate_and_plot_noisybistable(T=1e8; obtaindwelltime="generate"); #from the paper, takes a while to integrate this long
 # fig, axs = integrate_and_plot_noisybistable(T=1e4; obtaindwelltime="readfromfile"); #quick version: integrates for a short time and reads dwell times from long integration made previously
 # safesave("$(plotsdir())/mechanisms/paper-version/noisybistable.png", fig)
-fig
+# fig
