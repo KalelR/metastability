@@ -38,16 +38,16 @@ function  integrate_and_plot_noisybistable(; T=1e4, obtaindwelltime="readfromfil
 
     numbins = 15
     if obtaindwelltime == "readfromfile"
-        τs_l = readdlm("$(datadir())/noisybistable-dwelltimes-left-n_0.18-T_10000.0.dat")[:,1];
-        # τs_r = readdlm("$(datadir())/noisybistable-dwelltimes-right-n_0.18.dat")[:,1];
+        τs_l = readdlm("$(datadir())/noisybistable-dwelltimes-left-n_0.18-T_1.0e7.dat")[:,1];
+        # τs_r = readdlm("$(datadir())/noisybistable-dwelltimes-right-n_0.18-T_1e.0e8.dat")[:,1];
     else
         τs_l, _  = length_samevalues_allowfluctuations(bistable_laminarperiods(sol[1,:]), 0)
         τs_l = τs_l[1];
         @show τs_l
         τs_r, _  = length_samevalues_allowfluctuations(bistable_laminarperiods(sol[1,:]), 1)
         τs_r = τs_r[1];
-        writedlm("$(datadir())/noisybistable-dwelltimes-left-n_$n-T_$T.dat", τs_l)
-        writedlm("$(datadir())/noisybistable-dwelltimes-right-n_$n-T_$T.dat", τs_r)
+        # writedlm("$(datadir())/noisybistable-dwelltimes-left-n_$n-T_$T.dat", τs_l)
+        # writedlm("$(datadir())/noisybistable-dwelltimes-right-n_$n-T_$T.dat", τs_r)
     end
 
     weights_l, bins_l =  histogram(τs_l, numbins);
@@ -82,8 +82,7 @@ function  integrate_and_plot_noisybistable(; T=1e4, obtaindwelltime="readfromfil
     return fig, [ax1, ax2, ax3]
 end
 
-# fig, axs = integrate_and_plot_noisybistable(T=1e7; obtaindwelltime="generate"); #from the paper, takes a while to integrate this long
-fig, axs = integrate_and_plot_noisybistable(T=1e8; obtaindwelltime="generate"); #from the paper, takes a while to integrate this long
-# fig, axs = integrate_and_plot_noisybistable(T=1e4; obtaindwelltime="readfromfile"); #quick version: integrates for a short time and reads dwell times from long integration made previously
-# safesave("$(plotsdir())/mechanisms/paper-version/noisybistable.png", fig)
+# fig, axs = integrate_and_plot_noisybistable(T=1e8; obtaindwelltime="generate"); #for the paper, generating the dwell times
+fig, axs = integrate_and_plot_noisybistable(T=1e4; obtaindwelltime="readfromfile"); #quick version: integrates for a short time and reads dwell times from long integration made previously
+safesave("$(plotsdir())/mechanisms/paper-version/noisybistable.png", fig)
 # fig

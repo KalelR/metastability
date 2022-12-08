@@ -1,7 +1,7 @@
 using DrWatson
 @quickactivate "metastability"
 using DynamicalSystems, Statistics, CurveFit, DelimitedFiles
-using GLMakie
+using CairoMakie
 include("$(scriptsdir())/utils.jl")
 include("$(srcdir())/paperplottheme.jl")
 
@@ -45,4 +45,4 @@ end
 
 fig, axs = integrate_and_plot_chaoticsaddle()
 fig
-safesave("$(plotsdir())/paper/bursting-hindmarshrose.pdf", fig)
+safesave("$(plotsdir())/paper/chaoticsaddle.pdf", fig)

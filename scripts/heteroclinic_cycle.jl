@@ -4,6 +4,10 @@ using GLMakie, OrdinaryDiffEq
 include("$(scriptsdir())/utils.jl")
 
 
+# ---------------------------------------------------------------------------- #
+#                              Guckenheimer-Holmes                             #
+# ---------------------------------------------------------------------------- #
+
 @inbounds function heteroclinic_cycle_gh!(du, u, p, t)
 	μ, a, b, c = p
     du[1] = μ*u[1] + u[1]*(a*u[1]^2 + b*u[2]^2 + c*u[3]^2)
@@ -321,7 +325,9 @@ scatter!(ax2, [0], [0], [0], color=:blue, markersize=8000)
 
 
 
-#--------------------------------------------3 COUPLED HODGKIN-HUXLEY NEURONS----------------------------------------------------------------
+# ---------------------------------------------------------------------------- #
+#                       3 COUPLED HODGKIN-HUXLEY NEURONS                       #
+# ---------------------------------------------------------------------------- #
 using DrWatson
 @quickactivate "metastability"
 using GLMakie,  DifferentialEquations
@@ -433,89 +439,16 @@ for i=1:N lines!(ax, t, Vs[i,:]) end
 
 
 
-# ------------------------------ via rate model ------------------------------ #
+# ---------------------------------------------------------------------------- #
+#                                via rate model                                #
+# ---------------------------------------------------------------------------- #
 using DrWatson
 @quickactivate "metastability"
 using GLMakie,  DifferentialEquations
-
 include("$(scriptsdir())/utils.jl")
+include("$(srcdir())/systems/ratemodel.jl")
 
 
-@inbounds function ratecoup(gi, ss)
-    Isyn = 0.0
-    for j = 1:length(ss)
-        Isyn += gi[j] * ss[j]
-    end
-    return Isyn
-end
-
-function F(x, ϵ, α)
-    if x ≤ 0 return 0.0 end
-    return exp(-ϵ/x) * x^α
-end
-
-@inbounds function ratemodel_rule!(du, u, p, t)
-    Smax = p.Smax; x₀ = p.x₀; I = p.I; gs = p.gs; τ = p.τ; ϵ = p.ϵ; α = p.α
-    N = size(gs, 1)
-    for i=1:N
-        s, r = @view u[(i-1)*2 + 1 : i*2]
-        ss = @view u[((1:N) .-1) .*2 .+ 1]
-        gi = @view gs[i,:]
-        du[(i-1)*2 + 1] = (1/τ) * (r - s/2) * (Smax - s)/Smax
-        du[(i-1)*2 + 2] = x₀ * F(I - ratecoup(gi, ss), ϵ, α) - r/τ
-    end
-return nothing
-end
-@inbounds function ratecoup_Z(gi, Zs, Smax)
-    Isyn = 0.0
-    for j = 1:length(Zs)
-        Isyn += gi[j] * (Smax - exp(Zs[j]))
-    end
-    return Isyn
-end
-@inbounds function ratemodel_rule_Z!(du, u, p, t)
-    Smax = p.Smax; x₀ = p.x₀; I = p.I; gs = p.gs; τ = p.τ; ϵ = p.ϵ; α = p.α
-    N = size(gs, 1)
-    for i=1:N
-        Z, r = @view u[(i-1)*2 + 1 : i*2]
-        Zs = @view u[((1:N) .-1) .*2 .+ 1]
-        gi = @view gs[i,:]
-        du[(i-1)*2 + 1] = (1/(τ*Smax)) * ( ((Smax - exp(Z))/2) - r)
-        du[(i-1)*2 + 2] = x₀ * F(I - ratecoup_Z(gi, Zs, Smax), ϵ, α) - r/τ
-    end
-return nothing
-end
-
-# @time ratemodel_rule!(rand(6), rand(6), p, t)
-# @btime ratecoup($gs[1,:], $rand(3))
-
-mutable struct rateparams
-    gs :: Matrix{Float64}
-    I :: Float64
-    ϵ :: Float64
-    Smax :: Float64
-    τ :: Float64
-    x₀ :: Float64
-    α :: Float64
-end
-
-N = 3
-
-τ = 50.
-ϵ = 1e-3
-I = 0.145
-Smax = 0.045
-g₁ = 3.0
-g₂ = 0.7
-x₀ = 2.57e-3
-α = 0.564
-
-gs = zeros(Float64, (3,3))
-gs[2,1] = gs[3,2] = gs[1,3] = g₁
-gs[1,2] = gs[2,3] = gs[3,1] = g₂
-gs[1,1] = gs[2,2] = gs[3,3] = 0.
-
-p = rateparams(gs, I, ϵ, Smax, τ, x₀, α)
 T = 5e5
 # T=10
 Ttr = 0
@@ -561,22 +494,18 @@ scatter!(ax2, fps[2:2:end, :][:,1], fps[2:2:end, :][:, 2], fps[2:2:end, :][:, 3]
 
 
 
-# --------------------------- Trying the Z version --------------------------- #
-T = 1e6
+T = 1e3
 Ttr = 1000
 Δt = 1.0
-u0 = rand(3*2) #.* 0.01; # NOT THE SAME ICS
-# u0 = [0.01, -20, 0.02, -25, 0.03, -30]
+u0 = rand(3*2)
 tspan = (0, T);
+p = rateparams()
 hcgh = ODEProblem(ratemodel_rule_Z!, u0, tspan, p);
-# sol = solve(hcgh, Rosenbrock23(), maxiters=1e9, saveat=Ttr:Δt:T); ts = sol.t;
 sol = solve(hcgh, Vern9(), maxiters=1e9, saveat=Ttr:Δt:T); ts = sol.t;
 
-z_to_s(z, Smax) = Smax - exp(z);
 zs = @view sol[((1:N) .-1) .*2 .+ 1, :];
-ss = map(x->z_to_s(x, Smax), zs);
-az = 6.995530633326985
-elev = 0.3926990816987241
+ss = map(x->z_to_s(x, p.Smax), zs);
+az = 6.995530633326985; elev = 0.3926990816987241
 fig = Figure()
 ax1 = Axis3(fig[1, 1], title="new variables Zi = log(Smax - si)", azimuth=az, elevation=elev);
 lines!(ax1, zs[1,:], zs[2,:], zs[3,:]);
@@ -593,23 +522,21 @@ save("$(plotsdir())/heterocliniccycle/ratemodel-newvariable.png", fig)
 
 
 
+# -------------------------- Animation for Z version ------------------------- #
+include("$(srcdir())/visualizations/animations.jl")
+let
+set_theme!(animationtheme)
+Ttr = 50000; T = 100000; Δt= 1.0;
+p = rateparams()
+u0 = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]
+hcgh = ODEProblem(ratemodel_rule_Z!, u0, (0, T), p);
+sol = solve(hcgh, Vern9(), maxiters=1e9, saveat=Ttr:Δt:T);
+logvars = @view sol[((1:N) .-1) .*2 .+ 1, :];
+ogvars =map(x->z_to_s(x, p.Smax), logvars);
 
-u0 = rand(3*2) .* 0.01;
-@inbounds function noise_ratemodel!(du, u, p, t)
-    du .= p.n
+fps = fixedpoints_ratemodel(p)
+az = 6.995530633326985; el = 0.3926990816987241
+framerate = 25; numframes = 400
+filename = "$(plotsdir())/mechanisms/heterocliniccycle/ratemodel/animation-ratemodel-logvars-T_$T-Ttr_$(Ttr)-framerate_$framerate.mp4"
+animate_heterolinic_cycle(filename, sol.t, ogvars[1, :], ogvars[2, :], ogvars[3, :], fps; framerate, numframes, az, el)
 end
-mutable struct params_noise
-    gs :: Matrix{Float64}
-    I :: Float64
-    ϵ :: Float64
-    Smax :: Float64
-    τ :: Float64
-    x₀ :: Float64
-    α :: Float64
-    n :: Float64
-end
-
-n = 0.1
-p = params_noise(gs, I, ϵ, Smax, τ, x₀, α, n)
-hcgh = SDEProblem(ratemodel_rule!, noise_ratemodel!, u0, tspan, p);
-sol = solve(hcgh, SOSRA(), saveat=0:Δt:T); t = sol.t #nonstiff, didnt test
