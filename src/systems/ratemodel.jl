@@ -85,3 +85,9 @@ function fixedpoints_ratemodel(p)
     fp3 = [Smax r1 0 r3 Smax r2];
     fps = [fp1; fp2; fp3]';
 end
+
+function heteroclinic_cycle(; u0 = [0.5, 0.2, 0.4, 0.9, 0.5, 0.6], T = 1e6)
+    p = rateparams()
+    tspan = (0, T);
+    hcgh = ODEProblem(ratemodel_rule_Z!, u0, tspan, p);
+end

@@ -519,15 +519,41 @@ for i=1:3 lines!(ax4, ts, ss[i,:]) end
 
 save("$(plotsdir())/heterocliniccycle/ratemodel-newvariable.png", fig)
 
+let
+    Ttr = 50000; T = 1e6; Δt= 1.0;
+    p = rateparams(); N = 3;
+    u0 = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]
+    hcgh = ODEProblem(ratemodel_rule_Z!, u0, (0, T), p);
+    sol = solve(hcgh, Vern9(), maxiters=1e9, saveat=Ttr:Δt:T);
+    logvars = @view sol[((1:N) .-1) .*2 .+ 1, :];
+    ogvars =map(x->z_to_s(x, p.Smax), logvars);
+    xs, ys, zs = ogvars[1, :], ogvars[2, :], ogvars[3, :]
+    fps = fixedpoints_ratemodel(p)
+    c1 = :green; c2 = :purple; c3=:red; fulltrajcolor=:black
+
+    traj_state_idxs_all, dwelltimes = dwelltimes_heteroclinicycle(xs, ys, zs, fps; neigh_th=0.001)
+    fp_colors,  traj_colors = color_trajectory_hc(traj_state_idxs_all; c1, c2, c3, trajcolor=fulltrajcolor)
+
+    fig = Figure(resolution=(800, 150))
+    ax = Axis(fig[1,1], xlabel="t", ylabel="x", ylabelsize=24, xlabelsize=24);
+    for i=1:1 lines!(ax, sol.t, ogvars[i,:], color = traj_colors, linewidth=3.0) end
+    filename = "$(plotsdir())/mechanisms/heterocliniccycle/ratemodel/plot-longtime-ratemodel-ogvars-T_$T-Ttr_$(Ttr).png"
+    save(filename, fig)
+    fig
+end
 
 
 
 # -------------------------- Animation for Z version ------------------------- #
 include("$(srcdir())/visualizations/animations.jl")
+include("$(scriptsdir())/utils.jl")
+include("$(srcdir())/systems/ratemodel.jl")
+include("$(srcdir())/attractor_classification/classify_fixedpoints.jl")
+
 let
 set_theme!(animationtheme)
 Ttr = 50000; T = 100000; Δt= 1.0;
-p = rateparams()
+p = rateparams(); N = 3;
 u0 = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]
 hcgh = ODEProblem(ratemodel_rule_Z!, u0, (0, T), p);
 sol = solve(hcgh, Vern9(), maxiters=1e9, saveat=Ttr:Δt:T);

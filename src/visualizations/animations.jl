@@ -4,7 +4,7 @@ function dwelltimes_heteroclinicycle(xs, ys, zs, fps; neigh_th = 0.001)
     return traj_state_idxs_all, dwelltimes
 end
 
-function color_trajectory_hc(traj_state_idxs_all, c1=:purple, c2=:green, c3=:orange, fpalpha=1.0, trajcolor=:blue)
+function color_trajectory_hc(traj_state_idxs_all; c1=:purple, c2=:green, c3=:orange, fpalpha=1.0, trajcolor=:blue)
     fp_colors = [(c1, fpalpha), (c2, fpalpha), (c3, fpalpha)];
     traj_colors = replace(traj_state_idxs_all, (0:3 .=> [trajcolor; fp_colors])...); #get colors for trajectory
     return fp_colors, traj_colors
@@ -27,7 +27,7 @@ animationtheme = Theme(
 
 
 function animate_heterolinic_cycle(filename, ts, xs, ys, zs, fps; framerate=100, numframes=100, alphalines = 1.0, mksize=12,
-    az=0.78, el = 0.31, c1 = :green, c2 = :cyan, c3=:red)
+    az=0.78, el = 0.31, c1 = :green, c2 = :purple, c3=:red, fulltrajcolor=:black)
     xyz_points = Observable(Point3f[(xs[1], ys[1], zs[1])])
     tx_points = Observable(Point2f[(ts[1], xs[1])])
     ty_points = Observable(Point2f[(ts[1], ys[1])])
@@ -35,13 +35,13 @@ function animate_heterolinic_cycle(filename, ts, xs, ys, zs, fps; framerate=100,
     tanim = Observable(ts[1])
 
     traj_state_idxs_all, dwelltimes = dwelltimes_heteroclinicycle(xs, ys, zs, fps; neigh_th=0.001)
-    fp_colors,  traj_colors = color_trajectory_hc(traj_state_idxs_all)
+    fp_colors,  traj_colors = color_trajectory_hc(traj_state_idxs_all; c1, c2, c3, trajcolor=fulltrajcolor)
 # traj_colors = :black
 
     fig = Figure(resolution=(800, 600)); axs = [];
     ax = Axis3(fig[1:2,1:3], azimuth = az, elevation = el, title= @lift("t = $($tanim)")); push!(axs, ax);
 
-    lines!(ax, xs, ys, zs, color=(:black, 0.8)) #full trajectory, black line
+    lines!(ax, xs, ys, zs, color=fulltrajcolor) #full trajectory, black line
     scatter!(ax, fps[1:2:end, :][:,1], fps[1:2:end, :][:, 2], fps[1:2:end, :][:, 3], color=[c1, c2, c3], markersize=mksize+4)
     scatter!(ax, xyz_points, color=:orange, markersize=mksize, overdraw=true)
     hidedecorations!(ax, ticks=false, label=false, ticklabels=false)

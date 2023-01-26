@@ -47,23 +47,35 @@ end
 timederivative(sol) = [sol(t, Val{1}) for t ∈ sol.t]
 norm(v) = sum(v.^2)
 
+"""
+Return the index i of the "box" to which the value x belongs. The boxes are (-inf, box[1]], (box[2], box[3]], (box[3], box[4]], ...
+"""
 findbox(x, boxes) = searchsortedfirst.(Ref(boxes), x) #index of value inside (box[i], box[i+1]]
 
 """
-count the number of adjacent (subsequent) permanences of each point in xs inside a box in boxes
+# count the number of adjacent (subsequent) permanences of each point in xs inside a box in boxes
+Receive the time-series xs and `boxes`, a vector that defines the bins. Returns, for each
+bin, the durations that `xs` has consecutively spent within each bin. Note that boxes is
+not a very good name. The bins are actually (-inf, box[1]], (box[2], box[3]], .... Check
+the findbox documentation for more.  Boxes_duration is thus a vector of vectors. Each
+vector i inside contains the durations that xs spent inside bin i. Also returns a vector
+with the boxes appended by another bin. I think this actually does not make much sense.
 """
 function durationinboxes(xs, boxes)
     boxes_durations = [Float64[] for i=1:length(boxes)+1]
     #start counting once a new box is reached; so first need to find the first transition
     initial_box_id = findbox(xs[1], boxes)
-    secondbox_time_id = 0; box_id = 1; box_dur = 0; prev_box_id = 1;
+    secondbox_time_id = 0; box_id = 1; box_dur = 1; prev_box_id = 1;
     for i=2:length(xs)-1
         box_id = findbox(xs[i], boxes)
         if box_id != initial_box_id
             secondbox_time_id = i
+            push!(boxes_durations[prev_box_id], box_dur)
             prev_box_id = box_id
             box_dur = 1
             break
+        else 
+            box_dur +=1 
         end
     end
     if secondbox_time_id == 0 boxes_durations[initial_box_id] = [length(x)]; return boxes_durations end#stayed whole series in initial box;
@@ -80,7 +92,7 @@ function durationinboxes(xs, boxes)
     push!(boxes_durations[prev_box_id], box_dur)
     #create bins w same size as boxes_durs
     boxes_extended = deepcopy(boxes)
-    push!(boxes_extended, boxes_extended[end] + (boxes_extended[end]-boxes_extended[end-1]))
+    if length(boxes_extended) > 1 push!(boxes_extended, boxes_extended[end] + (boxes_extended[end]-boxes_extended[end-1])) end
     return boxes_durations, boxes_extended
 end
 # box_durs, boxes_ext = durationinboxes([0, 1.1, 1.1, 2, 5, 1.1, 5, 5, 5, 2.1, 2.1, 1.1, 1.1, 1.1, 1.1, 0,0 ], [0,1,2,3])

@@ -1,3 +1,67 @@
+@article{john2022it, 
+year = {2022}, 
+title = {{It’s about time: Linking dynamical systems with human neuroimaging to understand the brain}}, 
+author = {John, Yohan J. and Sawyer, Kayle S. and Srinivasan, Karthik and Müller, Eli J. and Munn, Brandon R. and Shine, James M.}, 
+journal = {Network Neuroscience}, 
+doi = {10.1162/netn\_a\_00230}, 
+abstract = {{The study of dynamical systems offers a powerful framework for interpreting neuroimaging data from a range of different contexts, however, as a field, we have yet to fully embrace the power of this approach. Here, we offer a brief overview of some key terms from the dynamical systems literature, and then highlight three ways in which neuroimaging studies can begin to embrace the dynamical systems approach: by shifting from local to global descriptions of activity, by moving from static to dynamic analyses, and by transitioning from descriptive to generative models of neural activity patterns.}}, 
+pages = {960--979}, 
+number = {4}, 
+volume = {6}, 
+keywords = {}
+}
+@article{bittracher2018transition, 
+year = {2018}, 
+title = {{Transition Manifolds of Complex Metastable Systems}}, 
+author = {Bittracher, Andreas and Koltai, Péter and Klus, Stefan and Banisch, Ralf and Dellnitz, Michael and Schütte, Christof}, 
+journal = {Journal of Nonlinear Science}, 
+issn = {0938-8974}, 
+doi = {10.1007/s00332-017-9415-0}, 
+pmid = {29527099}, 
+pmcid = {PMC5835149}, 
+eprint = {1704.08927}, 
+abstract = {{We consider complex dynamical systems showing metastable behavior, but no local separation of fast and slow time scales. The article raises the question of whether such systems exhibit a low-dimensional manifold supporting its effective dynamics. For answering this question, we aim at finding nonlinear coordinates, called reaction coordinates, such that the projection of the dynamics onto these coordinates preserves the dominant time scales of the dynamics. We show that, based on a specific reducibility property, the existence of good low-dimensional reaction coordinates preserving the dominant time scales is guaranteed. Based on this theoretical framework, we develop and test a novel numerical approach for computing good reaction coordinates. The proposed algorithmic approach is fully local and thus not prone to the curse of dimension with respect to the state space of the dynamics. Hence, it is a promising method for data-based model reduction of complex dynamical systems such as molecular dynamics.}}, 
+pages = {471--512}, 
+number = {2}, 
+volume = {28}, 
+keywords = {}
+}
+@article{bittracher2021dimensionality, 
+year = {2021}, 
+title = {{Dimensionality Reduction of Complex Metastable Systems via Kernel Embeddings of Transition Manifolds}}, 
+author = {Bittracher, Andreas and Klus, Stefan and Hamzi, Boumediene and Koltai, Péter and Schütte, Christof}, 
+journal = {Journal of Nonlinear Science}, 
+issn = {0938-8974}, 
+doi = {10.1007/s00332-020-09668-z}, 
+abstract = {{We present a novel kernel-based machine learning algorithm for identifying the low-dimensional geometry of the effective dynamics of high-dimensional multiscale stochastic systems. Recently, the authors developed a mathematical framework for the computation of optimal reaction coordinates of such systems that is based on learning a parameterization of a low-dimensional transition manifold in a certain function space. In this article, we enhance this approach by embedding and learning this transition manifold in a reproducing kernel Hilbert space, exploiting the favorable properties of kernel embeddings. Under mild assumptions on the kernel, the manifold structure is shown to be preserved under the embedding, and distortion bounds can be derived. This leads to a more robust and more efficient algorithm compared to the previous parameterization approaches.}}, 
+pages = {3}, 
+number = {1}, 
+volume = {31}, 
+keywords = {}
+}
+@article{babloyantz1986low, 
+year = {1986}, 
+title = {{Low-dimensional chaos in an instance of epilepsy.}}, 
+author = {Babloyantz, A and Destexhe, A}, 
+journal = {Proceedings of the National Academy of Sciences}, 
+issn = {0027-8424}, 
+doi = {10.1073/pnas.83.10.3513}, 
+pmid = {3085091}, 
+pmcid = {PMC323547}, 
+abstract = {{Using a time series obtained from the electroencephalogram recording of a human epileptic seizure, we show the existence of a chaotic attractor, the latter being the direct consequence of the deterministic nature of brain activity. This result is compared with other attractors seen in normal human brain dynamics. A sudden jump is observed between the dimensionalities of these brain attractors (4.05 +/- 0.05 for deep sleep) and the very low dimensionality of the epileptic state (2.05 +/- 0.09). The evaluation of the autocorrelation function and of the largest Lyapunov exponent allows us to sharpen further the main features of underlying dynamics. Possible implications in biological and medical research are briefly discussed.}}, 
+pages = {3513--3517}, 
+number = {10}, 
+volume = {83}, 
+keywords = {}
+}
+@article{rossi2022repository, 
+year = {2002}, 
+title = {{Repository for metastability}}, 
+author = {Rossi}, 
+journal = {GitHub}, 
+url = {https://github.com/ComplexNetworks-jl/MetastableDynamics}, 
+keywords = {}
+}
 @article{sakurai2016recruitment, 
 year = {2016}, 
 title = {{Recruitment of Polysynaptic Connections Underlies Functional Recovery of a Neural Circuit after Lesion}}, 
@@ -55,13 +119,17 @@ number = {1},
 volume = {19}, 
 keywords = {}
 }
-@article{rotstein2014mixedmode, 
+@incollection{rotstein2014mixedmode, 
 year = {2014}, 
-title = {{Encyclopedia of Computational Neuroscience}}, 
+title = {{Mixed-Mode Oscillations in Single Neurons}}, 
 author = {Rotstein, Horacio G.}, 
-doi = {10.1007/978-1-4614-7320-6\_31-1}, 
+editor = {Jaeger, Dieter and Jung, Ranu}, 
+booktitle = {Encyclopedia of Computational Neuroscience}, 
 pages = {1--9}, 
-keywords = {}
+series = {Encyclopedia of Computational Neuroscience}, 
+publisher = {Springer New York, NY}, 
+keywords = {}, 
+doi = {10.1007/978-1-4614-7320-6\_31-1}
 }
 @article{fernandez2020sleep, 
 year = {2020}, 
@@ -430,14 +498,17 @@ number = {1},
 volume = {1}, 
 keywords = {}
 }
-@article{olivieri2005large, 
+@book{olivieri2005large, 
 year = {2005}, 
 title = {{Large Deviations and Metastability}}, 
 author = {Olivieri, Enzo and Vares, Maria Eulália}, 
-doi = {10.1017/cbo9780511543272.005}, 
+isbn = {978-0-521-59163-8}, 
 abstract = {{The van der Waals–Maxwell theory Metastability is a relevant phenomenon for thermodynamic systems close to a first order phase transition. Examples are supercooled vapours and liquids, super-saturated vapours and solutions, as well as ferromagnets in the part of the hysteresis loop where the magnetization is opposite to the external magnetic field. A metastable state occurs when some thermodynamic parameter such as the temperature, pressure or magnetic field is changed from a value giving rise to a stable state with a unique phase, say X, to one for which at least part of the system should be in some new equilibrium phase Y. Then, in particular experimental situations, instead of undergoing the phase transition, the system goes over continuously into a ‘false’ equilibrium state with a unique phase X′, far from Y but actually close to the initial equilibrium phase X. It is this apparent equilibrium situation that is called a ‘metastable state’. Its properties are very similar to those of the stable equilibrium state; for example for a supersaturated vapour one can determine the pressure experimentally as a function of the temperature and the specific volume. We speak of the ‘metastable branch’ of the isothermal curve. The distinguishing feature of metastability is that, eventually, either via an external perturbation or via a spontaneous fluctuation, a nucleus of the new phase appears, starting an irreversible process which leads to the stable equilibrium state Y, where the phase transition has taken place.}}, 
-pages = {198--286}, 
-keywords = {}
+series = {Encyclopedia of Mathematics and its Applications}, 
+publisher = {Cambridge University Press}, 
+address = {Cambridge}, 
+keywords = {}, 
+doi = {10.1017/cbo9780511543272.005}
 }
 @article{10.1007/bf02219225, 
 year = {1997}, 
@@ -506,6 +577,19 @@ number = {8},
 volume = {74}, 
 keywords = {}
 }
+@article{ishii1986breakdown, 
+year = {1986}, 
+title = {{Breakdown of chaos symmetry and intermittency in the double-well potential system}}, 
+author = {Ishii, Hiroaki and Fujisaka, Hirokazu and Inoue, Masayoshi}, 
+journal = {Physics Letters A}, 
+issn = {0375-9601}, 
+doi = {10.1016/0375-9601(86)90590-6}, 
+abstract = {{The chaos-chaos transition in a one-particle system in the symmetric double-well potential under an external periodic field is studied from the viewpoint of the breakdown of the chaos symmetry and the development of the intermittency characteristics. It is found that the similarity exponent introduced to analyze the intermittency characteristics satisfies a scaling law near the transition point.}}, 
+pages = {257--263}, 
+number = {6}, 
+volume = {116}, 
+keywords = {}
+}
 @article{grebogi1983crises, 
 year = {1983}, 
 title = {{Crises, sudden changes in chaotic attractors, and transient chaos}}, 
@@ -517,6 +601,19 @@ abstract = {{The occurrence of sudden qualitative changes of chaotic dynamics as
 pages = {181--200}, 
 number = {1-3}, 
 volume = {7}, 
+keywords = {}
+}
+@article{10.1103/physreve.56.2592, 
+year = {1997}, 
+title = {{Symmetry between laminar and burst phases for on-off intermittency}}, 
+author = {Čenys, A. and Anagnostopoulos, A. N. and Bleris, G. L.}, 
+journal = {Physical Review E}, 
+issn = {1539-3755}, 
+doi = {10.1103/physreve.56.2592}, 
+abstract = {{It is demonstrated both analytically and numerically that a symmetry exists between laminar and burst phases of on-off intermittency. The symmetry is a specific feature of on-off intermittency. It does not exist for the other types of regular Pomeau-Manneville and crisis-induced intermittency. A diffusional model, which incorporates reflecting barriers representing noise and nonlinearity, predicts the same scaling for the laminar and the burst lengths near the blowout bifurcation point. The symmetry of the scaling properties is demonstrated numerically for two systems exhibiting on-off intermittency, namely, the discrete three-dimensional Hénon map and the unidirectionally coupled Rössler oscillators.}}, 
+pages = {2592--2596}, 
+number = {3}, 
+volume = {56}, 
 keywords = {}
 }
 @article{ashwin2001influence, 
@@ -936,6 +1033,20 @@ eprint = {2203.02151},
 abstract = {{Naturalistic animal behavior exhibits a strikingly complex organization in the temporal domain, whose variability stems from at least three sources: hierarchical, contextual, and stochastic. What are the neural mechanisms and computational principles generating such complex temporal features? In this review, we provide a critical assessment of the existing behavioral and neurophysiological evidence for these sources of temporal variability in naturalistic behavior. We crystallize recent studies which converge on an emergent mechanistic theory of temporal variability based on attractor neural networks and metastable dynamics, arising from the coordinated interactions between mesoscopic neural circuits. We highlight the crucial role played by structural heterogeneities and by noise arising in mesoscopic circuits. We assess the shortcomings and missing links in the current theoretical and experimental literature and propose new directions of investigations to fill these gaps.}}, 
 keywords = {}
 }
+@article{boaretto2021discriminating, 
+year = {2021}, 
+title = {{Discriminating chaotic and stochastic time series using permutation entropy and artificial neural networks}}, 
+author = {Boaretto, B. R. R. and Budzinski, R. C. and Rossi, K. L. and Prado, T. L. and Lopes, S. R. and Masoller, C.}, 
+journal = {Scientific Reports}, 
+doi = {10.1038/s41598-021-95231-z}, 
+pmid = {34349134}, 
+pmcid = {PMC8338970}, 
+abstract = {{Extracting relevant properties of empirical signals generated by nonlinear, stochastic, and high-dimensional systems is a challenge of complex systems research. Open questions are how to differentiate chaotic signals from stochastic ones, and how to quantify nonlinear and/or high-order temporal correlations. Here we propose a new technique to reliably address both problems. Our approach follows two steps: first, we train an artificial neural network (ANN) with flicker (colored) noise to predict the value of the parameter, α, that determines the strength of the correlation of the noise. To predict α the ANN input features are a set of probabilities that are extracted from the time series by using symbolic ordinal analysis. Then, we input to the trained ANN the probabilities extracted from the time series of interest, and analyze the ANN output. We find that the α value returned by the ANN is informative of the temporal correlations present in the time series. To distinguish between stochastic and chaotic signals, we exploit the fact that the difference between the permutation entropy (PE) of a given time series and the PE of flicker noise with the same α parameter is small when the time series is stochastic, but it is large when the time series is chaotic. We validate our technique by analysing synthetic and empirical time series whose nature is well established. We also demonstrate the robustness of our approach with respect to the length of the time series and to the level of noise. We expect that our algorithm, which is freely available, will be very useful to the community.}}, 
+pages = {15789}, 
+number = {1}, 
+volume = {11}, 
+keywords = {}
+}
 @article{Cabral.2022, 
 year = {2022}, 
 keywords = {Metastability}, 
@@ -959,6 +1070,19 @@ abstract = {{We often learn and recall long sequences in smaller segments, such 
 pages = {e1004592}, 
 number = {11}, 
 volume = {11}, 
+keywords = {}
+}
+@article{Ashwin.1998, 
+year = {1998}, 
+title = {{On the unfolding of a blowout bifurcation}}, 
+author = {Ashwin, Peter and Aston, Philip J. and Nicol, Matthew}, 
+journal = {Physica D: Nonlinear Phenomena}, 
+issn = {0167-2789}, 
+doi = {10.1016/s0167-2789(97)80006-1}, 
+abstract = {{Suppose a chaotic attractor A in an invariant subspace loses stability on varying a parameter. At the point of loss of stability, the most positive Lyapunov exponent of the natural measure on A crosses zero at what has been called a ‘blowout’ bifurcation.We introduce the notion of an essential basin of an attractor A. This is the set of points x such that accumulation points of the sequence of measures 1n∑n − 1k = 0δfk(x) are supported on A. We characterise supercritical and subcritical scenarios according to whether the Lebesgue measure of the essential basin of A is positive or zero.We study a drift-diffusion model and a model class of piecewise linear mappings of the plane. In the supercritical case, we find examples where a Lyapunov exponent of the branch of attractors may be positive (‘hyperchaos’) or negative, depending purely on the dynamics far from the invariant subspace. For the mappings we find asymptotically linear scaling of Lyapunov exponents, average distance from the subspace and basin size on varying a parameter. We conjecture that these are general characteristics of blowout bifurcations.}}, 
+pages = {81--95}, 
+number = {1-4}, 
+volume = {111}, 
 keywords = {}
 }
 @article{hindmarshmodel1984, 
@@ -1018,6 +1142,18 @@ number = {10-11},
 volume = {227}, 
 keywords = {}
 }
+@article{Blackbeard.2014, 
+year = {2014}, 
+title = {{From synchronisation to persistent optical turbulence in laser arrays}}, 
+author = {Blackbeard, Nicholas and Wieczorek, Sebastian and Erzgräber, Hartmut and Dutta, Partha Sharathi}, 
+journal = {Physica D: Nonlinear Phenomena}, 
+issn = {0167-2789}, 
+doi = {10.1016/j.physd.2014.07.007}, 
+abstract = {{We define and study synchronisation in a linear array of nearest-neighbour coupled lasers. Our focus is on possible synchronisation types and the stability of their corresponding synchronisation manifolds with dependence on the coupling strength, the laser frequency detuning, the amount of shear (amplitude–phase coupling) in a single laser, and the array size. We classify, and give analytical conditions for the existence of complete synchronisation solutions, where all the lasers emit light with the same intensity and frequency. Furthermore, we derive stability criteria for two special cases where all the lasers oscillate (i) in-phase with each other and (ii) in anti-phase with their nearest neighbour(s). We then explain transitions from complete synchronisation, to partial synchronisation (where only a subset of the lasers synchronises), to persistent optical turbulence (where no lasers synchronise and each laser is chaotic) in terms of bifurcations including blowouts of chaotic attractors. Finally, we quantify properties of optical turbulence using Lyapunov spectrum and dimension, which highlights differences in chaos generated by nearest-neighbour and globally coupled oscillators.}}, 
+pages = {43--58}, 
+volume = {286}, 
+keywords = {}
+}
 @article{ott1994blowout, 
 year = {1994}, 
 title = {{Blowout bifurcations: the occurrence of riddled basins and on-off intermittency}}, 
@@ -1031,10 +1167,25 @@ number = {1},
 volume = {188}, 
 keywords = {}
 }
+@article{ashwin1994bubbling, 
+year = {1994}, 
+title = {{Bubbling of attractors and synchronisation of chaotic oscillators}}, 
+author = {Ashwin, Peter and Buescu, Jorge and Stewart, Ian}, 
+journal = {Physics Letters A}, 
+issn = {0375-9601}, 
+doi = {10.1016/0375-9601(94)90947-4}, 
+abstract = {{We present a system of two coupled identical chaotic electronic circuits that exhibit a blowout bifurcation resulting in loss of stability of the synchronised state. We introduce the concept of bubbling of an attractor, a new type of intermittency that is triggered by low levels of noise, and demonstrate numerical and experimental examples of this behaviour. In particular we observe bubbling near the synchronised state of two coupled chaotic oscillators. We give a theoretical description of the behaviour associated with locally riddled basins, emphasising the role of invariant measures. In general these are non-unique for a given chaotic attractor, which gives rise to a spectrum of Lyapunov exponents. The behaviour of the attractor depends on the whole spectrum. In particular, bubbling is associated with the loss of stability of an attractor in a dynamically invariant subspace, and is typical in such systems.}}, 
+pages = {126--139}, 
+number = {2}, 
+volume = {193}, 
+keywords = {}
+}
 @book{strogatz2002nonlinear, 
 year = {2002}, 
 title = {{Nonlinear Dynamics and Chaos}}, 
 author = {Strogatz}, 
+series = {Studies in nonlinearity}, 
+publisher = {Westview}, 
 keywords = {}, 
 doi = {10.1201/9781420033830-8}
 }
@@ -1176,6 +1327,20 @@ pmcid = {PMC6137616},
 abstract = {{Discrete sequential information coding is a key mechanism that transforms complex cognitive brain activity into a low-dimensional dynamical process based on the sequential switching among finite numbers of patterns. The storage size of the corresponding process is large because of the permutation capacity as a function of control signals in ensembles of these patterns. Extracting low-dimensional functional dynamics from multiple large-scale neural populations is a central problem both in neuro- and cognitive- sciences. Experimental results in the last decade represent a solid base for the creation of low-dimensional models of different cognitive functions and allow moving toward a dynamical theory of consciousness. We discuss here a methodology to build simple kinetic equations that can be the mathematical skeleton of this theory. Models of the corresponding discrete information processing can be designed using the following dynamical principles: (i) clusterization of the neural activity in space and time and formation of information patterns; (ii) robustness of the sequential dynamics based on heteroclinic chains of metastable clusters; and (iii) sensitivity of such sequential dynamics to intrinsic and external informational signals. We analyze sequential discrete coding based on winnerless competition low-frequency dynamics. Under such dynamics, entrainment, and heteroclinic coordination leads to a large variety of coding regimes that are invariant in time.}}, 
 pages = {73}, 
 volume = {12}, 
+keywords = {}
+}
+@article{deco2015rethinking, 
+year = {2015}, 
+title = {{Rethinking segregation and integration: contributions of whole-brain modelling}}, 
+author = {Deco, Gustavo and Tononi, Giulio and Boly, Melanie and Kringelbach, Morten L.}, 
+journal = {Nature Reviews Neuroscience}, 
+issn = {1471-003X}, 
+doi = {10.1038/nrn3963}, 
+pmid = {26081790}, 
+abstract = {{The brain balances the segregation and integration of incoming information to facilitate flexible cognition and behaviour. In this Opinion article, Deco and colleagues argue that whole-brain computational modelling based on neuroimaging data can provide insights into these segregation and integration processes. The brain regulates information flow by balancing the segregation and integration of incoming stimuli to facilitate flexible cognition and behaviour. The topological features of brain networks — in particular, network communities and hubs — support this segregation and integration but do not provide information about how external inputs are processed dynamically (that is, over time). Experiments in which the consequences of selective inputs on brain activity are controlled and traced with great precision could provide such information. However, such strategies have thus far had limited success. By contrast, recent whole-brain computational modelling approaches have enabled us to start assessing the effect of input perturbations on brain dynamics in silico.}}, 
+pages = {430--439}, 
+number = {7}, 
+volume = {16}, 
 keywords = {}
 }
 @article{tognoli2014enlarging, 
@@ -1349,20 +1514,6 @@ publisher = {Springer International Publishing},
 language = {en}, 
 keywords = {}, 
 doi = {10.1007/978-3-319-24406-8}
-}
-@book{Olivieri.2005, 
-year = {2005}, 
-title = {{Large Deviations and Metastability}}, 
-author = {Olivieri, Enzo and Vares, Maria Eulália}, 
-isbn = {978-0-521-59163-8}, 
-url = {https://www.cambridge.org/core/books/large-deviations-and-metastability/9304ECA0C75EEF9C5A189C5B0C919CF2}, 
-abstract = {{The book provides a general introduction to the theory of large deviations and a wide overview of the metastable behaviour of stochastic dynamics. With only minimal prerequisites, the book covers all the main results and brings the reader to the most recent developments. Particular emphasis is given to the fundamental Freidlin-Wentzell results on small random perturbations of dynamical systems. Metastability is first described on physical grounds, following which more rigorous approaches to its description are developed. Many relevant examples are considered from the point of view of the so-called pathwise approach. The first part of the book develops the relevant tools including the theory of large deviations which are then used to provide a physically relevant dynamical description of metastability. Written to be accessible to graduate students, this book provides an excellent route into contemporary research.}}, 
-urldate = {2021-05-19}, 
-series = {Encyclopedia of Mathematics and its Applications}, 
-publisher = {Cambridge University Press}, 
-address = {Cambridge}, 
-keywords = {}, 
-doi = {10.1017/cbo9780511543272}
 }
 @book{Singleton.2021, 
 year = {2021}, 
@@ -2202,19 +2353,20 @@ publisher = {Springer, Berlin, Heidelberg},
 keywords = {}, 
 doi = {10.1007/978-3-642-78411-8\_9}
 }
-@book{fingelkurts2001operational, 
+@article{fingelkurts2001operational, 
 year = {2001}, 
 keywords = {Adaptive segmentation,Binding problem,Coherence,EEG microstructure,Functional integration,Metastability,Neocortical dynamics,Nonstationarity,Operational synchronization,Spatial scale}, 
 title = {{Operational architectonics of the human brain biopotential field: Towards solving the mind-brain problem}}, 
 author = {Fingelkurts, Andrew A. and Fingelkurts, Alexander A.}, 
+journal = {Brain and Mind}, 
+issn = {1389-1987}, 
+doi = {10.1023/a:1014427822738}, 
 url = {https://link.springer.com/article/10.1023/A:1014427822738}, 
 abstract = {{The understanding of the interrelationship between brain and mind remains far from clear. It is well established that the brain's capacity to integrate information from numerous sources forms the basis for cognitive abilities. However, the core unresolved question is how information about the "objective" physical entities of the external world can be integrated, and how unified and coherent mental states (or Gestalts) can be established in the internal entities of distributed neuronal systems. The present paper offers a unified methodological and conceptual basis for a possible mechanism of how the transient synchronization of brain operations may construct the unified and relatively stable neural states, which underlie mental states. It was shown that the sequence of metastable spatial EEG mosaics does exist and probably reflects the rapid stabilization periods of the interrelation of large neuron systems. At the EEG level this is reflected in the stabilization of quasi-stationary segments on corresponding channels. Within the introduced framework, physical brain processes and psychological processes are considered as two basic aspects of a single whole informational brain state. The relations between operational process of the brain, mental states and consciousness are discussed.}}, 
-volume = {2}, 
-series = {Brain and Mind}, 
+pages = {261--296}, 
 number = {3}, 
-publisher = {Springer}, 
-note = {ISSN: 13891987 Publication Title: Brain and Mind}, 
-doi = {10.1023/a:1014427822738}
+volume = {2}, 
+note = {ISSN: 13891987 Publication Title: Brain and Mind}
 }
 @article{kelso2013outline, 
 year = {2013}, 
@@ -2374,6 +2526,19 @@ pmid = {33737868},
 abstract = {{The past decade has seen growing support for the critical brain hypothesis, i.e., the possibility that the brain could operate at or very near a critical state between two different dynamical regimes. Such critical states are well-studied in different disciplines, therefore there is potential for a continued transfer of knowledge. Here, I revisit foundations of bifurcation theory, the mathematical theory of transitions. While the mathematics is well-known it's transfer to neural dynamics leads to new insights and hypothesis.}}, 
 pages = {614268}, 
 volume = {15}, 
+keywords = {}
+}
+@article{Tomasz.1999, 
+year = {1999}, 
+title = {{Blowout bifurcation of chaotic saddles}}, 
+author = {Tomasz, Kapitaniak, and Ying-Cheng, Lai, and Celso, Grebogi,}, 
+journal = {Discrete Dynamics in Nature and Society}, 
+issn = {1026-0226}, 
+doi = {10.1155/s1026022699000023}, 
+abstract = {{Chaotic saddles are nonattracting dynamical invariant sets that can lead to a variety of physical phenomena. We describe the blowout bifurcation of chaotic saddles located in the symmetric invariant manifold of coupled systems and discuss dynamical phenomena associated with this bifurcation.}}, 
+pages = {9--13}, 
+number = {1}, 
+volume = {3}, 
 keywords = {}
 }
 @article{ansmann2016selfinduced, 
