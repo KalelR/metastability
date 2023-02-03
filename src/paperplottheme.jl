@@ -4,8 +4,6 @@ const columnsize_pt = inches_to_pts(3.54) #inches
 width_pt = 2*columnsize_pt;
 height_pt = 1.2*width_pt;
 
-_fontsize = 16
-_labelsize = 20
 _fontsize = 20
 _labelsize = 24
 _spinewidth = 1.8
@@ -39,3 +37,20 @@ if isdefined(Main, :DrWatson)
         end
     end
 end
+
+_fontsize = 12
+_labelsize = 22
+figure3 = Theme(
+    fontsize = _fontsize,
+    Axis=(
+        spinewidth=_spinewidth, rightspinevisible=false, topspinevisible=false, xtickalign=1, ytickalign=1, ygridvisible=false, xgridvisible=false,
+        xlabelsize = _labelsize, ylabelsize = _labelsize
+        ),
+    Axis3=(
+        xspinewidth=_spinewidth, yspinewidth=_spinewidth, zspinewidth=_spinewidth,
+        xtickalign=1, ytickalign=1,
+        xlabelsize = _labelsize, ylabelsize = _labelsize, zlabelsize = _labelsize,
+        xlabeloffset=30, ylabeloffset=30, zlabeloffset=50, protrusions=0,  viewmode=:stretch,
+        ),
+)
+set_theme!(papertheme)

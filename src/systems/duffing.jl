@@ -61,9 +61,19 @@ function get_distribution_noisy_bistable(sol, numbins=15; obtain_dwell_time="rea
 
     weightsl, binsl =  histogram(τs_l, numbins);
     xfitl = binsl; yfitl = weightsl; Al, Bl = CurveFit.exp_fit(xfitl, yfitl .+ 1e-7);
-    yfitl = Al .* exp.(Bl .* xfit_l)
+    yfitl = Al .* exp.(Bl .* xfitl)
     yfitl .+= 1e-8; #small value so log10 doesnt break
     weightsl .+= 1e-8; #small value so log10 doesnt break
     @info "Exponents of exp fit are $Al and $Bl"
     Dict("bins_l"=>binsl, "weights_l"=>weightsl, "xfit_l"=>xfitl, "yfit_l"=>yfitl, "A_l"=>Al, "B_l"=>Bl)
+end
+
+
+function dwell_times_attractor_merging_crisis(xs, numbins=10)
+    idx_states_time = [x >= 0 ? 1 : 0 for x in xs]
+    dwelltimes = [Float64[] for i=1:2]
+    for (i, key) in enumerate([0, 1])
+        dwelltimes[i] = length_samevalues_allowfluctuations(idx_states_time, 3)[1][key]
+    end
+    return dwelltimes
 end
