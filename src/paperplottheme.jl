@@ -6,6 +6,8 @@ height_pt = 1.2*width_pt;
 
 _fontsize = 16
 _labelsize = 20
+_fontsize = 20
+_labelsize = 24
 _spinewidth = 1.8
 papertheme = Theme(
     fontsize = _fontsize,

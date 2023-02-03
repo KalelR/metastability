@@ -10,10 +10,9 @@ include("$(srcdir())/systems/duffing.jl")
 include("$(srcdir())/paperplottheme.jl")
 include("$(srcdir())/visualizations/plots.jl")
 function plot_time_series()
-    # T = 100000
     T = 1e6
     Ttr = 100000
-    Δt=0.05
+    Δt = 0.05
     tplot = 1000;
 
     parameters_ishii1986 = Dict(
@@ -27,14 +26,19 @@ function plot_time_series()
         :ω => 3.5, #Ω
     )
 
-    # Time series
-    diffeq = (alg = Tsit5(), abstol=1e-8, reltol=1e-8, maxiters=1e8)
+    @unpack a, b, c, d, f, ω = parameters_ishii1986
     u0 = [0.1, 0.1]
+    prob_duffing, p = duffing(; a, b, c, d, f, ω, n₁=0, n₂=0, T, u0) 
+    sol = solve(prob_duffing, Tsit5(), saveat=Ttr:Δt:T, maxiters=1e9, progress=true, abstol=1e-8, reltol=1e-8);
+
+    # Time series
     cleft = :purple
     cright = :green
+    
     fig, axs = subplotgrid(3, 1; resolution=(columnsize_pt, 2.0*columnsize_pt), xlabels=["t", "x", ""], ylabels=["x", "dx/dt", "PDF(τ)"], sharex=false, sharey=false)
-    df = duffing_assymetric(parameters_ishii1986)
-    tr = trajectory(df, T, u0; Ttr, Δt, diffeq); 
+    # df = duffing_assymetric(parameters_ishii1986)
+    # tr = trajectory(df, T, u0; Ttr, Δt, diffeq); 
+    
     ts = Ttr:Δt:Ttr+T; xs = tr[:,1]; ys = tr[:,2];
     time_idxs_plot = floor(Int64, T - tplot/Δt):1:ceil(Int64, T)
     ts_plot = ts[time_idxs_plot]; xs_plot = xs[time_idxs_plot]; ys_plot = ys[time_idxs_plot]
@@ -56,14 +60,14 @@ function plot_time_series()
     idx_states_time = [x >= 0 ? 1 : 0 for x in xs]
     numbins = 10;
     for (i, key) in enumerate([0, 1])
-    dwelltimes = length_samevalues_allowfluctuations(idx_states_time, 3)[1][key]
-    weights, bins = histogram(dwelltimes, collect(range(0, 4000; length=numbins)))
-    weights .+=1e-8
-    lines!(ax, bins, weights, color=[cleft, cright][i])
+        dwelltimes = length_samevalues_allowfluctuations(idx_states_time, 3)[1][key]
+        weights, bins = histogram(dwelltimes, collect(range(0, 4000; length=numbins)))
+        weights .+=1e-8
+        lines!(ax, bins, weights, color=[cleft, cright][i])
     end
     ax.yscale = log10
     ax.xticks = 0:2000:4000
-    save("$(plotsdir())/paper/intermittency-attractormergingcrisis.pdf", fig)
+    # save("$(plotsdir())/paper/intermittency-attractormergingcrisis.pdf", fig)
     fig
 end
 

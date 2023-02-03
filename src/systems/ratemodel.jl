@@ -90,4 +90,14 @@ function heteroclinic_cycle(; u0 = [0.5, 0.2, 0.4, 0.9, 0.5, 0.6], T = 1e6)
     p = rateparams()
     tspan = (0, T);
     hcgh = ODEProblem(ratemodel_rule_Z!, u0, tspan, p);
+    return hcgh, p
 end
+
+include("$(srcdir())/attractor_classification/classify_fixedpoints.jl")
+function dwelltimes_heteroclinicycle(xs, ys, zs, fps; neigh_th = 0.001)
+    traj_state_idxs_all = classify_points_into_fps([xs ys zs]', fps[1:2:end, :]; neigh_th);
+    dwelltimes, _ = length_samevalues_allowfluctuations(traj_state_idxs_all); #dwell times in each saddle
+    return traj_state_idxs_all, dwelltimes
+end
+
+

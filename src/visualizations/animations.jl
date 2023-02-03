@@ -1,14 +1,3 @@
-function dwelltimes_heteroclinicycle(xs, ys, zs, fps; neigh_th = 0.001)
-    traj_state_idxs_all = classify_points_into_fps([xs ys zs]', fps[1:2:end, :]; neigh_th);
-    dwelltimes, _ = length_samevalues_allowfluctuations(traj_state_idxs_all); #dwell times in each saddle
-    return traj_state_idxs_all, dwelltimes
-end
-
-function color_trajectory_hc(traj_state_idxs_all; c1=:purple, c2=:green, c3=:orange, fpalpha=1.0, trajcolor=:blue)
-    fp_colors = [(c1, fpalpha), (c2, fpalpha), (c3, fpalpha)];
-    traj_colors = replace(traj_state_idxs_all, (0:3 .=> [trajcolor; fp_colors])...); #get colors for trajectory
-    return fp_colors, traj_colors
-end
 
 _fontsize = 16; _spinewidth = 1.8; _labelsize=20
 animationtheme = Theme(
