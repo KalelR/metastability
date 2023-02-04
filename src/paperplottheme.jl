@@ -19,7 +19,7 @@ papertheme = Theme(
         xlabelsize = _labelsize, ylabelsize = _labelsize, zlabelsize = _labelsize
         ),
     )
-set_theme!(papertheme)
+# set_theme!(papertheme)
 
 #Thjanks to George Datseries for the code below!
 if isdefined(Main, :DrWatson)
@@ -38,8 +38,9 @@ if isdefined(Main, :DrWatson)
     end
 end
 
-_fontsize = 12
-_labelsize = 22
+_fontsize = 9
+_labelsize = 9
+_spinewidth = 1.0
 figure3 = Theme(
     fontsize = _fontsize,
     Axis=(
@@ -50,7 +51,7 @@ figure3 = Theme(
         xspinewidth=_spinewidth, yspinewidth=_spinewidth, zspinewidth=_spinewidth,
         xtickalign=1, ytickalign=1,
         xlabelsize = _labelsize, ylabelsize = _labelsize, zlabelsize = _labelsize,
-        xlabeloffset=30, ylabeloffset=30, zlabeloffset=50, protrusions=0,  viewmode=:stretch,
+        xlabeloffset=2, ylabeloffset=2, zlabeloffset=1, protrusions=0, viewmode=:stretch,
         ),
 )
-set_theme!(papertheme)
+# set_theme!(papertheme)

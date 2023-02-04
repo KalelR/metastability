@@ -34,10 +34,16 @@ function duffing(; a=0.5, b=8.0, c=0.0, d = 0.2, f = 0.0, ω = 1.0, n₁ = 0.18,
     return prob_duffing, p
 end
 
-function distribution_times_noisywell(xs, numbins, side=0) #0 is left, 1 is right
-    τs, _  = length_samevalues_allowfluctuations(bistable_laminarperiods(xs_sol), side)
+function distribution_times_up_below_threshold(d::Dict, numbins, side=0) #0 is left, 1 is right
+    v = d["v"]
+    return distribution_times_up_below_threshold(v, numbins, side)
+end
+
+function distribution_times_up_below_threshold(v, numbins, side=0) #0 is left, 1 is right
+    τs, _  = length_samevalues_allowfluctuations(bistable_laminarperiods(v), side)
     ws, bins = histogram(τs[1], numbins);
 end
+
 
 U(x, a, b, c) = (a/4)*x^4 - (b/2) * x^2 + c*x #double well
 
@@ -49,31 +55,31 @@ function  integrate_and_get_distribution(; T=1e4)
     sol = solve(prob_duffing, SKenCarp(), saveat=Ttr:Δt:T, maxiters=1e9, progress=true);
 end
 
-function get_distribution_noisy_bistable(sol, numbins=15; obtain_dwell_time="readfromfile")
-    if obtain_dwell_time == "readfromfile"
-        τs_l = readdlm("$(datadir())/noisybistable-dwelltimes-left-n_0.18-T_1.0e7.dat")[:,1];
-    else
-        τs_l, _  = length_samevalues_allowfluctuations(bistable_laminarperiods(sol[1,:]), 0)
-        τs_l = τs_l[1];
-        τs_r, _  = length_samevalues_allowfluctuations(bistable_laminarperiods(sol[1,:]), 1)
-        τs_r = τs_r[1];
+function distribution_info_noisy_bistable(xs, numbins=10; obtain_dwell_time="readfromfile")
+    distribution_data = Dict()
+    for side in [0, 1]
+        weights, bins = distribution_times_up_below_threshold(xs, numbins, side)
+        if minimum(weights) == 0 weights .+= 1e-8 end #just make sure that log and fitting don't error because of weights=0
+        xfit = bins; yfit = deepcopy(weights) 
+        A, B = CurveFit.exp_fit(xfit, yfit);
+        yfit = A .* exp.(B .* xfit)
+        data = @strdict weights bins xfit yfit A B
+        distribution_data["$side"] = data
     end
-
-    weightsl, binsl =  histogram(τs_l, numbins);
-    xfitl = binsl; yfitl = weightsl; Al, Bl = CurveFit.exp_fit(xfitl, yfitl .+ 1e-7);
-    yfitl = Al .* exp.(Bl .* xfitl)
-    yfitl .+= 1e-8; #small value so log10 doesnt break
-    weightsl .+= 1e-8; #small value so log10 doesnt break
-    @info "Exponents of exp fit are $Al and $Bl"
-    Dict("bins_l"=>binsl, "weights_l"=>weightsl, "xfit_l"=>xfitl, "yfit_l"=>yfitl, "A_l"=>Al, "B_l"=>Bl)
+    return distribution_data
 end
 
 
+function dwell_times_attractor_merging_crisis(d::Dict, numbins=10)
+    xs = d["v"]
+    return dwell_times_attractor_merging_crisis(xs, numbins)
+end
+
 function dwell_times_attractor_merging_crisis(xs, numbins=10)
     idx_states_time = [x >= 0 ? 1 : 0 for x in xs]
-    dwelltimes = [Float64[] for i=1:2]
+    dwelltimes = Dict()
     for (i, key) in enumerate([0, 1])
-        dwelltimes[i] = length_samevalues_allowfluctuations(idx_states_time, 3)[1][key]
+        dwelltimes["$key"] = length_samevalues_allowfluctuations(idx_states_time, 3)[1][key]
     end
     return dwelltimes
 end

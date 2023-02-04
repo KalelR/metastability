@@ -47,9 +47,9 @@ function time_to_converge(integ, t, u0 = nothing;
 	return L
 end
 
-function distribution_times_chaotic_saddle(τs, numbins; mode=:pdf, T=1e6)
+function distribution_times_chaotic_saddle(τs, numbins; mode=:pdf)
 	filter!(x->x>=10, τs)
-	filter!(x->x<T, τs)
+	# filter!(x->x<T, τs)
 	bins = collect(range(minimum(τs), maximum(τs), length=numbins+1))
 	weights, bins = histogram(τs, bins; mode=mode);
 	return weights, bins
@@ -64,7 +64,7 @@ end
 # 	return weights, bins
 # end
 
-function dwell_times_chaotic_saddle(ik, u0, icsperdim; T=1e6, Ttr=1e2, threshold=1)
+function dwell_times_chaotic_saddle(ik, u0, fp; icsperdim=20, T=1e6, Ttr=1e2, threshold=1)
 	xs = range(-0.0, 1.0, length=icsperdim)
 	ys = range(-2.0, 0,   length=icsperdim)
 	u0s = [[x, y] for x ∈ xs for y ∈ ys]
