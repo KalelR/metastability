@@ -115,3 +115,26 @@ function get_ticks_in_powers(yvalues)
     return (yticks, ytickstring)
 end
 
+function fix_y_ticks_limits!(ax, yvals)
+    yticks = get_ticks_in_powers(yvals); 
+    ax.yticks = yticks; 
+    ylims!(ax, yticks[1])
+end
+
+function fix_x_ticks_limits!(ax, vals; powers=true)
+    xticks = powers ? get_ticks_in_powers(vals) : (vals, string.(vals))
+    ax.xticks = xticks; 
+    xlims!(ax, xticks[1])
+end
+
+function plot_arrow_following_data!(fig, ax, pos_rough, data)
+    mindist, idxmin = findmin(mapslices(x->evaluate(Euclidean(), pos_rough, x), data, dims=2))
+    idx_closest_point = idxmin[1]
+    p1 = data[idx_closest_point, :] #data point closest to my choic e
+    p2 = data[idx_closest_point+1, :] #next data point
+
+    ps = [Point3f(p1)] #origin of arrow 
+    ns = [Point3f(p2 .- p1)] #component of arrow (diff)
+    arrows!(ax, ps, ns, lengthscale=0.3, arrowsize=Vec3f(6e-3, 6e-3, 1e-2), align = :center, fxaa=true) 
+    return fig, ax
+end

@@ -78,6 +78,52 @@ writedlm("$(datadir())/typeIintermittency-lorenz-dwelltimes.dat", dwelltimes)
 =#
 
 
+σ = 10; β = 8/3; u0 = [0.1, 0.1, 0.1]
+ρ_chaos = 166.1; p_chaos = [σ, ρ_chaos, β]; #intermittency (CA);
+ρ_lc = 166.06; p_lc = [σ, ρ_lc, β]; #LC, just before SN
+
+#dwell times
+T = 1e6
+T = 1025
+dwelltimes_input = Dict("T"=>T, "p_chaos"=>p_chaos, "system_func"=>lorenz!, "u0"=>u0, "p_lc"=>p_lc)
+dwelltimes_input = Dict("T"=>T, "p_chaos"=>p_chaos, "system_func"=>lorenz, "u0"=>u0, "p_lc"=>p_lc)
+@unpack T, p_chaos, system_func, u0, p_lc = dwelltimes_input
+
+Ttr = 1e3; Δt_chaos = 0.05; #like this to look good
+prob = ODEProblem(system_func, u0, (0., T), p_chaos)
+u0 =  SVector{3}([0.1, 0.1, 0.1])
+sol = solve(prob, Tsit5(), saveat=Ttr:Δt_chaos:T, abstol=1e-8, reltol=1e-8, maxiters=1e9);
+
+#get the limit cycle (before the bif) and save
+T = Ttr + 3; Δt = 0.005;
+prob = ODEProblem(system_func, u0, (0, T), p_lc); 
+sol_lc = solve(prob, Tsit5(), saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8, maxiters=1e9);
+
+arewithin = mapslices(x->withinset(x, sol_lc', 10), sol[:, :], dims=1)[1, :];
+dwelltimes_int = length_samevalues_allowfluctuations(arewithin, 3)[1] #1 corresponds to time in  the limit cycle (so 1=laminar)
+dwelltimes = multiply_dict_number(dwelltimes_int, Δt_chaos)
+colors = [el == true ? :green : :red for el in arewithin]
+
+numbins = 10
+maximum_time = maximum(maximum.(values(dwelltimes)))
+bins = collect(range(0, maximum_time, length=numbins))
+
+
+
+fig = Figure()
+# for i=1:2
+i=1
+ax = Axis(fig[i,1])
+lines!(ax, sol.t, sol[i, :], color=colors)
+lines!(ax, sol_lc.t, sol_lc[i,:])
+# end
+ax = Axis(fig[i+1, 1])
+for (i, (withinlc, dwelltimes_one)) in enumerate(dwelltimes)
+weights, _bins = histogram(dwelltimes_one, bins)
+if minimum(weights) <= 0 weights .+= 1e-8 end
+@show _bins
+scatterlines!(ax, _bins, weights, color=[(:red, 1.0), (:green, 1.0)][i], markersize=4, linewidth=0.7)
+end
 
 
 # ---------------------------------------------------------------------------- #

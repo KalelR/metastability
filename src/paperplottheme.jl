@@ -45,7 +45,8 @@ figure3 = Theme(
     fontsize = _fontsize,
     Axis=(
         spinewidth=_spinewidth, rightspinevisible=false, topspinevisible=false, xtickalign=1, ytickalign=1, ygridvisible=false, xgridvisible=false,
-        xlabelsize = _labelsize, ylabelsize = _labelsize
+        xlabelsize = _labelsize, ylabelsize = _labelsize, 
+        xlabelpadding=2, ylabelpadding=2,
         ),
     Axis3=(
         xspinewidth=_spinewidth, yspinewidth=_spinewidth, zspinewidth=_spinewidth,

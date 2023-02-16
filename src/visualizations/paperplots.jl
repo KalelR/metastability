@@ -4,15 +4,20 @@ include("$(srcdir())/visualizations/plots.jl")
 include("$(scriptsdir())/paper/noisybistable.jl")
 function noisybistable(generate_data=false; idxrow=1, idxcol=1, fig)
     @info "Running and plotting noisy bistable"
-    prob, params = duffing()
-    T = 1e8; Ttr = 0; Δt = 0.5;
-    sol = solve(prob, SKenCarp(), saveat=Ttr:Δt:T, maxiters=1e9, progress=true, seed=2);
-    n₁ = params[7]; n₂ = params[8]
-    filename = "$(datadir())/noisybistable-distributioninfo-n1_$(n₁)-n2_$(n₂)-T_$T.jld2"
-    distribution_data, file = produce_or_load(Dict("v"=>sol[1,:]), distribution_info_noisy_bistable; filename, force=generate_data, tag=false)
+    
+    #for dwell times
+    T = 1e7; Ttr = 0; Δt = 0.5; numbins = 8;
+    info = @strdict T Ttr Δt generate_data numbins
+    distribution_data = integrate_and_get_distribution_info_noisy_bistable(info)
+    
+    #for plotting
+    T = 5000; Ttr = 0; Δt = 0.5;
+    info = @strdict T Ttr Δt generate_data
+    sol_data = integrate_noisy_bistable(info); sol = sol_data["sol"]
     ts = sol.t; xs = sol[1,:]; xdots = sol[2,:];
     idxs_restricted = 1:floor(Int64, 5000/Δt)
     _fig, _axs = plot_noisy_bistable(ts[idxs_restricted], xs[idxs_restricted], xdots[idxs_restricted], distribution_data; fig, idxrow, idxcol)
+    
     return _fig, _axs 
 end
 
@@ -75,20 +80,23 @@ function typeIintermittency(generate_data=true; idxrow=1, idxcol=1, fig)
     σ = 10; β = 8/3; u0 = [0.1, 0.1, 0.1]
     ρ_chaos = 166.1; p_chaos = [σ, ρ_chaos, β]; #intermittency (CA);
     ρ_lc = 166.06; p_lc = [σ, ρ_lc, β]; #LC, just before SN
+    # threshold = 7; Δt_chaos = 0.0025;
+    threshold = 5; Δt_chaos = 0.0025;
     
     #dwell times
-    T = 1e6
-    dwelltimes_input = Dict("T"=>T, "p_chaos"=>p_chaos, "system_func"=>lorenz!, "u0"=>u0, "p_lc"=>p_lc)
-    filename = "$(datadir())/typeIintermittency-dwelltimesinfo-T_$T.jld2"
+    T = 1e4
+    dwelltimes_input = Dict("T"=>T, "p_chaos"=>p_chaos, "system_func"=>lorenz!, "u0"=>u0, "p_lc"=>p_lc, "Δt_chaos"=>Δt_chaos, "threshold"=>threshold)
+    filename = "$(datadir())/typeIintermittency-dwelltimesinfo-T_$T-Δtchaos_$(Δt_chaos)-threshold-$threshold.jld2"
     dwelltimes_data, file = produce_or_load(dwelltimes_input, dwelltimes_info_laminar_phase; filename, force=generate_data, tag=false)
     @unpack dwelltimes, sol_lc = dwelltimes_data
 
     #to plot
-    Ttr = 780; T=850; Δt=0.01; 
+    # Ttr = 780; T=850; Δt=Δt_chaos; 
+    Ttr = 1980; T=2030; Δt=Δt_chaos; 
     prob = ODEProblem(lorenz!, u0, (0, T), p_chaos)
     sol = solve(prob, Tsit5(), saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8, maxiters=1e9);
     ts = sol.t; xs = sol[1, :]; ys = sol[2, :]; zs = sol[3,:]
-    arewithin = mapslices(x->withinset(x, sol_lc', 2), sol[:, :], dims=1)[1, :];
+    arewithin = mapslices(x->withinset(x, sol_lc', threshold), sol[:, :], dims=1)[1, :];
     colors = [el == true ? c1 : c2 for el in arewithin]
     
     _fig, _axs = plot_typeI_intermittency(ts, xs, ys, zs, dwelltimes, colors; fig, idxrow, idxcol, c1, c2)
@@ -112,7 +120,6 @@ function chaotic_saddle(; idxcol=1, idxrow=1, fig)
     # τs = dwell_times_chaotic_saddle(ik, u0, fp; icsperdim; T=1e6, Ttr=1e2, threshold=1)
 
     filename = "$(datadir())/durationinchaoticsaddle-d_0.2.dat";
-    # filename = "$(datadir())/durationinchaoticsaddle-d_$d.dat";
     dwelltimes = readdlm(filename)[:,1]
 
     # xfit = bins; yfit = weights; A, B = CurveFit.exp_fit(xfit, yfit);

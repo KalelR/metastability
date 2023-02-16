@@ -48,8 +48,7 @@ function time_to_converge(integ, t, u0 = nothing;
 end
 
 function distribution_times_chaotic_saddle(τs, numbins; mode=:pdf)
-	filter!(x->x>=10, τs)
-	# filter!(x->x<T, τs)
+	# filter!(x->x>=10, τs)
 	bins = collect(range(minimum(τs), maximum(τs), length=numbins+1))
 	weights, bins = histogram(τs, bins; mode=mode);
 	return weights, bins

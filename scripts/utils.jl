@@ -371,3 +371,11 @@ end
 #                                Noisy bistable                                #
 # ---------------------------------------------------------------------------- #
 bistable_laminarperiods(v) = v .> 0 #1 is positive, 0 is negative
+
+function multiply_dict_number(d::Dict{T, U}, n::F) where {T, U, F}
+    dnew = Dict{T, Vector{F}}()
+    for (k, v) in d 
+        dnew[k] = v .* n 
+    end 
+    return dnew 
+end
