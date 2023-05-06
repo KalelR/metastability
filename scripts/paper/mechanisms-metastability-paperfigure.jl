@@ -24,6 +24,7 @@ fig, _axs = heteroclinicycle(; idxcol, fig); idxcol+=1; push!(axs, _axs);
 fig, _axs = amcrisis(generate_data; idxcol, fig); idxcol+=1; push!(axs, _axs);
 fig, _axs = typeIintermittency(generate_data; idxcol, fig); idxcol+=1;push!(axs, _axs);
 fig, _axs = chaotic_saddle(; idxcol, fig); push!(axs, _axs);
+
 rowsize!(fig.layout, 2, Relative(0.6))
 rowgap!(fig.layout, Relative(0.01))
 colgap!(fig.layout, Relative(0.0))
@@ -52,18 +53,24 @@ axs[4][1].xticks = [800, 830]
 ylims!(axs[4][1], [-50, 50])
 axs[5][1].yticks = [0.0, 5.0]
 
+axs[5][1].xticks = [5e5, 1.5e6]
+
 
 fix_x_ticks_limits!(axs[4][1], [1990, 2020]; powers=false)
-fix_y_ticks_limits!(axs[1][3], [1e-7, 1e-5, 1e-2])
+fix_y_ticks_limits!(axs[1][3], [1e-7, 10^-(4.5), 1e-2])
 fix_y_ticks_limits!(axs[2][3], [1e4, 1e5, 1e6])
-fix_y_ticks_limits!(axs[3][3], [1e-6, 1e-4, 1e-1])
-fix_y_ticks_limits!(axs[4][3], [1e-6, 1e-4, 1e-1])
-fix_y_ticks_limits!(axs[5][3], [1e-8, 1e-6, 1e-5])
+fix_y_ticks_limits!(axs[3][3], [1e-6,  1e-1])
+fix_y_ticks_limits!(axs[4][3], [1e-4, 1e-3, 1e-2, 1e-1])
+fix_y_ticks_limits!(axs[5][3], [1e-8, 1e-7, 1e-6, 1e-5])
+axs[1][3].yticks = get_ticks_in_powers([1e-6, 1e-4, 1e-2])
+axs[3][3].yticks = get_ticks_in_powers([1e-6, 1e-4, 1e-2])
+# axs[4][3].yticks = get_ticks_in_powers([1e-3, 1e-2, 1e-1])
+# axs[5][3].yticks = get_ticks_in_powers([1e-7, 1e-6, 1e-5])
 
 # safesave("$(plotsdir())/paper/mechanismsmetastability-tmp.png", fig, px_per_unit=4)
-safesave("$(plotsdir())/paper/mechanismsmetastability.png", fig, px_per_unit=40)
+safesave("$(plotsdir())/paper/mechanismsmetastability-lines.png", fig, px_per_unit=8)
 using CairoMakie
-safesave("$(plotsdir())/paper/mechanismsmetastability.pdf", fig)
+safesave("$(plotsdir())/paper/mechanismsmetastability-lines.pdf", fig)
 
 
 

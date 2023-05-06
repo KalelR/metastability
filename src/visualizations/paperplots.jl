@@ -11,7 +11,8 @@ function noisybistable(generate_data=false; idxrow=1, idxcol=1, fig)
     distribution_data = integrate_and_get_distribution_info_noisy_bistable(info)
     
     #for plotting
-    T = 5000; Ttr = 0; Δt = 0.5;
+    # T = 5000; Ttr = 0; Δt = 0.5;
+    T = 5000; Ttr = 0; Δt = 0.01; #for lines
     info = @strdict T Ttr Δt generate_data
     sol_data = integrate_noisy_bistable(info); sol = sol_data["sol"]
     ts = sol.t; xs = sol[1,:]; xdots = sol[2,:];
@@ -59,14 +60,16 @@ function amcrisis(generate_data=false; idxrow=1, idxcol=1, fig)
 
     #first, get dwell times
     T = 1e6; Ttr = 1e4; Δt = 1.0; 
+    # T = 1e6; Ttr = 1e4; Δt = 0.05; #for lines 
     prob, p = duffing(; a, b, c, d, f, ω, n₁=0, n₂=0, T, u0=[0.1, 0.1]) 
     sol = solve(prob, Tsit5(), saveat=Ttr:Δt:T, maxiters=1e9, progress=true, abstol=1e-8, reltol=1e-8);
     ts = sol.t; xs = sol[1, :]; ys = sol[2, :];
-    filename = "$(datadir())/attractormergingcrisis-dwelltimesinfo-T_$T.jld2"
-    dwelltimes_data, file = produce_or_load(Dict("v"=>xs), dwell_times_attractor_merging_crisis; filename, force=generate_data, tag=false)
+    # filename = "$(datadir())/attractormergingcrisis-dwelltimesinfo-T_$T.jld2"
+    # dwelltimes_data, file = produce_or_load(Dict(), x->dwell_times_attractor_merging_crisis(xs); filename, force=generate_data, tag=false)
+    dwelltimes_data=dwell_times_attractor_merging_crisis(xs)
 
     #now integrate at finer time scale to plot
-    T = 1e4 + 1000; Ttr = 1e4; Δt = 0.1; 
+    T = 1e4 + 1000; Ttr = 1e4; Δt = 0.01; 
     sol = solve(prob, Tsit5(), saveat=Ttr:Δt:T, maxiters=1e9, progress=true, abstol=1e-8, reltol=1e-8);
     ts = sol.t; xs = sol[1, :]; ys = sol[2, :];
 
@@ -93,6 +96,7 @@ function typeIintermittency(generate_data=true; idxrow=1, idxcol=1, fig)
     #to plot
     # Ttr = 780; T=850; Δt=Δt_chaos; 
     Ttr = 1980; T=2030; Δt=Δt_chaos; 
+    # Ttr = 1900; T=3000; Δt=Δt_chaos; 
     prob = ODEProblem(lorenz!, u0, (0, T), p_chaos)
     sol = solve(prob, Tsit5(), saveat=Ttr:Δt:T, abstol=1e-8, reltol=1e-8, maxiters=1e9);
     ts = sol.t; xs = sol[1, :]; ys = sol[2, :]; zs = sol[3,:]
@@ -123,16 +127,26 @@ function chaotic_saddle(; idxcol=1, idxrow=1, fig)
     dwelltimes = readdlm(filename)[:,1]
 
     # xfit = bins; yfit = weights; A, B = CurveFit.exp_fit(xfit, yfit);
+    mksize_cs = 0.4
+    mksize_nd = 1.2
 
     #getting colors that distinguish chaotic saddle from fixed point
-    bool_within_fp = map(x->iswithinneighborhood(x, fp, dist_th), traj);
-    # bool_within_fp = map(x->iswithinneighborhood(x, [traj[1:1000, 1] traj[1:1000, 2]], 0.05), traj);
+    # bool_within_fp = map(x->iswithinneighborhood(x, fp, dist_th), traj);
+    # fp_idx_1_og = 101251 #found first true value in bool_within_fp calculated from iswhinneighborhood, then reduced the idxs until the correct transition - this is only for illustrations purposes!!
+    fp_idx_1 = 101251 - 10 #hacky way to 
+    bool_within_fp = zeros(Bool, length(traj))
+    bool_within_fp[fp_idx_1:end] .= true
     colors = [el == true ? c1 : c2 for el in bool_within_fp];
-
+    #reduce density of points to clarify structure of CS
+    transition_idx = findfirst(x->x != bool_within_fp[1], bool_within_fp)
+    idxs_redu = vcat( collect(1:30:transition_idx), collect(transition_idx+1:length(bool_within_fp)))
+    markersizes = [el == true ? mksize_nd : mksize_cs for el in bool_within_fp];
+    ts = ts[idxs_redu]; xs = xs[idxs_redu]; ys = ys[idxs_redu]; colors = colors[idxs_redu]; markersizes = markersizes[idxs_redu];
+    
 
     # include("$(srcdir())/visualizations/plots.jl")
     # fig = Figure(; resolution=(width, height))
-    _fig, _axs = plot_chaotic_saddle(ts, xs, ys, dwelltimes, colors; fig, idxrow, idxcol, color_pdf=c2)
+    _fig, _axs = plot_chaotic_saddle(ts, xs, ys, dwelltimes, colors; fig, idxrow, idxcol, color_pdf=c2, markersize=markersizes)
     return _fig, _axs 
 end
 

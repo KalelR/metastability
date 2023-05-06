@@ -31,7 +31,7 @@ function plot_heterocliniccycle_paper(ts, xs, ys, zs, p, dwelltimes, fps; azim=7
     lines!(ax2, xs, ys, zs, color=traj_colors, linewidth=0.5)
     scatter!(ax2, fps[1:2:end, :][:,1], fps[1:2:end, :][:, 2], fps[1:2:end, :][:, 3], color=[c1, c2, c3], markersize=6)
     hc = [xs ys zs]
-    fig, ax = plot_arrow_following_data!(fig, ax2, (0.025, 0.05, 0.02), hc)
+    fig, ax = plot_arrow_following_data!(fig, ax2, (0.015, 0.05, 0.02), hc)
     fig, ax = plot_arrow_following_data!(fig, ax2, (0.04, 0.025, 0.02), hc)
     fig, ax = plot_arrow_following_data!(fig, ax2, (0.02, 0.018, 0.05), hc)
     
@@ -39,9 +39,9 @@ function plot_heterocliniccycle_paper(ts, xs, ys, zs, p, dwelltimes, fps; azim=7
     for i=1:3
         scatter!(ax3, dwelltimes[i], color=fp_colors[i], markersize=3)
     end
-    yticks = get_ticks_in_powers(dwelltimes[1])
-    ax3.yticks = yticks
-    ylims!(ax3, yticks[1]...)
+    # yticks = get_ticks_in_powers(dwelltimes[1])
+    # ax3.yticks = yticks
+    # ylims!(ax3, yticks[1]...)
 
     return fig, [ax1, ax2, ax3]
 end
@@ -68,16 +68,17 @@ function plot_noisy_bistable(ts, xs, xdots, distribution_info; idxrow = 1, idxco
     # ax1.yticks = yticks
 
     ax2 = Axis(fig[idxrow+1, idxcol], ylabel="dx/dt", xlabel="x", yticks=WilkinsonTicks(3))
-    scatter!(ax2, xs, xdots;  color=[el > 0 ? c1 : c2 for el in xs], markersize=1.0)
+    # scatter!(ax2, xs, xdots;  color=[el > 0 ? c1 : c2 for el in xs], markersize=1.0)
+    alpha = 0.6
+    lines!(ax2, xs, xdots;  color=[el > 0 ? (c1, alpha) : (c2, alpha) for el in xs], linewidth=0.3)
 
     ax3 = Axis(fig[idxrow+2, idxcol], ylabel="PDF(τ)", xlabel="τ", yscale=log10)
     for (idx, (side, info)) in enumerate(distribution_info)
         @unpack bins, weights, xfit, yfit, A, B = info
         scatterlines!(ax3, bins, weights, color=color=[c2, c1][idx], markersize=4)
         # lines!(ax3, xfit, yfit, color=[c2, c1][idx], label="$(trunc(A, sigdigits=2)) exp($(trunc(B, sigdigits=3)) τ)")
-        yticks = get_ticks_in_powers(weights)
-        ax3.yticks = yticks
-        ylims!(ax3, yticks[1]...)
+        # @show weights/
+        # fix_y_ticks_limits!(ax3, weights)
     end
     
     # axislegend(ax3, position=:rt; framevisible=false, labelsize=10, orientation = :horizontal, margin=(-25,-20,-20,-8))
@@ -90,7 +91,7 @@ function plot_attractormerging_crisis(ts, xs, ys, dwelltimes_info; fig=nothing, 
     
     idx_states_time_plot = [x >= 0 ? 1 : 0 for x in xs]
     colors_ax1 = replace(idx_states_time_plot, 1=>cright, 0=>cleft)
-    alpha =0.8
+    alpha =0.6
     colors_ax2 = replace(idx_states_time_plot, 1=>(cright, alpha), 0=>(cleft, alpha))
 
     ax1 = Axis(fig[idxrow, idxcol], ylabel="x", xlabel="t")
@@ -98,20 +99,21 @@ function plot_attractormerging_crisis(ts, xs, ys, dwelltimes_info; fig=nothing, 
     ax1.xticks = [10000, 11000]
 
     ax2 = Axis(fig[idxrow+1, idxcol], ylabel="dx/dt", xlabel="x")
-    scatter!(ax2, xs, ys, color=colors_ax2, markersize=1.0)
+    # scatter!(ax2, xs, ys, color=colors_ax2, markersize=1.0)
+    lines!(ax2, xs, ys, color=colors_ax2, linewidth=0.3)
     
     ax3 = Axis(fig[idxrow+2, idxcol], ylabel="PDF(τ)", xlabel="τ", yscale=log10)
     for (i, (key, dwelltimes)) in enumerate(dwelltimes_info)
         weights, bins = histogram(dwelltimes, collect(range(0, maximum(dwelltimes); length=numbins)))
         if minimum(weights) <= 0 weights .+=1e-8 end
         scatterlines!(ax3, bins, weights, color=[cleft, cright][i], markersize=4, linewidth=0.7)
-        ax3.yticks = get_ticks_in_powers(weights)
+        # ax3.yticks = get_ticks_in_powers(weights)
     end
     
     return fig, [ax1, ax2, ax3]
 end
 
-function plot_typeI_intermittency(ts, xs, ys, zs, dwelltimes, colors; fig=nothing, idxrow=1, idxcol=1, c1, c2, azimuth=5.47, elevation=0.05, numbins=10, viewmode=:stretch)
+function plot_typeI_intermittency(ts, xs, ys, zs, dwelltimes, colors; fig=nothing, idxrow=1, idxcol=1, c1, c2, azimuth=5.47, elevation=0.05, numbins=15, viewmode=:stretch)
     
     ax1 = Axis(fig[idxrow, idxcol], ylabel="x", xlabel="t")
     lines!(ax1, ts, xs, color=colors, linewidth=0.6)
@@ -120,7 +122,8 @@ function plot_typeI_intermittency(ts, xs, ys, zs, dwelltimes, colors; fig=nothin
 
     ax2 = Axis3(fig[idxrow+1, idxcol]; azimuth, elevation, viewmode)#, xlabeloffset=5, ylabeloffset=5, zlabeloffset=5, protrusions=5, viewmode=:stretch)
     # hidedecorations!(ax2, label=false, grid=false);
-    scatter!(ax2, xs, ys, zs; markersize=1.0, color=colors) 
+    # scatter!(ax2, xs, ys, zs; markersize=1.0, color=colors) 
+    lines!(ax2, xs, ys, zs; linewidth=0.3, color=colors) 
 
     ax3 = Axis(fig[idxrow+2, idxcol], ylabel="PDF(τ)", xlabel="τ", yscale=log10)
     maximum_time = maximum(maximum.(values(dwelltimes)))
@@ -129,7 +132,7 @@ function plot_typeI_intermittency(ts, xs, ys, zs, dwelltimes, colors; fig=nothin
         weights, _bins = histogram(dwelltimes_one, bins)
         if minimum(weights) <= 0 weights .+= 1e-8 end
         scatterlines!(ax3, _bins, weights, color=[(c2, 1.0), (c1, 1.0)][i], markersize=4, linewidth=0.7)
-        if withinlc ax3.yticks = get_ticks_in_powers(weights) end
+        # if withinlc ax3.yticks = get_ticks_in_powers(weights) end
     end
     # rowsize!(fig.layout, 2, Relative(0.6))
     # ax3.yticks = [1e-3, 1e-2]
@@ -137,21 +140,22 @@ function plot_typeI_intermittency(ts, xs, ys, zs, dwelltimes, colors; fig=nothin
     return fig, [ax1, ax2, ax3]
 end
 
-function plot_chaotic_saddle(ts, xs, ys, dwelltimes, colors; fig=nothing, idxrow=1, idxcol=1, color_pdf=:green, numbins=10)
+function plot_chaotic_saddle(ts, xs, ys, dwelltimes, colors; fig=nothing, idxrow=1, idxcol=1, color_pdf=:green, numbins=10, markersize=0.7)
 
     ax1 = Axis(fig[idxrow, idxcol], ylabel="x", xlabel="t")
-    lines!(ax1, ts, xs, color=colors, linewidth=0.7);
+    # lines!(ax1, ts, xs, color=colors, linewidth=0.7);
+    scatter!(ax1, ts, xs, color=colors, markersize=0.4);
     ax1.xticks = 0:100000:200000;
     ax1.yticks = 0:3:6;
     
 
     ax2 = Axis(fig[idxrow+1, idxcol], ylabel="y", xlabel="x")
-    scatter!(ax2, xs, ys; markersize=0.7, color=colors);
+    scatter!(ax2, xs, ys; markersize, color=colors);
 
     ax3 = Axis(fig[idxrow+2, idxcol], ylabel="PDF(τ)", xlabel="τ", yscale=log10)
     weights, bins = distribution_times_chaotic_saddle(dwelltimes, numbins);
-    scatterlines!(ax3, bins, weights, color=color_pdf, markersize=4, linewidth=0.7);
-    ax3.yticks = get_ticks_in_powers(weights)
+    scatterlines!(ax3, bins, weights; color=color_pdf, markersize=4, linewidth=0.7);
+    # ax3.yticks = get_ticks_in_powers(weights)
     # l=lines!(ax3, xfit, A .* exp.(B .* xfit), color=c1)
     # ax3.xticks = 0:4e5:8e5;
     # ax3.yticks = [1e-5, 1e-4]

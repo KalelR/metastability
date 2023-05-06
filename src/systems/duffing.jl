@@ -1,5 +1,8 @@
 using DynamicalSystemsBase:CDS
 
+doublewell(x, a, b, c) = (a/4)*x^4 - (b/2) * x^2 + c*x
+U(x, a, b, c) = (a/4)*x^4 - (b/2) * x^2 + c*x #double well
+
 @inbounds function duffing_rule!(du, u, p, t)
     a,b,c,d,f, ω, n₁, n₂ = p
     x, v = u
@@ -13,6 +16,8 @@ end
     du[2] = n₂
 end
 
+using RandomNumbers
+
 """
 This function establishes the default parameters used in the simulations and then creates the structure in the code that is needed to numerically integrate.
 U(x) = ax^4/4 - bx 2/2 + cx (c: assymetry paramter); gamma: dissipation, f forcing omega forcing freq, n noise strength
@@ -24,10 +29,12 @@ a = 100 # = b in the paper
 c = 0
 ω = 3.5 # = Ω
 """
-function duffing(; a=0.5, b=8.0, c=0.0, d = 0.2, f = 0.0, ω = 1.0, n₁ = 0.18, n₂ = n₁, T = 1e4, u0 = [0.0, 0.0])
+function duffing(; a=0.5, b=8.0, c=0.0, d = 0.2, f = 0.0, ω = 1.0, n₁ = 0.18, n₂ = n₁, T = 1e4, u0 = [0.0, 0.0], rngseed=1)
     p =  [a, b, c, d, f, ω, n₁, n₂];
     if n₁ != 0 || n₂ != 0
-        prob_duffing = SDEProblem(duffing_rule!, duffing_noise_rule!, u0, (0, T), p; seed=0)
+        rng = Xorshifts.Xoroshiro128Plus(rngseed)
+        W = WienerProcess(0.0, 0.0, 0.0; rng)
+        prob_duffing = SDEProblem(duffing_rule!, duffing_noise_rule!, u0, (0, T), p; noise=W, seed=rngseed)
     else
         prob_duffing = ODEProblem(duffing_rule!, u0, (0, T), p; seed=0)
     end
@@ -46,7 +53,6 @@ function distribution_times_up_below_threshold(v, numbins, side=0; Δt=1.0) #0 i
 end
 
 
-U(x, a, b, c) = (a/4)*x^4 - (b/2) * x^2 + c*x #double well
 
 # function integrate_and_get_distribution(; T=1e4)
 #     a=0.5; b=8.0; c=0.0; d = 0.2; f = 0.0; ω = 1.0; n₁ = n₂ = n = 0.18;

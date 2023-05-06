@@ -1,7 +1,6 @@
 # ---------------------------------------------------------------------------- #
 #                                Chaotic Saddle                                #
 # ---------------------------------------------------------------------------- #
-iswithinneighborhood(point, fp, threshold) = evaluate(Euclidean(), point, fp) ≤ threshold ? true : false
 # iswithinneighborhood([3.0, 3.0], fp, 0.1)
 
 using DynamicalSystemsBase:obtain_access, get_state

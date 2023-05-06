@@ -89,8 +89,8 @@ function subplotgrid(m, n;
 end
 
 
-function nearest_powers(v, n)
-    [floor(Int64, log10( max(1e-8, minimum(v)) )), ceil(Int64, log10(maximum(v)))]
+function nearest_powers(v)
+    vcat(floor.(Int64, log10.( max.(1e-8, minimum.(v[1:end-1])) )), ceil(Int64, log10(maximum(v))))
 end
 
 function superscriptnumber(i::Int)
@@ -110,7 +110,7 @@ function superscriptnumber(i::Int)
 end
 
 function get_ticks_in_powers(yvalues)
-    powers = nearest_powers(yvalues, 2)
+    powers = nearest_powers(yvalues)
     yticks = sort(10.0 .^ powers); ytickstring = ["10$(superscriptnumber(power))" for power in powers]
     return (yticks, ytickstring)
 end
@@ -118,13 +118,13 @@ end
 function fix_y_ticks_limits!(ax, yvals)
     yticks = get_ticks_in_powers(yvals); 
     ax.yticks = yticks; 
-    ylims!(ax, yticks[1])
+    ylims!(ax, yticks[1][1], yticks[1][end])
 end
 
 function fix_x_ticks_limits!(ax, vals; powers=true)
     xticks = powers ? get_ticks_in_powers(vals) : (vals, string.(vals))
     ax.xticks = xticks; 
-    xlims!(ax, xticks[1])
+    xlims!(ax, xticks[1][1], xticks[1][end])
 end
 
 function plot_arrow_following_data!(fig, ax, pos_rough, data)
