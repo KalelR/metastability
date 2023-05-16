@@ -121,7 +121,7 @@ function run_animate_type_I_intermittency()
     arewithin = mapslices(x->withinset(x, limitcycle, threshold), traj, dims=2)[:,1]; #to distinguish between laminar and chaotic periods
     
     xs = traj[:,1]; ys = traj[:,2]; zs = traj[:,3];
-    c1 = METASTABLE_STATE_1_COLOR; c2 = METASTABLE_STATE_2_COLOR
+    c1 = METASTABLE_STATE_2_COLOR; c2 = METASTABLE_STATE_1_COLOR #I si
     alpha = 0.8
     colors_state_space = [el == 1 ? (c1, alpha) : (c2, alpha) for el ∈ arewithin]
     
@@ -137,7 +137,8 @@ function run_animate_interior_crisis()
     framerate = 25 
     numframes = 800
     numframes = 1000
-    idxs_t_anim = 600:1100
+    idxs_t_anim = 600:1100 #high level view of phenomenon
+    idxs_t_anim = 645:723; numframes = length(idxs_t_anim); framerate=3 #zoom into the escape and return 
     fps_5 = [-0.149036 -0.111942; 0.6901164331310736 -0.07534279207228838; 0.7081550024831971 0.6107258394579234; 0.08793801081244812 -0.377787118392552; 1.0755007518118098 -0.25769927892208205]
     
     innercore = []
@@ -170,6 +171,6 @@ end
 # run_animation_shc()
 # run_animation_doublewell()
 # run_animation_chaoticsaddle()
-# run_animate_type_I_intermittency()
-run_animate_interior_crisis()
+run_animate_type_I_intermittency()
+# run_animate_interior_crisis()
     
