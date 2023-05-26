@@ -1,10 +1,9 @@
-using DrWatson 
-@quickactivate
-using GLMakie, DifferentialEquations, RandomNumbers
+# using DrWatson 
+# @quickactivate
+# using GLMakie, DifferentialEquations, RandomNumbers
+using DrWatson, GLMakie, DifferentialEquations, RandomNumbers
 
-"""
-Eq. 18 in Ashwin, 2011
-"""
+# Eq. 18 in Ashwin, 2011
 @inbounds function ratemodel_rule_Z!(du, u, p, t)
     Smax = p.Smax; x₀ = p.x₀; I = p.I; gs = p.gs; τ = p.τ; ϵ = p.ϵ; α = p.α
     N = size(gs, 1)
@@ -111,9 +110,18 @@ function plot_heteroclinic_cycle(ts, xs, ys, zs; title="", azimuth=7, elevation=
     return fig, axs 
 end
 
+function supertitle(fig, title)
+    Label(fig[0, :], title, valign = :bottom,
+        # padding = (0, 0, 5, 0), tellheight = true, tellwidth = false,
+        tellheight = true, tellwidth = false,
+        font = "TeX Gyre Heros Bold", # same font as Axis titles
+    )
+    return
+end
 
 
-
-fig, axs = run_heteroclinic_cycle(noise_strength=1e-4; Ttr=0.0, T=1e5)  
+noise_strength = 1e-3
+# noise_strength = 1e-2 #already dies, no clue why; note it takes a few minutes, reducing the precision would speed up considerably
+ts, vars = run_heteroclinic_cycle(; noise_strength, Ttr=0.0, T=1e5)  #with this integrator and tolerances, it takes some time to run
 xs, ys, zs = eachrow(vars)
-fig, axs = plot_heteroclinic_cycle(ts, xs, ys, zs; title="noise strength = $(noise_strength)")
+fig, axs = plot_heteroclinic_cycle(ts, xs, ys, zs; title="noise strength = $(noise_strength)"); fig
