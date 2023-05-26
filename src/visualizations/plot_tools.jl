@@ -138,3 +138,12 @@ function plot_arrow_following_data!(fig, ax, pos_rough, data)
     arrows!(ax, ps, ns, lengthscale=0.3, arrowsize=Vec3f(6e-3, 6e-3, 1e-2), align = :center, fxaa=true) 
     return fig, ax
 end
+
+function supertitle(fig, title)
+    Label(fig[0, :], title, valign = :bottom,
+        # padding = (0, 0, 5, 0), tellheight = true, tellwidth = false,
+        tellheight = true, tellwidth = false,
+        font = "TeX Gyre Heros Bold", # same font as Axis titles
+    )
+    return
+end

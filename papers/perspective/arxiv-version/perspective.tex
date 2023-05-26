@@ -1,0 +1,294 @@
+%  \documentclass[12pt, onecolumn, a4paper]{article}
+% \documentclass[reprint,showpacs,amsmath,superscriptaddress,amssymb,aps,floatfix,nolongbibliography]{revtex4-2}
+\documentclass[reprint,superscriptaddress,showpacs,amsmath,amssymb,aps,floatfix,nolongbibliography]{revtex4-2}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}		
+\usepackage{natbib}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{siunitx}
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{xspace}
+\usepackage[normalem]{ulem}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newcommand{\kl}[1]{\textcolor{red}{#1}}
+\newcommand{\lm}[1]{\textcolor{blue}{#1}}
+\newcommand{\rb}[1]{\textcolor{orange}{#1}}
+% \newcommand{\figref}[2]{Fig. #1}{#2}
+\newcommand{\Emph}[1]{\textbf{#1}}
+\newcommand*{\supprime}{\textsuperscript{\everymodeprime}\xspace}
+\newcommand*{\ssupprime}{\textsuperscript{\everymodeprime\everymodeprime\xspace}}
+\graphicspath{{figs-perspective/}}
+\newcommand*{\everymodeprime}{\ensuremath{\prime}} 
+\newcommand{\Poincare}{Poincar\'e\xspace}
+% \usepackage{printlen} %textwidth = 510pt
+% \printlength\columnwidth
+% \linespread{1.5} %Increase baselineskip (for Ulrike)
+
+\begin{document}
+\title{A unified framework of metastability in neuroscience}
+\author{Kalel L. Rossi}
+\affiliation{Theoretical Physics/Complex Systems, ICBM, Carl von Ossietzky University Oldenburg, Oldenburg, Lower Saxony, Germany}
+\author{Roberto C. Budzinski}
+\affiliation{Department of Mathematics, Western University, London, Ontario, Canada}
+\affiliation{Western Institute for Neuroscience, Western University, London, Ontario, Canada}
+\affiliation{Western Academy for Advanced Research, Western University, London, Ontario, Canada}
+\author{Everton S. Medeiros}
+\affiliation{Theoretical Physics/Complex Systems, ICBM, Carl von Ossietzky University Oldenburg, Oldenburg, Lower Saxony, Germany}
+\author{Bruno R. R. Boaretto}
+\affiliation{Institute of Science and Technology, Federal University of São Paulo, São José dos Campos, São Paulo, Brazil}
+\author{Lyle Muller}
+\affiliation{Department of Mathematics, Western University, London, Ontario, Canada}
+\affiliation{Western Institute for Neuroscience, Western University, London, Ontario, Canada}
+\affiliation{Western Academy for Advanced Research, Western University, London, Ontario, Canada}
+\author{Ulrike Feudel}
+\affiliation{Theoretical Physics/Complex Systems, ICBM, Carl von Ossietzky University Oldenburg, Oldenburg, Lower Saxony, Germany}
+
+
+\begin{abstract}
+Neural activity typically follows a series of transitions between well-defined states, in a regime generally called metastability. In this work, we review current observations and formulations of metastability to argue that they have been largely context-dependent, and a unified framework is still missing. To address this, we propose a context-independent framework that unifies the context-dependent formulations by defining metastability as an umbrella term encompassing regimes with transient but long-lived states. This definition can be applied directly to experimental data but also connects neatly to the theory of nonlinear dynamical systems, which allows us to extract a general dynamical principle for metastability: the coexistence of attracting and repelling directions in phase space. With this, we extend known mechanisms and propose new ones that can implement metastability through this general dynamical principle. We believe that our framework is an important advancement towards a better understanding of metastability in the brain, and can facilitate the development of tools to predict and control the brain's behavior. 
+\end{abstract} 
+
+\maketitle
+
+\section{Metastability is important, but what is it actually?}
+When neural activity is recorded for any significant period of time, one immediately appreciates a series of transitions between clearly definable states. For example, as subjects fall asleep, the brain progresses through a series of well-defined patterns, from the 11-15 Hz sleep spindle \cite{contreras1996control}, to the large low-frequency rhythms of deep sleep \cite{steriade1993thalamocortical}, and back to waking-like activity during rapid eye movement (REM) sleep \cite{jouvet1979does}. These states can also occur on shorter timescales, as subjects transition from passive rest to states of active perception \cite{poulet2008internal}. This ubiquitous phenomenon of state switching has prompted connections to the concept of \textit{metastability} in physics and dynamical systems theory. Many works have demonstrated metastability in neural systems \cite{michel2017eeg, vandeville2010eeg, lehmann1987eeg, jones2007natural, lacamera2019cortical, mazzucato2019expectation, recanatesi2021metastable, brinkman2022metastable, abeles1995cortical, seidemann1996simultaneously, jercog2017updown, luczak2007sequential, mazor2005transient, sasaki2007metastability, mashour2020conscious, dehaene2005ongoing, hudson2014recovery, tognoli2014metastable, popa2009constracting, curtis2015initiation, fernandez2020sleep, caruso2023single, lang2023temporal} across different recording techniques, system scales and species.
+At the same time, conceptual differences have emerged around metastability, as works remained mostly focused on the specific context of their studies. A close look into the literature reveals several disagreements about what metastability is, and under which circumstances it can occur (see Sec. \ref{sec:currentformulations}). These different formulations lead to a general lack of agreement on the exact meaning of metastability in neural systems, which hampers systematic comparisons between works and also constrains studies on the dynamical mechanisms for this behavior.
+
+Here we present a rigorous framework that unifies these formulations of metastability by using the theory of nonlinear dynamical systems.
+We propose a general definition of metastability that captures the range of experimental observations in neuroscience by considering metastable states as \textit{transient but long-lived}. Currently applied formulations of metastability fit into this framework as subtypes, allowing it to account for the features of each subtype while maintaining a general view. This allows us to provide insights into the underlying mechanisms for metastability, and to propose new mechanisms, directly motivated by the theory of nonlinear dynamical systems. This unified framework can thus provide new research directions to generate experimentally testable and falsifiable hypotheses about metastability in the brain.
+
+\section{Short summary of metastability in the brain}
+\subsection{Observations}
+\label{sec:observations}
+
+We now review key observations that helped to establish metastability as an important dynamical phenomenon. We focus on examples of metastability characterized by the switching between long-lived states of activity. These states vary depending on the experiment and analysis technique. However, consistent with the unifying framework we propose later in Sec. \ref{sec:framework}, we note that all of them represent transitions between well-defined dynamical states.
+
+Figure \ref{fig:observationsmetastability} illustrates some observations showing time-series with these metastable states, along with two corresponding characteristics: (i) whether the transitions between the states occur during resting conditions (spontaneously) or if they are evoked by stimulus; (ii) whether the metastable states occur more than once in the observation (repeat) or not.  
+%
+\begin{figure*}[hbt]
+    \centering
+    \includegraphics[width=\textwidth]{observationsmetastability.png}
+    \caption{\textbf{Brain activity typically evolves as a sequence of well-defined states that are transient but long lived.} The panels illustrate important observations taken from the literature, namely EEG microstates \cite{michel2017eeg}, hidden Markov states of firing rates \cite{brinkman2022metastable}, UP and DOWN states \cite{jercog2017updown}, cortical wave patterns \cite{townsend2015emergence}, epileptic seizures \cite{wenzel2019acute}, and bursting in central pattern generators \cite{sakurai2016recruitment}. Each observation is explained in detail in the main text, and is classified into subtypes of metastability that we define in the Sec.~\ref{sec:subtypes}.}
+    \label{fig:observationsmetastability}
+\end{figure*}
+
+As a first example, Fig. \ref{fig:observationsmetastability}A shows time-series of electroencephalography (EEG) measurements performed in resting humans with eyes closed (taken from \cite{michel2017eeg}). Colors indicate \Emph{EEG microstates}, identified from the spatial configuration of the electric potential amplitude of each electrode. These microstates remain almost stationary for roughly $\SI{100}{\milli\second}$ \cite{vandeville2010eeg, lehmann1987eeg}, and then give way to other microstates.
+
+Figures \ref{fig:observationsmetastability}B-C show results based on firing rates of neurons. In particular, Fig. \ref{fig:observationsmetastability}B shows exemplary sequences of states adapted from Ref. \cite{brinkman2022metastable}. The states are characterized by roughly stationary behavior in the firing rates of neurons in the gustatory cortex of rats, and are identified via the technique of \Emph{hidden Markov models} (HMM). Each state lasts for roughly an order of magnitude longer than the transitions between any state \cite{jones2007natural, lacamera2019cortical, mazzucato2019expectation, recanatesi2021metastable, brinkman2022metastable}. This is observed during both spontaneous and stimulus-evoked activity, and the sequence of such states is shown to encode the stimuli presented to the animals \cite{lacamera2019cortical, mazzucato2019expectation}. These states are proposed to serve as a ``substrate for internal computations" in the brain \cite{lacamera2019cortical}. Similar results have also been reported in the frontal cortex of monkeys during a delayed localization task \cite{abeles1995cortical, seidemann1996simultaneously}.
+
+Figure \ref{fig:observationsmetastability}C shows sequences of sustained firing (significant activity, \Emph{UP states}) and silence (\Emph{DOWN states}) in the firing rates of the deep layers of the somatosensory cortex of urethane-anesthetized rats (adapted from \cite{jercog2017updown}). Each state lasts for a significant time, with quick transitions between them \cite{jercog2017updown}. These states are ubiquitously observed in spontaneous activity \cite{luczak2007sequential, jercog2017updown}. 
+
+Figure \ref{fig:observationsmetastability}D shows a sequence of complex \Emph{wave patterns} identified in the cerebral cortex of anesthetized marmoset monkeys, taken from Ref. \cite{townsend2015emergence} (Copyright 2015 Society for Neuroscience). Starting from local field potential data from multiple electrodes, they created a spatial map for the phases of the oscillations, filtered at the $\delta$ band ($1-\SI{4}{\hertz}$), from which they identified different spatiotemporal patterns, classified as plane waves (PW), synchrony (SY), node, from a source or sink (ND), spiral (SP), and saddle (SA) \cite{townsend2015emergence}. These patterns repeat across the time series, but the probabilities of switching from one pattern to another differs from pattern to pattern (i.e., there is preferential switching between patterns) \cite{townsend2015emergence}.
+% The firing rate of neurons in slice cultures of the hippocampal CA3 region was found to evolve also as sequences of discrete, long-lasting states, separated by quick transitions \cite{sasaki2007metastability} (Fig. \ref{fig:observationsmetastability}D). The figure was taken from \cite{sasaki2007metastability} (Copyright 2007 Society for Neuroscience). Each state is identified by clustering algorithms applied to the space spanned by the principal components obtained from Principal Component Analysis (\Emph{PCA}) of the firing rates. The figure shows the raster plot of the firing, and the total activity, with colors denoting each state \cite{sasaki2007metastability}.
+
+Mazor and Laurent \cite{mazor2005transient} (not included in the figure) measured the firing rate of neurons in the antennal lobe of locusts as the animals were presented with a variety of odor pulses. Their results suggest that, for long pulses (lasting more than $\SI{2}{\second}$), spiking activity in the antennal lobe switches between a baseline fixed point and an odor-specific fixed-point, which can last for a few seconds. Interestingly, the transition epochs between the two fixed points were found to contain the most amount of information about the stimuli, suggesting an important role for them in neural computations \cite{mazor2005transient, rabinovich2008transientdynamics}.
+
+Figure \ref{fig:observationsmetastability}E shows the neural activity recorded by two-photon calcium imaging in mouse neocortex \cite{wenzel2019acute} (Copyright 2019 Society for Neuroscience). The population is being invaded by a propagating \Emph{epileptic seizure}, which appears in the middle of the time-series, and is characterized by sustained firing of a large number of neurons. Traveling as a wave, it transiently replaces the baseline state, in which firing is more sparse and distributed. In this study, a pharmacological agent was applied to a specific region of the cortex to induce the seizures.
+
+% Figure \ref{fig:observationsmetastability}E shows that metastable states also occur in the context of consciousness. The global neuronal workspace theory of consciousness proposes that we become conscious of a certain object (e.g. a stimulus) when the representation of that object is broadcast from local processing regions into a variety of spatially distributed regions, which form the global workspace \cite{mashour2020conscious}. This global broadcast is known as \Emph{ignition}, and is achieved through the sustained firing of the involved areas; this is shown in panel E for the local-field potential (LFP) and spikes in area D2 of the model studied in \cite{dehaene2005ongoing}. The figure is adapted from \cite{dehaene2005ongoing}. The activity of workspace neurons is thus characterized by discrete episodes of spontaneous coherent activation, with sustained firing, and quick transitions between them \cite{michel2017eeg}.
+
+
+Figure \ref{fig:observationsmetastability}F shows the swim motor pattern in intracellular recordings of two neurons that belong to the swim central pattern generator of the mollusk \textit{Tritonia} \cite{sakurai2016recruitment} (adapted from Ref. \cite{sakurai2016recruitment}). These neurons respond by \Emph{bursting} to stimulation in a nerve called PdN3. These bursts are phenomenologically similar to those shown later in Fig. \ref{fig:mechanismsmetastability}E (though their mechanisms might differ), and demonstrate the alternation between periods of sustained firing and periods of silence. Central pattern generators \cite{marder2001central} contain various examples of metastable states. 
+
+Another work (not included in the figure) has also found that the power spectrum of local-field potential (LFP) recordings in rats progresses as a sequence of relatively stationary states lasting for some time before rapidly transitioning to other states \cite{hudson2014recovery} (see e.g. Fig. 2 of Ref. \cite{hudson2014recovery}). This was observed as the rats recovered consciousness, when the concentration of an anesthetic was progressively decreased. The authors argue that the existence of well-defined metastable states is crucial for the fast recovery of consciousness \cite{hudson2014recovery}.
+
+Additionally, we remark that several other regimes could be mentioned in this section, such as other seizures \cite{curtis2015initiation, babloyantz1986low}; sleep spindles \cite{fernandez2020sleep}, transient patterns of circular waves that repeatedly travel across the cortex over sleep and may aid the consolidation of memories \cite{muller2016rotating}, and the phases of local-field potentials in cats at rest \cite{tognoli2014metastable, popa2009constracting}. Other results are also discussed in Ref. \cite{tsuda2009hypotheses}.
+
+% We also note that some works mentioned previously may have not necessarily used the term metastability in their respective papers. \lm{Finally,} we note that some works interpret metastability differently than the idea of long-lasting states, and they were not included here.
+
+\subsection{Current formulations}\label{sec:currentformulations}
+
+Several theoretical formulations have been discussed as a result of the observations of metastability in the brain. However, despite their large applicability, such formulations often depend on the specific context of their observations. To illustrate this issue, we depict in Figs. \ref{fig:definitionsmetastability}A-F the main formulations of metastability that we have identified in the neuroscience literature.
+
+We can generalize those from Figs.~\ref{fig:definitionsmetastability}A-E as considering metastability to be a regime with a type of variability in the dynamics. This variability can be directly observed in different \textit{patterns of activity} (Fig. \ref{fig:definitionsmetastability}A) \cite{friston1997transients, friston2000transients, varela2001brainweb, roberts2019metastable}, or \textit{patterns of synchronization} (Fig. \ref{fig:definitionsmetastability}B) \cite{cabral2011role, deco2017dynamics, deco2016metastability, poncealvarez2015restingstate, aguilera2016extended}. In some cases, abstract states can be identified through some technique, such as Hidden-Markov model \cite{mazzucato2015dynamics, lacamera2019cortical, brinkman2022metastable} or PCA analysis \cite{sasaki2007metastability}. Then, metastability is said to be the variability of these states (Fig. \ref{fig:definitionsmetastability}C) \cite{mazzucato2015dynamics, lacamera2019cortical, afraimovich2010longrange, alderson2020metastable, lee2017linking, vasa2015effects, hellyer2014control, naik2017metastability, rabinovich2008transientcognitive, cavanna2018dynamic, werner2007metastability, bhowmik2013metastability}. In other works, metastability is said to occur due to variability of trajectories along different \textit{regions of phase space} (which is, roughly, a space composed of the variables or observables of the system) (Fig. \ref{fig:definitionsmetastability}D) \cite{hudson2017metastability, graben2019metastable}, or along different positions in an \textit{energy landscape} (Fig. \ref{fig:definitionsmetastability}E) \cite{gili2018metastable, cavanna2018dynamic, aguilera2016extended, hudson2017metastability}. Another, more distinct, formulation of metastability is that of a regime \textit{integration-segregation}, in which neural assemblies transiently synchronize and desynchronize (Fig. \ref{fig:definitionsmetastability}F) \cite{deco2015rethinking, fingelkurts2001operational, tognoli2014metastable, tognoli2014enlarging, bressler2016coordination, kelso2012multistability, hellyer2015cognitive}. 
+
+Furthermore, we remark that, while some works explicitly mention a time-scale separation in metastability \cite{hudson2017metastability, brinkman2022metastable}, others do not. The latter can be problematic, as it implies that even states with arbitrarily short durations can be regarded as metastable.
+Works also differ in regards to the possible mechanisms giving rise to metastability. Some consider that the variability in the dynamics needs to be spontaneous, occurring in autonomous systems (Fig. \ref{fig:definitionsmetastability}G) \cite{sasaki2007metastability, kelso2012multistability, roberts2019metastable, fingelkurts2008brainmind, cavanna2018dynamic}, while others argue that the variability must be externally induced, occurring in non-autonomous systems (Fig. \ref{fig:definitionsmetastability}G\supprime) \cite{jercog2017updown, hudson2017metastability}. A combination of both is also found in Refs. \cite{brinkman2022metastable, friston2000transients, lacamera2019cortical}.  
+Finally, another source of differences is in the repeatability of metastable regimes: some works consider metastable states as repeatable  (Fig. \ref{fig:definitionsmetastability}H) \cite{graben2019metastable}, while others consider them as non-repeatable (Fig \ref{fig:definitionsmetastability}H\supprime). Examples of these types of metastability are shown in the observations in Fig. \ref{fig:observationsmetastability}.
+%
+\begin{figure*}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{definitionsmetastability.png}
+    \caption{\textbf{Formulations of metastability in the neuroscience literature.} A common theme among these is the presence of transitions between certain aspects of the system's dynamics (e.g., between activity patterns). The upper part of the figure illustrates what these aspects are in each definition, and the bottom part shows characteristics of the transitions. Further details are available in the main text.}
+    \label{fig:definitionsmetastability}
+\end{figure*}
+
+\section{A unifying framework of metastability}\label{sec:framework}
+
+Here, we propose to unify the observations and formulations of metastability into a single framework. We start with a general, context-independent, definition of metastability that acts as an umbrella term including the other formulations as distinct subtypes. This definition already facilitates meaningful comparisons between the various observations of metastability. Then, using insights from nonlinear dynamical systems theory, we expand the framework by providing a variety of mechanisms leading to metastability. 
+
+\subsection{A general definition}
+\label{sec:definitions}
+A unified framework for metastability relies on a general definition of the behavior, which itself relies on the notion of metastable states. To this end, we first establish the concept of a state as an \textbf{epoch of the dynamics with typical and unique properties}. The dynamics are specified, both experimentally and theoretically, by observables (e.g., local-field potential in EEG, or neuronal firing rates). Properties can then be identified from these observables, such as wave patterns, hidden Markov states, or synchronization patterns, and they are often stationary or quasistationary in the statistical sense for the state's duration \cite{michel2017eeg, brinkman2022metastable, mazor2005transient} (as discussed in Sec. \ref{sec:observations}). 
+
+With these concepts, we propose that \Emph{states are metastable if they are transient but long-lived}. Thus, a metastable state is expressed continuously for a long time, but is eventually left by the system. More quantitatively, we define a state's duration $\tau$ as finite but longer than some characteristic time $\tau_0$ defining its dynamics, such that $\tau_0 < \tau < \infty$.
+% The first definition we propose is easy: metastability occurs when a system has metastable states. Then, we define (again) a \Emph{state as an epoch of the dynamics with typical and unique properties}. These properties are features (i.e. quantifiers, or observables) of the dynamics that characterize the state and are stationary or quasistationary in time in the statistical sense (i.e. their statistics remain roughly constant throughout the state). As we have seen in Fig. \ref{fig:observationsmetastability}, a state can be a pattern of activity (such as a wave pattern), of firing rates (such as a hidden Markov state), of synchronization, among many other possibilities. Then, we propose that \Emph{states are metastable if they are transient but long-lived.} A metastable state is expressed continuously for a long time, but is eventually left. More quantitatively, we can say a state is metastable if its duration $\tau$ is finite but longer than some characteristic time $\tau_0$ defining it (i.e. $\tau_0 < \tau < \infty$).
+
+Our definition of metastability is based solely on observables of a system. An important advantage of this approach is its ability to quickly identify metastability from experimental neurobiological data. Besides its experimental accessibility, the definition also connects directly to theoretical concepts of nonlinear dynamical systems theory, which allows for a theoretical framework based on the experimental observations that can also lead to deep theoretical insights. But to establish this connection, we first need to explore the concept of phase space: the phase space of a system is a multidimensional space in which each dimension corresponds to an observable that describes the system. For example, consider a system of $N$ neurons whose observables are their firing rates. The instantaneous firing rates at each time correspond to a point in this $N$-dimensional phase space. An equilibrium, in which the system's state is constant in time (e.g., constant firing rates across time), is a single point in this space, while a continuous periodic solution is a closed loop. The theory of dynamical systems shows that the geometry of structures like these underlies the systems' dynamics: the time evolution of a system is represented by trajectories in this phase space, and the stability of structures there can be interpreted according to geometrical properties in this space. In particular, an equilibrium  solution is stable if it attracts trajectories from all directions, and unstable if it repels trajectories from at least one direction. This notion allows us to extract a clear and simple \textit{dynamical principle} that underlies systems with metastability: metastable states occur due the coexistence of attracting and repelling directions around that state in phase space (as proposed similarly in Refs. \cite{tognoli2014metastable} and \cite{kaneko2003chaotic}). The ability of metastable states to retain trajectories is thus due to their attracting directions, and their finite duration is due to their repelling directions that push the trajectories away. 
+
+Furthermore, the phase space view also allows us to better specify the characteristic time $\tau_0$ through the tools from dynamical systems theory \cite{lai2009transient}. For continuous-time systems without external perturbations, $\tau_0$ can be, for instance, (i) the period of periodic oscillations, (ii) an average period for chaotic oscillations, or (iii) a characteristic return time to equilibria (fixed points, when perturbed) that can be obtained from the eigenvalues of the Jacobian at those points \cite{strogatz2002nonlinear}. For systems with external perturbations (driven systems), $\tau_0$ can be the period or a characteristic time of the forcing. In noisy systems, described by stochastic differential equations, metastable behaviors have an explicit timescale separation, and their characteristic times can be obtained from the eigenvalues of transfer operators \cite{bittracher2018transition, bittracher2021dimensionality}. Finally, for discrete-time systems, $\tau_0$ can be simply one iterate (i.e., the time-step) \cite{lai2009transient}. %In the next section, we explore and illustrate these geometrical ideas in more detail.
+
+
+\subsection{Dynamical mechanisms for metastability}
+\label{sec:mechanisms}
+Following our general definition of metastability, we now explain some important mechanisms that can generate metastability, all of which are known from nonlinear dynamical systems theory, but only a few of which have been discussed previously in the literature \cite{graben2019metastable, cavanna2018dynamic}. 
+
+We start with the role of \Emph{noise in a multistable system}. Specifically, we consider the simplest case, in which a particle moves with friction under the influence of an energy landscape composed of two wells separated by a hill. Without any external perturbation, the particle's trajectory converges to the bottom of one of the two wells, depending on its initial condition (where it is released and with which velocity). The bottom of each well therefore corresponds to a long-term state, called a \textit{fixed-point attractor}. Since the system has two attractors, it is called bistable. 
+When a periodic forcing is added to the system, the particle's trajectories evolve periodically around the well, on a \textit{periodic attractor}. Adding noise on top of this enables the trajectories to occasionally cross the hill separating the two wells. The trajectories thus spend time around one well, then hop to the other well, and repeat this cycle indefinitely. This phenomenon is called \textit{attractor hopping} \cite{kraut2002multistability}, and is shown in the time-series of the particle's position in Fig. \ref{fig:mechanismsmetastability}A. The system is no longer bistable, but it does have two metastable states, each corresponding to the dynamics around one well. This can also be seen in the particle's phase space, spanned by its position $x$ and velocity $dx/dt$, shown in Fig. \ref{fig:mechanismsmetastability}A\supprime. The times spent on each metastable state (called residence times, dwell times, or also permanence times) follow a probability distribution, such as an exponential distribution for Gaussian white noise \cite{hanggi1986escape} (Figure \ref{fig:mechanismsmetastability}A\textsuperscript{\everymodeprime\everymodeprime}). This mechanism of noise-induced transitions in multistable systems has been proposed for several observations of metastability in the brain \cite{brinkman2022metastable, hudson2017metastability}.
+
+Metastable states can also occur in the absence of noise or any external input, due different deterministic mechanisms. We concentrate now on some of these, starting with a \Emph{stable heteroclinic cycle}, which occurs here on a firing-rate model derived from three synaptically-coupled Hodgkin-Huxley neurons \cite{ashwin2011criteria}. Figure \ref{fig:mechanismsmetastability}B shows a trajectory on such a cycle, performing a sequential alternation between three distinct states. Each state is a fixed point of saddle type, meaning it has specific attracting directions (stable manifold) and repelling directions (unstable manifold) in phase space. Because of this, trajectories approach each saddle point along its stable manifold - and potentially spend a long time near it - but eventually depart along its unstable manifold. This makes each saddle point a metastable state. But the heteroclinic cycle itself is stable, since the manifolds are connected in such a way that trajectories repelled from one saddle point are attracted to the next, and so the trajectories cycle through each saddle sequentially in the same order eternally. Figure \ref{fig:mechanismsmetastability}B shows the time evolution of one variable, with each color representing one state, and Fig. \ref{fig:mechanismsmetastability}B\supprime shows the state space with the saddles and a trajectory. Each time a trajectory approaches a saddle, it comes ever closer to it, and so spends ever more time near it, leading to the sequence of residence times shown in panel B\ssupprime. Importantly, it can be shown that such heteroclinic cycles can globally attract trajectories \cite{nowotny2007dynamical} and are also conserved under small parameter changes (they are structurally stable) \cite{rabinovich2008transientcognitive}. 
+Moreover, it has been shown in neural networks that heteroclinic cycles depend on the inputs to the neurons, such that the cycle is sensitive to the stimulus to the network \cite{rabinovich2001dynamical}. Once the stimulus is applied, and the cycle is defined, it is robust against noise. So this mechanism allows for robustness to noise while keeping sensitivity to inputs \cite{rabinovich2001dynamical, rabinovich2008transientcognitive}. The heteroclinic cycle also generates sequential ordering of patterns, which may be relevant for reliable neural computations \cite{fonollosa2015learning}. It has also been proposed as the mechanism behind experimental observations \cite{rabinovich2008transientcognitive, rabinovich2008transientdynamics, rabinovich2012information} and theoretically hypothesized as a mechanism for cognition \cite{fonollosa2015learning, rabinovich2014chunking}.
+%
+\begin{figure*}[hbt]
+    \centering
+    % \includegraphics[width=\textwidth]{mechanismsmetastability.pdf}
+    \includegraphics[width=\textwidth]{mechanismsmetastability.png}
+    \caption{\textbf{Dynamical mechanisms of metastability.} Each column corresponds to one mechanism, with the panels respectively showing a representative time-series, trajectories in phase space, and the distribution of residence times in each identified metastable state. Further details in the main text and Supplemental Material.}
+    \label{fig:mechanismsmetastability}
+\end{figure*}
+% state is not necessarily the same as a single point in phase space - it can include more points.
+
+Now we move to another example, which involves a \textit{chaotic attractor}. Unlike the fixed point and periodic attractors discussed so far, the trajectories on a chaotic attractor are fundamentally unpredictable, which occurs because nearby trajectories on the attractor diverge exponentially from each other in time. For the example, the chaotic attractor results from the merging of two previously separated attractors, both also chaotic. In this case, the merged chaotic attractor has two distinct subregions, each one corresponding to one of the attractors before the merging. These subregions trap trajectories for a considerable time, following an exponential probability distribution \cite{grebogi1983crises} (Fig. \ref{fig:mechanismsmetastability}C\ssupprime). So that both subregions are metastable states. Figures \ref{fig:mechanismsmetastability}C and C\supprime show the intermittency between each metastable state, colored either green or purple. This mechanism is called an \textbf{attractor-merging crisis}. 
+It is interesting to note that the trajectories for this mechanism look similar to those for the noisy bistable systems (compare Figs. \ref{fig:mechanismsmetastability}A and \ref{fig:mechanismsmetastability}C). The key difference is that the transitions in the former are caused by noise, and in the latter they are caused by the deterministic dynamics of the system on the attractor, namely by a saddle periodic orbit mediating the crisis. Still, this highlights the often apparent similarity between noisy and chaotic dynamics, and the need for deeper analysis to distinguish between both \cite{boaretto2021discriminating}.
+
+Similar dynamics occur as a result of an \textbf{interior crisis}, another mechanism. In it, a parameter change makes a chaotic attractor suddenly occupy a larger region of phase space, which can be roughly decomposed into an inner core, that the previous attractor occupied, and an outer core, where the expansion took place. Trajectories near this attractor intermittently switch between the inner and outer cores, with an exponential distribution of residence times. The attractors near both crises, attractor-merging and interior, are two of many concrete instances of an idea proposed by Friston \cite{friston2000transients}, who argues that different metastable states can live in different subregions of the same attractor. This idea is also valid for other mechanisms we discuss in the sequence.
+
+In the two previous examples, the metastable states involved fixed points, periodic and chaotic attractors, all of which are said to be invariant - meaning that points belonging to these structures evolve to other points also belonging to them. Figure \ref{fig:mechanismsmetastability}D now shows that a metastable state can also correspond to a region of phase space without an existing invariant structure. This is the case near a saddle-node bifurcation of periodic orbits, leading to \Emph{type-I intermittency}. In time-discrete systems, it occurs when a pair of fixed points, a saddle (with attracting and repelling directions) and a node (only attracting directions) merge in phase space. The bifurcation destroys the saddle and the node, leaving behind only a \textit{ghost} of the node \cite{pomeau1979intermittency, pomeau1980intermittent, strogatz2002nonlinear}. In time-continuous systems, this mechanism occurs analogously for unstable and stable periodic orbits  \cite{medeiros2016trapping}, an example of which is the Lorenz system that we show in Fig. \ref{fig:mechanismsmetastability}D. Contrary to the stable limit cycle (or the node), the ghost is not invariant: trajectories on the ghost eventually exit it. Indeed, after the bifurcation, the trajectories converge to another attractor, such as a chaotic attractor for the system in the figure, where they have chaotic, irregular dynamics (purple part of Fig. \ref{fig:mechanismsmetastability}D). When they pass near the ghost, however, they spend a long time near it and become nearly periodic (green parts). Commonly, the ghost is embedded in the attractor of the system, as in this example, such that the trajectories get constantly reinjected near it after exiting, generating an asymptotic regime alternating between two metastable states: the ghost and the rest of the chaotic attractor \cite{pomeau1980intermittent}. The time spent on the ghost can be considerably long, but is finite for any fixed parameter \cite{pomeau1980intermittent}.
+Chaos is a mechanism for re-injection in deterministic systems, but re-injection can also occur in systems with noise \cite{medeiros2016trapping}. 
+This mechanism has been proposed by Kelso and colleagues as the mechanism for metastability in the brain \cite{kelso1991an, tognoli2014metastable}. It is another example of the general proposal by Friston \cite{friston2000transients}, since the trajectories here live on a chaotic attractor, which can nevertheless be separated in two distinct dynamical regimes: nearly-periodic (green) and chaotic dynamics (purple). 
+
+Another mechanism that leads to metastable states is due to a \Emph{chaotic saddle}. A chaotic saddle is similar to a chaotic attractor, with the distinction that it also has repelling directions (it is thus the analogue of a saddle fixed point for a chaotic set) \cite{lai2009transient}. As a consequence, trajectories can stay near the chaotic saddle for potentially very long times, displaying chaotic dynamics, before eventually being expelled from it \cite{yorke1979metastable}. This is the purple structure in Figs. \ref{fig:mechanismsmetastability}E and E\supprime. This behavior characterizes the chaotic saddle as a metastable state. The residence times for different initial conditions near the chaotic saddle follow an exponential distribution \cite{grebogi1983crises} (Fig. \ref{fig:mechanismsmetastability}E\ssupprime). We remark that trajectories on the chaotic saddle resemble the ignition behavior leading to conscious access shown in Ref. \cite{dehaene2005ongoing}.
+A chaotic saddle has been reported in networks of spiking neurons \cite{ansmann2016selfinduced}, in which, interestingly, it can be subdivided into three distinct dynamical regimes, corresponding to three subregions, which are all intermittently accessed. Therefore, also every subregion of that chaotic saddle can be considered metastable. Chaotic saddles have also been observed in other networks of spiking neurons \cite{keplinger2014transient, lafranceschina2015impact, hartle2017transient, kaminker2019alternating}.
+
+There are several other dynamical mechanisms for metastability beyond the ones discussed previously. One example is \Emph{on-off intermittency}, which is common, for instance in systems that can completely synchronize \cite{ashwin1994bubbling, ott1994blowout, saha2017extreme}, and occurs during transitions from synchronization to desynchronization induced by changing the global coupling strength. During these transitions, systems with on-off intermittency have trajectories that intermittently switch from a synchronized regime to a desynchronized one and back. The mechanism for this intermittency, and its statistical scaling, has been studied in detail \cite{ platt1993onoff, heagy1994characterization, hammer1994experimental, cenis1997symmetry}. It is one out of many possible mechanisms that can realize the coexistence of integration (synchronization) and segregation (desynchronization), often mentioned as a crucial need for the brain \cite{fingelkurts2001operational, tognoli2014metastable, tognoli2014enlarging, deco2015rethinking}. It is also a possible mechanism for the intermittent switching between UP and DOWN states exemplified in Fig. \ref{fig:observationsmetastability}C. Furthermore, evidence for on-off intermittency has been reported for EEG data of non-convulsive paroxysmal (high-amplitude) activity in rats with genetic absence epilepsy \cite{hramov2006onoff}. The study identified a power-law distribution of residence times characteristic of on-off intermittency in regular brain activity, which alternated with the epileptic paroxysms.
+A very similar mechanism is in-out intermittency \cite{ashwin1999transverse, ashwin2001influence,saha2018characteristics}. In addition, evidence for yet another type of intermittency, known as type-III intermittency \cite{pomeau1979intermittency}, has been reported in \cite{velazquez1999type}.
+
+Another example of metastability is \Emph{bursting} behavior, characterized by quick firing of spikes followed by a quiescent period (as in Fig. \ref{fig:observationsmetastability}F). Bursting is a ubiquitous mode of firing in neurons \cite{fox2015bursting}, and can have important functional roles due to its ability to generate more robust responses \cite{swadlow2001impact}. A simple model displaying bursting is the Hindmarsh-Rose neuron \cite{hindmarshmodel1984}. In it, an adaptation current causes the switching between the tonic spiking and the silence \cite{hindmarshmodel1984}. The whole trajectory is on stable limit cycle, but can still be decomposed into the tonic spiking and the silence, each of which can be considered metastable. This is yet another example of the idea proposed by Friston in \cite{friston2000transients}. 
+
+A similar important behavior is \Emph{mixed-mode oscillations}, in which trajectories alternate between periods of small amplitude (e.g., sub-threshold) and large amplitude oscillations (e.g., spikes) \cite{rotstein2014mixedmode}. There are various mechanisms for mixed-mode oscillations, which can involve either forcing the system to induce changes of parameters or through an adaptation variable that enables the switching between the two modes \cite{desroches2012mixed, rotstein2014mixedmode}.
+
+Another important example of metastable behavior is \Emph{chaotic itinerancy} \cite{kaneko2003chaotic}. This phenomenon has also been discussed in the context of neuroscience \cite{freeman2003evidence, tsuda2009hypotheses, tsuda2015chaotic}, and includes several specific mechanisms, and thus is also an umbrella term, but more specific than metastability as we define it here.
+
+
+\subsection{Subtypes of metastability}
+\label{sec:subtypes}
+The definition of metastability that we propose leads naturally to the classification of several subtypes. For instance, spontaneous and driven metastability (illustrated in Figs. \ref{fig:definitionsmetastability}G-G\supprime respectively). In spontaneous metastability, the transitions between states occur spontaneously, without the need for external perturbations to the system. In this case, the system may still be open (i.e., subject to external perturbations, such as noise), but the mechanism for the transitions is intrinsic to the system and can be separated from the perturbations. Conversely, in driven metastability the transitions occur due to factors external to the system itself, such as the presentation of a stimulus. Another important pair of subtypes is repeatable metastability and non-repeatable metastability (Figs. \ref{fig:definitionsmetastability}H-H\supprime). These are characterized by whether the metastable states eventually repeat in the time series or not. To avoid confusion, we emphasize that the repeated object is the metastable state (for instance, the neighborhood of some saddle periodic orbit), and not a single point in that space (which can only be visited repeatedly in periodic orbits). The case of non-repeatable states is sometimes called metastability en route to ground state \cite{brinkman2022metastable}. Note that the observations in Figure \ref{fig:observationsmetastability} are already classified into these subtypes. 
+
+Each mechanism has distinct but important functional roles: spontaneous metastability enables transitions between states without the expenditure of additional energy to stimulate the transitions \cite{tognoli2014metastable}, and guarantees that a system does not get stuck in the same state \cite{ito2008dynamics}; driven metastability is important for direct control of the transitions, and in stimulus-evoked cases.
+
+The mechanisms we have shown in Sec. \ref{sec:mechanisms} illustrate these different subtypes. There, only the first requires noise for the transitions; the rest have spontaneous transitions that can be robust with respect to noise. Furthermore, there the chaotic saddle (Fig. \ref{fig:mechanismsmetastability}E) is not repeatable, as it occurs only once in the observation, though the residence may be extremely long; the other metastable states shown are repeatable. Another distinction that can be made is in regards to the distribution of residence times. As shown in the third panel of each mechanism in Fig. \ref{fig:mechanismsmetastability}, the behavior of the residence times differs across some mechanisms: they may be extremely long (noisy bistable, especially for weak noise, heteroclinic cycle, attractor-merging crisis, and chaotic saddle); they may have a maximum value (saddle-node bifurcation), or even a constant value (for the periodic bursting in Hindmarsh-Rose neurons \cite{hindmarshmodel1984}, not shown in the figure).
+
+\section{Conclusions and outlook}
+
+Throughout this paper, we argue that the observations and formulations of metastability in neuroscience have so far been mostly restricted to each study's specific context. Our aim is to take these context-specific ideas and unify them into a general, context-independent, framework that can be used to both describe and understand metastable brain dynamics. We start by proposing a general definition of metastability as a regime with transient states that last for a significant amount of time. Metastability then becomes an umbrella term encompassing phenomena characterized by transient but long-lived states, and each context-dependent case then fits neatly into a subtype of metastability.  The definition depends solely on observable aspects of the system, making it directly applicable to experimental data. 
+
+On top of this dynamical aspect, the definition of metastability can be connected to the theory of nonlinear dynamical systems, allowing us to extract a simple dynamical principle underlying metastable states: the coexistence of attracting and repelling directions in phase space.  This general principle can occur due to several dynamical mechanisms. Using again the theory of nonlinear dynamical systems, we discuss some of these mechanisms, providing further insights into previously discussed mechanisms and proposing several additional ones. This approach provides insights on the distinct subtypes of metastability, for instance on the difference between noise-induced and spontaneous transitions between metastable states. It also gives further insights into mechanisms already proposed in the literature. One example is the several concrete instances we have provided for an abstract mechanism proposed by Friston in \cite{friston2000transients} of metastable states corresponding to sub-regions of a same attractor. Another example is the proposal of additional mechanisms that can account for the coexistence of segregation and integration, which go beyond what was already proposed in the literature. 
+
+Future works can use this framework to further develop the current understanding of metastable brain dynamics, since each dynamical mechanism has distinctive signatures that can be explored to identify them from experimental data. Knowledge of the mechanisms is crucial for developing better control of the systems and for better predicting their behavior. This possibility constitutes an exciting avenue of future research, that requires both theoretical works exploring the signatures of each mechanism and experimental works in obtaining and dealing with data to find those signatures. Recent advancements in the identification of system equations from data \cite{voss2004nonlinear, brunton2016discovering, tabar2019analysis, anvari2016disentangling} could prove very fruitful here. Therefore, we believe that the framework we establish here is crucial in uniting the observations and formulations of metastability in neuroscience, and also in uniting several research areas towards the goal of understanding metastable brain dynamics. 
+
+
+\section*{Acknowledgments}
+We would like to thank inspiring discussions with James A. Yorke, Klaus Lehnertz, and Nicolás Rubido. K.L.R. was supported by the German Academic Exchange Service (DAAD). E.S.M acknowledges the support by the Deutsche Forschungsgemeinschaft (DFG) via the project number 454054251. B.R.R.B. acknowledges the support of the São Paulo Research Foundation (FAPESP), Brazil, Proc. 2018/03211-6 and 2021/09839-0. This work was partially supported by BrainsCAN at Western University through the Canada First Research Excellence Fund (CFREF), the NSF through a NeuroNex award (\#2015276), the Natural Sciences and Engineering Research Council of Canada (NSERC) grant R0370A01, and the Western Academy for Advanced Research. R.C.B gratefully acknowledges the Western Institute for Neuroscience Clinical Research Postdoctoral Fellowship.
+
+\section*{Supplementary material}
+\subsection{Models}
+The code used to generate Figure 3 in the main text is available in the GitHub repository \cite{rossi2022repository}. All the code is done in the Julia computational language \cite{bezanson2017julia}; integration was done with the package DifferentialEquations.jl \cite{rackauckas2016differential}, with the aid of packages DynamicalSystems.jl \cite{datseris2018dynamical} and DrWatson.jl \cite{datseris2020drwatson}. Plots were made with Makie.jl \cite{danisch2021makie}.
+
+\subsubsection{Noisy bistable}
+The noisy bistable system, also known as the noisy Duffing oscillator \cite{strogatz2002nonlinear}, is given by:
+\begin{align}
+    \dot{x} &= v + \eta_1 \dot{W}\\ 
+    \dot{v} &= -ax^3 + bx -c -dv + f\cos(\omega t) + \eta_2 \dot{W},
+\end{align}
+with $\dot{W}$ describing a white Gaussian noise. The equations describe the evolution of a particle on a double-well (quartic) potential $U(x) = ax^4/4 -bx^2/2 +cx$ being periodically driven and with noise.
+The parameters used were $a=0.5$; $b=8.0$, $c=0.0$, $d = 0.2$, $f = 0.0$, $\omega = 1.0$, $\eta_1= \eta_2 = 0.18$, with initial condition $(0, 0)$. 
+
+% Each well corresponds to a fixed point in this system. Without noise, trajectories would converge to one of the fixed points and stay there indefinitely, as they would be stable. But the noise kicks trajectories away from the fixed points, such that, the fixed point now become metastable. For noise amplitudes that are not too high, the trajectory keeps alternating between dwelling near one (now metastable) fixed point and dwelling near the other, as shown in Fig. \ref{fig:observationsmetastability}(a). 
+
+\subsubsection{The heteroclinic cycle}
+The heteroclinic cycle occurs in a rate model derived from Hodgkin-Huxley type neurons with synaptic coupling \cite{ashwin2011criteria}. The equations are given by:
+\begin{align}
+\tau\dot{s_i} &= \left( r_i - s_i/2 \right) \frac{S_\mathrm{max} - s_i}{S_\mathrm{max}} \\
+\tau\dot{r_i} &= x_0 F\left( I - \sum_{j=1}^N g_{ij} s_j \right) \tau - r_i \\
+\end{align}
+for $i = 1, 2, 3$, with 
+\begin{equation}
+    F(x) = \exp(-\epsilon/x) [\max(0, x)^\alpha ]. 
+\end{equation}
+
+The matrix $g$ is constructed such that $g_{21} = g_{32} = g_{13} = g_1$, $g_{12} = g_{23} = g_{31} = g_2$ and $g_{11} = g_{22} = g_{33} = 0$. The parameters are $\tau = 50$, $\epsilon = 10^{-3}$, $I = 0.145$, $S_\mathrm{max} = 0.045$, $g_1 = 3.0$, $g_2 = 0.7$, $x_0 = 2.57 \times 10^{-3}$, and $\alpha = 0.564$.
+
+The numerical integration is best done with a change of coordinates $z_i \equiv \log(S_\mathrm{max} - s_i)$, which reduces the numerical precision difficulties associated with the trajectory getting too close to the stable manifold of the fixed points. The initial condition was $(0.5, 0.2, 0.4, 0.9, 0.5, 0.6)$. 
+
+% The heteroclinic cycle as a whole is an attractor of the system. But the trajectories on the cycle alternate between the three saddle fixed points. Each saddle has distinct properties (their position in phase space), and the duration near them is long, so each saddle is a metastable state.
+
+\subsubsection{Attractor-merging crisis}
+We have provided an example of attractor-merging crisis for the Duffing oscillator, whose dynamics is described by \cite{ishii1986breakdown}: 
+%
+\begin{align}
+    \dot{x} &= v \\ 
+    \dot{v} &= -ax^3 + bx -dv + f \cos(\omega t) 
+\end{align}
+
+with parameters $a = 100$, $b = 10$, $d = 1.0$, $f = 0.852$, $\omega = 3.5$ and initial condition $(x,v) = (0.11, 0.11)$.
+
+\subsubsection{Type I intermittency}
+The system used to obtain the type I intermittency is the Lorenz63 model \cite{lorenz1963deterministic}. The equations are given by 
+\begin{align}
+    \dot{x} &= \sigma(y - x) \\ 
+    \dot{y} &= x(\rho - z) - y \\ 
+    \dot{z} &= xz - \beta z \\
+\end{align}
+
+The parameters used in the figure are $\sigma = 10$, $\beta = 8/3$ and $\rho = 166.1$, based on \cite{yorke1979metastable}. The parameter used to obtain a stable limit cycle (before the saddle-node bifurcation) was $\rho = 166.06$. The initial condition was $(0.1, 0.1, 0.1)$. 
+
+
+% The trajectories alternate between the ghost of the limit cycle (where they have almost periodic behavior) and between chaotic behavior. In the example shown in Fig. \ref{fig:observationsmetastability}(c), the periodic regime lasts for a long time, compared to its own period, so it is a metastable state. The chaotic regime cannot be considered metastable in the figure, since its duration is too short. For other parameter choices, the chaotic phase can be much longer, and then it would be characterized as metastable. 
+
+\subsubsection{Chaotic saddle}
+The chaotic saddle shown in the figure occurs in the Ikeda system \cite{alligood1997book}, which has discretized time:
+\begin{align}
+    x_{n+1} &= a+b(x_n \cos(t_n) - y \sin(t_n)) \\ 
+    y_{n+1} &= b(x_n \sin(t_n) - y_n \cos(t_n)), \\ 
+\end{align}
+with 
+\begin{equation}
+    t_n = c - \frac{d}{1 + x^2 + y^2}.
+\end{equation}
+The parameters used for the chaotic saddle were $b = 0.9$, $c = 0.4$, $d = 6.0$, $a = 1.003$. The saddle occurs due to a boundary crisis, which occurs for a slightly smaller $a$. For reference, the value of $a$ used to obtain a chaotic attractor was $a = 0.997$. The initial condition was $(2.97, 4.15)$. This is the only mechanism in the figure where the initial condition is important: to reproduce the behavior, the trajectories need to be initialized near the chaotic saddle.
+
+
+% The time on the chaotic saddle is potentially very long (see the scaling in Fig. \ref{fig:observationsmetastability}(d)). Therefore, it is also a metastable state \cite{yorke1979metastable}.
+
+
+
+
+% \subsubsection{Bursting}
+% The bursting neuron shown in the figure is due to Hindmarsh and Rose \cite{hindmarshmodel1984}. The equations are 
+% \begin{align}
+%     \dot{V} &= y - aV^3 + bV^2 -z +I \\ 
+%     \dot{y} &= c - dV^2 - y \\ 
+%     \dot{z} &= r[s(V - x_r) -z]. 
+% \end{align}
+
+% The parameters used were $a=1$, $b=3$, $c=1$, $d=5$, $x_r=-8/5$, $s=4$, $r=0.001$, $I=2.0$, with initial conditions $(-1, 0, 0)$.
+
+% This final example in Fig. \ref{fig:observationsmetastability}(e) shows a bursting behavior that is stable: the trajectory tends to a limit cycle composed of the green and purple regions. We separate these regions because each has a distinct property: the green corresponds to spikes (circling around in phase space), the purple to quiescence (converging a stable node). Because they have distinct properties, they can be considered as different states. We defend that even here the at least the green state is metastable, since is lasts several cycles. But we concede that this is a sort of a pathological case.
+
+
+% \bibliographystyle{apalike}
+%\bibliographystyle{unsrt}
+%\bibliography{references}
+\nocite{*}
+\input{perspective.bbl}
+\end{document}

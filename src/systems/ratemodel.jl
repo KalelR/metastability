@@ -11,6 +11,7 @@ mutable struct rateparams
     τ :: Float64
     x₀ :: Float64
     α :: Float64
+    η :: Float64
 end
 
 function rateparams()
@@ -27,7 +28,8 @@ function rateparams()
     gs[2,1] = gs[3,2] = gs[1,3] = g₁
     gs[1,2] = gs[2,3] = gs[3,1] = g₂
     gs[1,1] = gs[2,2] = gs[3,3] = 0.
-    return rateparams(gs, I, ϵ, Smax, τ, x₀, α)
+    η = 0.0
+    return rateparams(gs, I, ϵ, Smax, τ, x₀, α, η)
 end
 
 # --------------------------- Naive implementation --------------------------- #
@@ -86,10 +88,25 @@ function fixedpoints_ratemodel(p)
     fps = [fp1; fp2; fp3]';
 end
 
-function heteroclinic_cycle(; u0 = [0.5, 0.2, 0.4, 0.9, 0.5, 0.6], T = 1e6)
+
+@inbounds function ratemodel_noise_rule!(du,u,p,t)
+    @unpack η = p
+    # du .= η
+    du[[1,3,5]] .= η
+end
+
+
+using RandomNumbers
+function heteroclinic_cycle(; η=0.0, u0 = [0.5, 0.2, 0.4, 0.9, 0.5, 0.6], T = 1e6, rngseed=1)
     p = rateparams()
-    tspan = (0, T);
-    hcgh = ODEProblem(ratemodel_rule_Z!, u0, tspan, p);
+    if η != 0 
+        p.η = η
+        rng = Xorshifts.Xoroshiro128Plus(rngseed)
+        W = WienerProcess(0.0, 0.0, 0.0; rng)
+        hcgh = SDEProblem(ratemodel_rule_Z!, ratemodel_noise_rule!, u0, (0, T), p; noise=W, seed=rngseed)
+    else
+        hcgh = ODEProblem(ratemodel_rule_Z!, u0, (0, T), p);
+    end
     return hcgh, p
 end
 

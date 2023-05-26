@@ -1,0 +1,568 @@
+%  \documentclass[12pt, onecolumn, a4paper]{article}
+\documentclass[preprint,superscriptaddress,showpacs,amsmath,amssymb,aps,pre,floatfix]{revtex4-1}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}		
+\usepackage{natbib}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{siunitx}
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{amsthm}
+\usepackage{float}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+% to discuss
+% unifying definition?
+% spontaneous
+% two subsystems
+% \usepackage[a4paper, margin=2.7cm]{geometry}
+% \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue,breaklinks]{hyperref}
+% \usepackage[affil-it]{authblk}
+% \title{Definition and Quantification of Metastability in Neuroscience}
+
+\begin{document}
+%\title{What is Metastability? Definition in Neuroscience}
+\title{A general definition of metastability for Neuroscience}
+\author{K. L. Rossi}
+\affiliation{Theoretical Physics/Complex Systems, ICBM, Carl von Ossietzky University Oldenburg, Oldenburg, Lower Saxony, Germany}
+\affiliation{Department of Physics, Universidade Federal do Paran\'a, Curitiba, Paran\'a, Brazil}
+\author{R. C. Budzinski}
+\affiliation{Department of Mathematics, Western University, London, Ontario, Canada}
+\affiliation{Brain and Mind Institute, Western University, London, Ontario, Canada}
+\author{B. R. R. Boaretto}
+\affiliation{Institute of Science and Technology, Federal University of São Paulo, São José dos Campos, São Paulo, Brazil}
+\author{E. S. Medeiros}
+\affiliation{Theoretical Physics/Complex Systems, ICBM, Carl von Ossietzky University Oldenburg, Oldenburg, Lower Saxony, Germany}
+%\author{S. R. Lopes}
+%\affiliation{Department of Physics, Universidade Federal do Paran\'a, Curitiba, Paran\'a, Brazil.}
+\author{L. Muller}
+\affiliation{Department of Mathematics, Western University, London, Ontario, Canada}
+\affiliation{Brain and Mind Institute, Western University, London, Ontario, Canada}
+\author{U. Feudel}
+\affiliation{Theoretical Physics/Complex Systems, ICBM, Carl von Ossietzky University Oldenburg, Oldenburg, Lower Saxony, Germany}
+% \affil[*]{kalel@fisica.ufpr.br}
+% \date{February 2021}
+
+
+\begin{abstract}
+This is a draft version to show the authors and aid in the discussions. The general idea is that metastability is an phenomenon in Neuroscience, but its definition can vary significantly between works. This lack of a clear general definition can be dangerous from a theoretical and experimental points of view, so we intend to review the different views on the literature, categorize and compare them, and propose more general/rigorous/clear definition. The current approach bases this definition on the one used in Physics (from where the idea of metastability came), matching some works already present in the literature and generalizing the rest.
+\end{abstract}
+
+\maketitle
+\tableofcontents
+\section{Introduction}
+This version is an early draft for the authors to read and discuss. Segments more likely to need discussions are \textcolor{orange}{highlighted in orange}. 
+
+Metastability is a widely studied phenomenon in several sciences, such as Physics, Chemistry and Computer Science. A usual definition for it is that of an apparent equilibrium state, in which a system stays for some time before eventually transitioning to another apparent equilibrium or to a real equilibrium. An alternative, related, definition is also used: that a metastable system is a local, but not global, minimum of energy of the system; a system can spend time in the local minimum, but some perturbation, external or even thermal, can kick it away, and towards another minimum, until eventually reaching the global minimum. As such, it is found in a variety of systems, like in those near first-order phase transitions (such as water freezing), in the conformation of large proteins, and in oscillatory chemical reactions \cite{bovier_2009}.  
+
+This concept was eventually brought into the neuroscience literature by Scott Kelso \cite{fingelkurts_2008, fingelkurts_2017, deco_2017}, who used it in a classic model of coordination dynamics, the extended HKB (Haken-Kelso-Bunz) model \cite{kelso_1995, kelso_1995book}. Drawing from his brain-behavior experiments, he used metastability in the context of oscillatory brain states between complete synchronization and independence, and integration and segregation of brain areas \cite{deco_2017, kelso_1995book, tognoli_2014, kelso_2017}. 
+However, with time the name and the meaning drifted apart: several definitions are now present throughout the Neuroscience literature, ranging from metastability being the regime for integration and segregation of areas, to the regime with variability of synchronization. The definitions are related, but are not necessarily equivalent. 
+This can lead to a variety of problems and confusions, as the same name can refer to distinct behaviors, and conclusions from works on "metastability" may not be consistent.
+
+For instance, in several works, with different definitions, metastability is seen as an important phenomenon for brain functioning, as works have proposed its role in the control of integration and segregation of brain areas \cite{tognoli_2014, fingelkurts_2004, alderson_2018}; in maximizing the dynamical repertoire of possible brain states \cite{ponce-alvarez_2015, alderson_2020, hellyer_2014, cordova-palomera_2017}; and in the rapid changes of neural ensembles \cite{shanahan_2010, kahana_2006}. It is not initially clear how to compare these works and considerations since the meaning of metastability is not the same in some of them.
+
+In this work, we start by reviewing the different definitions of metastability that can be found throughout the literature. We have been quite pedantic with this, running the risk of boring the reader with very similar definitions. This is then justified, as we then discuss the similarities and differences between these definitions, which can be quite subtle. With this, we propose a more rigorous, general definition, which involves the original, Physics definition. We then discuss how our definition relates to the previous definitions, several of which form subtypes of metastability. This helps to highlight the relation between all the different definitions, and clarifies the relation between the particular phenomena studied in each of the works. We believe that this helps avoid confusions between different papers by putting authors on the same page, and that it can also be a step forward towards a unified framework to think about metastability.
+
+
+
+\section{Definitions of Metastability in the literature}
+We start this section providing the usual definitions of metastability in Physics. This is important to create an intuition on the term and for our definition, present in Sec. \ref{sec:ourdef}. Then we move to the definitions in Neuroscience. 
+
+\subsection{In Physics}
+\label{sec:physdef}
+Originating from Statistical Physics, metastability has acquired two related definitions in Physics and other sciences.
+In the first, metastability occurs when a system spends a long period of time in an apparent equilibrium (called a metastable state), before eventually transitioning quickly to another apparent equilibrium or to a real equilibrium \cite{olivieri_2005, bovier_2009, hollander_2009}. The reason for this transition depends on the system; it can be stochastic, for instance due to thermal agitation, due to external perturbation \cite{bovier_2009, hollander_2009}, or also a spontaneous fluctuation from the system \cite{olivieri_2005}.
+
+The second definition is related to the first, but views metastability on an energy landscape: the metastable state in this case is a local, but not a global, minimum of energy. Since systems tend to minimize their energy, the system may stay a very long (unbounded, in fact) period of time in the metastable state. This is a common definition also in quantum physics \cite{makela_1997, gunton_1983}. In classical systems, a sufficiently strong perturbation is then required to take it away from the local minimum, from which the system then tends toward the global minimum \cite{sewell_1980, pathria_2011, reichl_2016, kardar_2007}. In quantum systems, this transition could also occur spontaneously, from tunneling.
+
+A classic example of a metastable state is in the case of water. Starting from a liquid state (in SP terms, a liquid phase), if the water is slowly cooled down, even below the freezing point, it can remain in a liquid phase, instead of transitioning to a solid phase. The properties of this metastable liquid are very similar to those of the stable liquid. But perturbations in this liquid can start a nucleation process, in which part of it freezes, and lead to all the rest freezing also. Another illustrative example occurs in spin systems, like the finite Ising model [Brinkman 2021, preprint].
+%
+\begin{figure}
+    \centering
+    % \includegraphics[width=\columnwidth]{Figs/energy-landscape.png}
+    % \includegraphics[width=\columnwidth]{Figs/metastable-transition-stable.png}
+    \includegraphics[width=\textwidth]{Figs/physics-defs.png}
+    \caption{Physics definitions of metastability.}
+    \label{fig:physdefs}
+\end{figure}
+
+% equilibrium state phases
+% It is important to remark that both the apparent and real equilibria are \textit{thermodynamic states} of the system 
+% The meaning of a system's state (including the apparent and real equilibrium concepts) needs some clarification. In general, they are meant as the thermodynamic macrostate of the system, a condition which at any time fully characterizes it macroscopically, generally through a set of thermodynamic variables (such as temperature, entropy or free energy). However, it is also possible that a state is meant as a \texit{microstate}, which instead describes the microscopic variables of the system. \textcolor{orange}{May be importante to discuss this.}
+
+It is important to remark that in the context of the previous two definitions, the states of the system (including the apparent and real equilibria) are \textit{thermodynamic states}.  A thermodynamic state is a condition of the system at any time that fully characterizes it macroscopically, generally through a set of thermodynamic variables (such as temperature, entropy, and energy).  The thermodynamic state does not include microscopic variables of the system - its macroscopic behavior is being looked at, not its microscopic.
+%For dynamical systems, including the brain, this is not the exact meaning we will deal with, but this is discussed further.
+
+Some definitions include a mention of a final, real equilibrium \cite{olivieri_2005}, as we mentioned before. In \cite{bovier_2009}, however, the definition only mention transitions between apparent equilibria (the metastable states).
+In that case, to identify one phase as metastable, it is enough to verify that the system leaves it (after some period of time). It is unnecessary to check if the system eventually reaches the real equilibrium. For systems, like the brain, whose parameters and inputs vary over time, the real equilibrium may change before the system even has time to reach it. {\it In this case, an alternative is to define metastability as the regime with a succession of apparent equilibria (that is, of metastable states). }
+
+
+
+
+
+\subsection{In Neuroscience}
+Scanning the neuroscience literature, we extracted definitions of metastability used either explicitly or implicitly by authors. This is not a necessarily straightforward job, since papers do not necessarily state the definition clearly, and often mention several descriptions of metastability, which are different views on the same behavior. In the case where no single definition could be extracted, we consider the different views present in the paper as distinct, simultaneous, definitions, and mention them independently here. Furthermore, it is often the case that consequences of the definition in one paper are the actual definition in another.
+
+\subsubsection{Definition 1a - Variability of states }
+\label{sec:varstates}
+Metastability here denotes the regime with a successive expression of the system's states over time. For a definition to enter this category, it has to explicitly use the term state.
+% Definitions in this category use the idea of a state, which can be concretely or abstractly defined, depending on the work. 
+The state can be concretely described as a set of variables or measurements characterizing or representing the system, like neuronal firing rates \cite{mazzucato_2015, lacamera_2019, afraimovich_2010}, a degree of phase synchronization \cite{alderson_2020, lee_2017, vasa_2015, hellyer_2014, naik_2017}, saddle-sets in phase space \cite{rabinovich_2008} or simply quasi-equilibrium points in phase-space \cite{cavanna_2018}. It can also be left as an abstract concept \cite{werner_2007}. The authors in \cite{bhowmik_2013, wildie_2012} confine themselves to synchronized states, in which case metastability is characterized by migrations between synchronized states. 
+% shanahan n define estado, só diz que ele precisa ser sincronizado
+
+Since each of these states is successively replaced by another, none of them are a real equilibrium. They are unstable states that are visited for some time ("attractor-like" \cite{vasa_2015, hellyer_2014, shanahan_2010, wildie_2012}), generally called metastable states (metastates). La Camera et al. in \cite{lacamera_2019} require the transitions between states to be abrupt, ``jump-like".
+
+A lot of care has to be taken regarding the exact meaning of a state, which we discuss later. %The state studied in some works characterizes the system in some way, but does not characterize it fully. %For instance, a system may have different configurations of phases which lead to the same degree of phase synchronization. 
+% Furthermore, one can distinguish generally two types of state. A dynamical state is the point in phase space (the sequence of points being the trajectory of the system), and metastability here is a phase-space view of definition 1a, the variability in the dynamical states. However, another, more macroscopic, view of state is possible, which we call a thermodynamic state, which uses other quantifiers, like degree of synchronization or firing rates. 
+
+
+\subsubsection{Definition 1b - Variability of activity patterns}
+\label{sec:varpatterns}
+Metastability here denotes the regime with a successive expression of activity patterns over time \cite{friston_1997, friston_2000transients, varela_2001, roberts_2019}. To enter this category, the terms pattern or activity have to be explicitly mentioned.
+
+Karl Friston requires these activity patterns to be "distinct, self-limiting and stereotyped" \cite{friston_1997}, referring to them as transients. 
+
+Activity of the system can be observed as a set of numbers describing, or reflecting the system's behavior. It can be the time series of average membrane potential of neurons in various regions \cite{roberts_2019}(*), time series of membrane potentials \cite{friston_1997, friston_2000transients}(*), or local-field potentials (LFPs) \cite{friston_2000transients}. 
+
+The patterns can be temporal or even spatial. In \cite{roberts_2019}, successive waves of electric potential are identified in whole-brain models, each denoting a spatial pattern, and their succession denotes metastability. In \cite{friston_2000transients}, the frequency composition of the system's activity is seen to change in time.
+
+Each pattern can, naturally. reflect or represent the system's state, so that this definition can be considered a subcase of 1a. 
+
+\subsubsection{Definition 1c - Variability of synchronization or phase configurations}
+\label{sec:varsync}
+Metastability here refers directly to the variability in time of degrees of synchronization, or of oscillation phases, with no mention of states. 
+It can denote (i) variability of the global degree of phase synchronization \cite{cabral_2011, deco_2017}; (ii) variability of the states of phase configurations (how synchronization fluctuates between nodes) \cite{deco_2016, deco_2017}; or (iii) variability in the relative phases of nodes \cite{ponce-alvarez_2015, tognoli_2014}; (iv) variability in phase-locking between neural assemblies \cite{aguilera_2016}. 
+
+All these cases can be viewed as a subset of definitions 1a or 1b if the synchronization measure defines or reflects a system's state or activity pattern. 
+
+
+\subsubsection{Definition 1d - Variability of regions in phase-space}
+\label{sec:varphasespace}
+Metastability here refers directly to a regime with transitions between regions in phase space \cite{hudson_2017,  beimgraben_2019}. The trajectory of the system spends time in certain regions, and then moves to other regions.
+Each region can be an attractor, in which case the trajectory is only near it, not inside \cite{hudson_2017}
+
+The region in phase-space where the system spends time can correspond to a state, or to a variety of different states, depending on the definition of a state. In this case, definition 1d can be a phase-space view of definition 1a. It should be also emphasized that knowing the structures in a system's phase-space is not necessarily doable in experimental situations, so that this definition can not always be applied.
+
+
+\subsubsection{Definition 1e - Variability of regions in energy landscape}
+\label{sec:varenergy}
+Metastability here refers to a regime with transitions between local minima of energy in an energy landscape. In this case, the system transitions from one state to another due to either external perturbations or to another dimension in the landscape \cite{gili_2018, cavanna_2018, aguilera_2016}. This definition is one of the definitions present in the Physics literature.
+
+If the energy value describes a system's state, or represents its activity pattern, then this definition can be considered a specific case of 1a and 1b. This is not, however, an easy job, since the system may be, for instance, degenerate, and the same value of energy can occur for different states.
+
+% \textcolor{orange}{What about a flat energy landscape? there is a recent paper by deco discussing flattening of energy landscapes due to LSD. }
+
+
+\subsubsection{Definition 2 - Regime for integration and segregation of neural assemblies}
+Metastability is often viewed as a dynamic regime that naturally implements the dual need for integration and segregation in the brain. 
+The most common approach is to define metastability through one of the previous definitions, and consider integration-segregation as a consequence, or a manifestation of metastable dynamics \cite{kozma_2016}: since a integration-dominated regime and a segregation-dominated one are different states, variability in states naturally implements variability in degree of IS. 
+% If, instead, a system with integration and segregation follows in time a sequence of integrated and segregated states, then this is a special case of definition 1a.
+However, other authors \cite{fingelkurts_2001, fingelkurts_2004, kelso_2017, tognoli_2014, tognoli_2014a, bressler_2016, kelso_2012, hellyer_2015} define metastability directly as the regime with this tendency of integration-segregation. The previous definitions are then seen as consequences of the IS tendency.
+
+Kelso and Tognoli, who opt for the latter approach of viewing metastability as the regime for integrative and segregative tendencies, also defend the mechanism for metastability as intermittency occurring right after a saddle-node (tangent) bifurcation \cite{tognoli_2014, bressler_2016}. In this case, the system spends some time in a certain region of phase-space, then leaves it and visits another region, before eventually returning \cite{kelso_1991}. In this case, a dynamical definition seems more natural, with integration~segregation being a consequence. %\textcolor{orange}{I don't know why they do this, their definitions are very confusing, discuss?}
+
+Fingelkurts and Fingelkurts refer to metastability as a regime with this integration-segregation, but also follow the definition 4 of a metastable state (see Sec. \ref{sec:role:int-seg} for more discussions).
+
+We also remark that a common way to view the communication between areas is in their degree of synchronization (zero-lag or otherwise). This can relate definition 2 to definition 1c.
+
+\subsubsection{Definition 3 - Outside natural equilibrium }
+Some works in neuroscience refer to metastability as the ``regime outside the natural equilibrium state of the system but persists for an extended period of time" \cite{deco_2017, deco_2015, naik_2017, kringelbach_2015}. It is unclear the exact meaning of ``natural", but it is probable that natural equilibrium means the real equilibrium of the system, as is indicated in other definitions \cite{alderson_2020} dropping this word.
+In this case, this definition is very close to the Physics definition. It also very readily leads to the variability of states definition, if more than one metastable state is available, or if a parameter change leads to the metastable state changing.
+
+
+\subsubsection{Definition 4 - Metastable states}
+\label{sec:defmetstates}
+There are works that do not mention or discuss metastability, but use the term metastable state to refer to states of apparent equilibrium, which last only for some finite time \cite{rabinovich_2008}.
+
+Fingelkurts and Fingelkurts also do this. In their theory of Operational Architectonics, a central concept is that operational modules, which are metastable (in the sense of stable only for some time) spatiotemporal activity patterns (also refereed as metastable brain states) \cite{fingelkurts_2008}. 
+
+
+\section{Proposed definition}
+\label{sec:ourdef}
+
+We can take two criteria to base our definition on. First, metastability as it is in physical systems (e.g. double well with noise). There, each metastable state is an attractor (when there is no noise); there is a coexistence of attracting and repelling tendencies; systems spend a potentially long time there, typically longer than the transition times. Secondly, metastability needs to fullfill the potential functional roles ascribed to it in neuroscience. This means in general that metastability needs to (i) afford the system the ability to "easily" switch between a variety of different states, each of which lasts for a sufficiently long duration for them to be functionally useful. Additionally, it also means that (ii) the states are repeatable: the system may leave them and come back after some time - this is important e.g. for coding \cite{brinkman2022}.
+
+We can think of a metastable state (metastate) as a transient attractor: a non-zero measure set of trajectories go to it and stay there for a nontrivial but also not indefinitely long amount of time. Nontrivial meaning more than the time they take to pass through other regions.
+Metastable states are (i) regions of state space (i.e. sets of points in state space); (ii) trajectories go to these states and dwell on them for a time; (iii) this time is longer than the time they spend transition regions (i.e. nonmetastable and nonstable regions) but also not infinite (metastates are not stable). Metastable systems have therefore at least two time scales: one for the duration of metastable states, another for the transition regions. 
+
+Let's define the metastable state and transition regions for a few examples:
+1. Saddle-node intermittency: laminar phase is metastable; turbulent phase may be metastable
+
+
+
+
+Should we require that metastable states be repeatable??
+
+Additionally, we should probably specify that the metastable states are minimal, so that e.g. the metastable states in the heteroclinic cycle are each saddle point, and not a set with more than one saddle. 
+
+\subsection{Alternative definitions}
+1. retaining trajectories. This is a nice idea, but I think it complicates matters only.
+2. coexistence attracting/repelling directions or tendencies. A bit vague... and how would yuo show that for an experimental time series?
+3. mecanism that retains trajectories in the region: similar to 2, a bit vague and hard/unclear how to show that for a time series
+4. existence of a distribution of dwell times; i dont think that fits w the neuroscience view
+
+
+% It is clear from the previous section that most definitions of metastability in Neuroscience are encompassed by definitions 1a, which refers to states. The exact meaning of a \textit{state} then needs to be carefully considered. One possible view is a state as the set of system's variables that fully characterizes the system, down to the microscopical detail. In this sense, a state can be regarded as a point in phase space.
+% Another view is a state as the set of observables or measures that characterizes the system, but not fully. It may represent the system's macroscopic condition only, such that several microscopic states can account for the same macroscopic state. Or it can represent structures in a system's phase space. For instance, consider a system with an attracting limit cycle. Its trajectory in phase space is periodic on this attractor, such that its microscopic state is constantly changing, but its macroscopic state is always the same (the limit cycle). 
+% Following the Physics approach, as discussed in Sec. \ref{sec:physdef}, we defend the second view, of a macroscopically-defined state, which henceforth we call simply a state. 
+
+% This also agrees with the views in several neuroscience works following definition 1a. However, for a sequence of states to be metastable, we need to impose additional restrictions. A state has to be reliable (last for a sufficiently long time), stereotyped (well-defined in space and time), self-limiting (defined by itself, independent of other patterns), and minimum (in the sense that it is the smallest pattern that can be observed). The reason for these restrictions is explored in subsequent questions. For now, we propose a general definition of metastability as
+% %
+% \begin{definition}[]
+% Metastability is the regime with a successive expression of transient states of the system.
+% \end{definition}
+% Each transient state is called a metastable state, or metastate, and a system with metastability is called also metastable.
+
+% In practice, the observables or measures used to define a state are a choice for each work, depending on the relevant and interesting behavior being observed.
+
+% In Neuroscience, and dynamical systems in general, a state can be observed as a pattern of activity of the system. Activity is meant as the spatiotemporal evolution of one or more variables describing the system, and includes fMRI data or firing rate of neurons \cite{afraimovich_2010}, for instance. A pattern is understood as a sample or collection of traits or characteristics in the spatiotemporal activity of the system. In this case, another, more practical definition of metastability can be
+% % Furthermore, the patterns need to be reliable (last for a sufficiently long time), stereotyped (well-defined in space and time), self-limiting (defined by itself, independent of other patterns), and minimum (in the sense that it is the smallest pattern that can be observed).  In this case, we arrive at our final, unifying definition of metastability:
+% %
+% \begin{definition}[Practical]
+% Metastability is the regime with successive expression of distinct activity patterns.
+% \end{definition}
+
+% Also, each distinct activity pattern (following the criteria established before) is called a metastable state.
+% This definition follows closely the one given by Friston \cite{friston_1997, friston_2000} and Roberts \cite{roberts_2019}.
+% % We evade the use of \textit{state} because it is carried with different meanings, from different areas, and may lead to confusion. Activity, on the other hand, is quite clear and concrete, while still retaining a lot of generality. 
+% Some researchers, which adopt different definitions, also mention at some point the variation in activity patterns as occurring in metastability \cite{tognoli_2014, kringelbach_2015}.
+
+% Now, to exemplify the definitions and illustrate how they encompass the other definitions, we discuss metastability for several examples.
+
+
+
+
+
+\subsection{Transition from metastable state can be either spontaneous or due to perturbation}
+Metastability is commonly discussed in the context of spontaneous versus nonspontaneous transitions between the states. Nonspontaneous transitions require external perturbations, noise or parameter changes to occur, while spontaneous transitions do not.
+
+The phenomenology in spontaneous or in nonspontaneous cases can be similar, with an important distinction that spontaneous transitions may be tipically more continuous, while forced transitions are more abrupt \cite{kelso_2012}. 
+Furthermore, the mechanism for both cases is different: spontaneous transitions arise simply from the system's dynamics, while nonspontaneous transitions require the external influences - in the case of multistability with noise, for instance, the noise is needed to kick the trajectory away from its previous attractor \cite{kelso_2012, kelso_2017}.
+
+The majority of works in the literature require spontaneity to consider the behavior as metastable \cite{vasa_2015, kelso_2017, kelso_2012, hellyer_2014, shanahan_2010, deco_2017, roberts_2019, ponce-alvarez_2015, fingelkurts_2006timing}. Hudson et al. \cite{hudson_2017} follow a perturbation-based definitions, and disregards this issue, considering that this is ``more or less a question  of whether the noise element is intrinsic to the system or can be separated out".
+Friston \cite{friston_2000transients} presents the distinctions, and considers both cases as metastable, adding that the distinction can be dependent on the observer's point of view, as a nonspontaneous transition in a smaller system can be spontaneous in a larger system (see Sec. \ref{sec:studies-2systems} for more). 
+
+Since the phenomenology is similar, though the mechanisms and functional roles may be different, we argue that both cases are metastable, following our definition, but defend that they need to be clearly distinguished. This is also in line with the Physics definitions (cf. Sec. \ref{sec:physdef}. In the first definition, neither spontaneity nor forcing are generally explicitly required for metastability. For the second, a perturbation is needed in classical systems for a transition from a local minimum to occur, though one may argue that some perturbations (e.g. thermal fluctuations) are endogenous to the system, and so the transition could be spontaneous \cite{bovier_2009}. 
+
+\subsection{No separation of time-scales is explicitly required}
+\label{sec:metastability-time-scales}
+% MAYBE RETHINK THIS SECTION;
+
+In some definitions, metastability is explicitly mentioned, or required, to have two distinct time-scales: the system  spends a long period in a metastable state, then eventually transitions quickly away from it \cite{hudson_2017}. To define how long, and how quick, can be a very subjective decision, which should not enter a definition.
+We believe that this is usually mentioned in order that both the metastable state and the transition can be clearly identified - if the time-scales are similar, it is more difficult to define one state as metastable, and another as simply a transition.
+
+In this case, the important point is the clear distinction between the two, which is already required in the definition, such that time-scale separation should not be an additional requirement. We note that in many experiments, this separation of long-lasting states and short transitions is indeed the observed phenomenon, but the other cases should also be allowed.
+
+\subsection{Continuous versus abrupt transitions}
+The transition from a metastable state is required by La Camera et al. to be abrupt, or ``jump-like" \cite{lacamera_2019}, perhaps to clearly distinguish each state. Similarly to the previous point, as long as each activity pattern is clearly observed, this should be enough to characterize a metastable state. Thus, our definition does not require the transitions to be neither continuous nor abrupt. 
+
+
+\subsection{Recurrent patterns}
+Some works mention metastable states as recurrent \cite{beimgraben_2019, varela_2001}. A recurrent state is possible even in a dynamical system, because state here is not the dynamical state (point in phase-space), but a macroscopic state. However, we see no reason to require this in general, and are supported by the other works on metastability. This is also the view supported by other authors (see winnerless competition and \cite{roberts_2019}).
+
+
+
+
+% Notes:
+% My definition: 
+%     - activity patterns; states are too carried with meanings, may be misleading
+%     - activity patterns do not need to fully define a system, nor uniquely characterize it
+%     - pattern can be spatial, temporal, or spatiotemporal 
+%     - pattern: reliable sample/collection of traits, acts, tendencies, or other observable characteristics
+
+% Alternatives to pattern:
+% configuration: relative arrangement of parts or elements
+% characteristic
+% pattern: a particular way in which something is done (cambridge)
+% pattern: is organized, or happens:; a natural or chance configuration; a reliable sample of traits, acts, tendencies, or other observable characteristics of a person, group, or institution (merriam webster)
+
+% Questions: 
+% \begin{itemize}
+%     \item In the definition, do states, or activity patterns, have to characterize the system completely (fully)? uniquely?
+%     \item What exactly is an activity pattern?
+%     \item Are definitions 1a and 1b really equivalent?
+%     \item Should metastability be endogenous (\cite{hellyer_2014}) aka spontaneous (\cite{shanahan_2010}), or can it be forced?. Related, the difference between metastability and multistability with noise is presented in: \cite{roberts_2019, poncealvarez_2015}; ponce-alvarez seems to allow it: "metastability does not require noise, is result of heterogenous frequencies and nonlinear interactions"; 
+%     \item Does the activity need to be active? Can the system be in a resting state?
+%     \item Should the separation of time-scales be explicity required? That is, the period between activity patterns have a minimal/maximal duration?
+%     \item Can jumps between metastates be continuous, or only abrupt?
+%     \item Should a recurrence in the activity patterns/states be required?
+%     \item time-scale separation required to define a pattern, but should not be in the    definition; 
+%     \item define what is stable and such
+% \end{itemize}
+
+
+
+\section{Case studies: which are metastable?}
+
+
+\subsubsection{Network of independent oscillators}
+Consider a network of simple phase oscillators, $\dot{\theta_i} = \omega_i$ each with a distinct frequency $\omega_i$ and independent of each other. Their phases do not form clear spatiotemporal pattern that lasts a significant time, and another measure, such as the degree of phase synchronization forms a stable pattern, that lasts throughout the simulation. There is no metastability in this system.
+
+\subsubsection{Stochastic time-series}
+For a noisy sequence, no pattern can be clearly distinguished, and thus no state can even be well-defined. \textcolor{orange}{Maybe show cases of colored noise.}
+
+\subsubsection{Intermittency}
+There are several types of intermittent behavior, which can be metastable or not. As an example, we show intermittency in a logistic map $x_{n+1} = r x_n (1 - x_n)$ with $r = 3.8282$, which occurs right before the system has been in a saddle-node (also called tangent) bifurcation. In this case, the system intermittency switches between a state very close to 3-cycle periodic one, and a chaotic one. As seen in Fig. \ref{fig:case-sninter}, the two states are visible, and both last a considerable time. The system is therefore metastable, which agrees with Kelso and Tognoli \cite{tognoli_2014, tognoli_2014a}.
+%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figs/strogatz-intermittency-tangent-logistic.png}
+    \caption{(Taken from \cite{strogatz_2001}) Intermittent behavior right before a saddle-node (tangent) bifurcation in the logistic map. The system alternates between a state very close to a 3-cycle periodic state and the chaotic one repeatedly \cite{strogatz_2001}. It is metastable, as also proposed by Kelso \cite{tognoli_2014, tognoli_2014a}.}
+    \label{fig:case-sninter}
+\end{figure}
+
+\subsubsection{Transiently stable: changing parameters}
+If the system's parameters change in time, what was once a stable state can become unstable, and give way to another new stable state. In this case, the system transitions between states and can have a nonspontaneous metastable behavior, depending on how slowly the parameters are changed. 
+
+
+\subsubsection{Multistable with noise}
+A multistable system with noise can have a similar phenomenology to a nonspontaneous metastable system: in both cases, transitions between different states occur in time, as shown in Fig. \ref{fig:kelsomulti}. The difference is that a spontaneous transition is continuous, while the nonspontaneous is more step-like (abrupt) \cite{kelso_2017}. The mechanism of the transitions is also different, but both are considered here as metastable.
+%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figs/kelso2017-multistable-metastable-comparison.png}
+    \caption{Taken from \cite{kelso_2017}, distinguishing spontaneous metastability and multistability with noise. Under our definition, both are metastable.}
+    \label{fig:kelsomulti}
+\end{figure}
+
+
+\subsubsection{Winnerless competition - stable heteroclinic channel}
+A competition without a winner, or with continuously changing winners, is called winnerless \cite{afraimovich_2010}. In the specific case where the switching between winners is periodic, this behavior can be due to a stable heteroclinic channel. Each winner is represented by a saddle state, a region of phase-space that is unstable, but which has some attracting tendencies. These tendencies make the system's trajectory approach the saddle, but its instability eventually ejects the trajectory away. From there, it can be attracted by another saddle, repeating this process. The connections between the saddles is said to form a heteroclinic channel. Once the trajectory is inside a stable channel, it only leaves it after passing through all the saddles. Since it spends sufficient time near a saddle (a winner) \cite{beimgraben_2015}, each one forms a pattern of activity, and so the system switching between these patterns is metastable.
+%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figs/heteroclinic-channel-afraimovich.png}
+    \caption{Taken from \cite{rabinovich_2018}. Stable heteroclinic channel is metastable.}
+    \label{fig:my_label}
+\end{figure}
+
+
+\subsubsection{Same attractor, different activity patterns}
+In the stable heteroclinic channel, each saddle is a region of phase-space and corresponds to a distinct state. With this, definition 1d gives the same result as definition 1a. If the channel is closed (last saddle cycles back to the first), then it is also an attractor \cite{}. The trajectory then cycles through all saddles forever. In this case, the attractor is fixed, but the activity patterns can change in time, so that the system is metastable considering our definition and definition 1b, but not 1d.
+
+\subsubsection{Beating phases (networks with bistable neurons)}
+Consider a network divided in two groups, each periodic but with different periods, as has been reported in networks of bursting bistable neurons (Bruno's paper). An illustrative raster plot is shown in Fig. \ref{fig:case-beating}. The phases or firing time configurations are constantly changing, as the groups phase-synchronize then desynchronize. None of these configurations, however, last a significant period, so that they do not form a spatiotemporal pattern by themselves. The smallest pattern that does last is the whole oscillation, from synchronization to desynchronization. Since this pattern does not change in time, the system is not metastable. This is phenomenologically a special case of example 1, with two groups.
+%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figs/beating1.png}
+    \caption{Phases with beating, not metastable.}
+    \label{fig:case-beating}
+\end{figure}
+
+\subsubsection{Microscopic scale is metastable, macroscopic scale is not}
+Consider a network with a group of synchronized neurons, and another of desynchronized neurons. The pairwise synchronization between the neurons can be metastable, as some neurons enter the synchronized group, and others leave. If the number of neurons entering and leaving is the same, it is possible that, on a global scale, the global degree of synchronization in the network is constant. We have observed this, for a phase-synchronization intermittency scenario, in bursting neuron networks. 
+On a microscopic scale, there would be metastability. On a macroscopic scale, there would not, as seen in Fig. \ref{fig:case-scale}.
+
+This example illustrates the importance of looking at different scales to study metastable, as also highlighted by Tognoli and Kelso \cite{tognoli_2014, tognoli_2014a}.
+%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figs/Rxt_Rijxt_T38_seeds_directed_ws_N_1000_p_1.0_k_4_seed_1.0.pdf}
+    \caption{Example from bursting neuron networks; in some cases the global degree of synchronization is close to constant, while the pairwise degree of synchronization is metastable. (We can discuss if the pairwise R is indeed metastable, but the point still remains that different scales can have different behaviors).}
+    \label{fig:case-scale}
+\end{figure}
+
+
+\subsubsection{Same degree of synchronization, different dynamical states/attractors}
+An example is the case of Kuramoto oscillators under a random topology (Watts-Strogatz, $p = 1.0$), which we see in the malleability study. Different frequency realizations lead to very similar $R$, but to different attractors, as can be seen in the different sets of instantaneous frequencies $\dot{\theta}$. A perturbation taking the system from one attractor to the other would not change $R$, but would change the attractor. In this case, it is metastable with a  perturbation if you look at the phases, but not if you look at the degree of synchronization only. 
+\textcolor{orange}{We would need to think of an example that does this without needing a perturbation. Maybe look for this in the synchronization intermittency scenario, for different times when R is equal.}
+
+This is an important point, as several works only look at the deviation in $R$ to characterize a system as metastable \cite{deco_2016}. In similar definitions, looking at the phase configurations, the system can be considered metastable also.
+
+\subsubsection{Same degree of phase synchronization, different neural assemblies being formed}
+We have seen this example in networks of bursting oscillators. Neurons enter and leave the assembly at roughly the same rate, so that $R$ stays constant. If the assembly lasts a sufficient time, this can be metastable without $R$ changing.
+
+
+
+\subsubsection{Synchronization intermittency}
+\label{sec:studies-syncinter}
+Deco et al. \cite{deco_2016, deco_2017} define metastability as ``[...] metastability refers to a state that falls outside the natural equilibrium state of the system but persists for an extended period of time". Then the authors also ``refer to metastability as a measure of the variability of the states of phase configurations as a function of time, that is, how the synchronization between the different nodes fluctuates across time. Thus, we measure the metastability as the standard deviation of the Kuramoto order parameter across time". 
+The two definitions are not equivalent: each R does correspond to a distinct phase configuration, but it does not necessarily last an extended period of time. For this to happen, each value of $R$ would have to last for some time (i.e. the laminar periods in the intermittency would need to be sufficiently long).
+
+A clear case of this is in Fig. \ref{fig:case-syncninter}, taken from \cite{deco_2017}.
+Under our definition (and even the authors' own first definition), this synchronization intermittency would not be metastable if the laminar periods are not long. %\textcolor{orange}{Might need to discuss this to make sure we all agree. Would be nice to see the authors' opinions.}
+%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figs/deco-synchronization-metastability.png}
+    \caption{Synchronization intermittency is not necessarily metastable. Figure taken from \cite{deco_2017}.}
+    \label{fig:case-syncninter}
+\end{figure}
+
+
+\subsubsection{System with 2+ subsystems}
+\label{sec:studies-2systems}
+Consider a system constituted by two smaller, connected, subsystems. And that the connections from each subsystem drive the other to a regime with changes in its activity patterns. An experiment looking only at one subsystem would conclude it is nonspontaneously metastable (transitions occur due to an external influence), while another experiment looking at the whole system would conclude it is spontaneously metastable (transitions occur due to the system's dynamics). This point is also raised by Friston in  \cite{friston_2000transients}, who argues also that each class of metastability can be a matter of perspective. This is an important reason for defining both types a metastable and becomes an important point if one considers each subsystem as being a brain region, and the whole system as the brain.
+
+% Types 1 and 2 can depend on point of view: what may be a type II complexity from the point of view of one system may turn out to be a type I complexity when one `stands back' and considers a larger system in which the first was embedded. (FRISTON, 2000 labile 2)
+
+
+
+\subsubsection{Integration and segregation}
+Maybe one case illustrating something about the integration~segregation coexistence. Maybe taking the relative phase between two communities, as Kelso does, illustrating that I~S can occur in a metastable regime.
+
+
+\subsubsection{HKB}
+The Haken-Kelso-Bunz model has a variety of different dynamical behaviors, which we have addressed previously. Might be useful. 
+%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figs/hkb-kelso2017.png}
+    \caption{Different dynamical regimes from the HKB model, considering a relative phase. Taken from \cite{kelso_2017}. }
+    \label{fig:hkb}
+\end{figure}
+
+\subsubsection{Multistability with fractal basin boundaries}
+Consider a multistable system, with many distinct attractors. Each attractor has its own basin of attraction, which is composed by the set of points in phase space that asymptotically tend to the attractor as they evolve in time. 
+In many systems, at least some of these basins of attraction have boundaries with a fractal structure. This generates an interesting metastable behavior when noise is added to the system. 
+What typically happens is the following: the trajectory in phase space spends some time on an attractor, then is kicked by the noise away from the attractor, towards its basin boundary. It spends some time on the basin boundary, until eventually entering the same or another attractor, and restarts the cycle \cite{feudel_2008}. 
+
+The motion on each attractor is regular, such that the system can be identified in a metastable state. Between these states, the motion on the basin boundaries is irregular, and corresponds to a transition period which not a state by itself. The characteristic duration of the metastable states, or of the transition, depends on the system's parameters. It can be that the metastable states last for a long time, with quick transitions; but it can also be that the transitions last longer than the metastable states. 
+In this case, as discussed in Sec. \ref{sec:metastability-time-scales}, the states and the transition can still be identified, and so the system clearly has (nonspontaneous) metastability. 
+
+
+
+
+
+\section{Functional role of metastability}
+\label{sec:role}
+Many works in the literature have identified metastability as a powerful mechanism for brain functioning. In this section, we collect and explain the reasons for this under the perspective of our new definition.
+
+In a general sense, a metastable system can have various transitions between different states, each of which last for some time. These transitions can be endless, if the system also changes in time, and so never reaches a final equilibrium \cite{negrello_2008} - the system can be in an eternal transient. From the point of view of the brain, each metastable state corresponds to a specific spatiotemporal activity pattern, which can include the formation of a specific assembly of functionally-related neurons, of a certain configuration of integration or segregation between areas, or the communication between specific areas, for instance. 
+Therefore, a metastable brain is great news, since it can access an enormous variety of possible, potentially-desirable behaviors - and it can do this naturally, spontaneously, without the necessity of external influence, though it may be restricted by the anatomical connectivity \cite{kringelbach_2015}. In other words, a metastable brain can explore a rich repertoire of intrinsic dynamics \cite{ponce-alvarez_2015, alderson_2020, hellyer_2014, kringelbach_2015}, of self-organized tendencies \cite{tognoli_2014}. 
+
+Furthermore, a spontaneously-metastable system (the one a significant part of the literature considers) does not require noise or inputs to transition between the states. This means no need for additional energy expenditure \cite{tognoli_2014} (though, of course, the brain spends energy to maintain itself, allowing metastability to occur). Spontaneous metastability also allows an independence: the brain can self-organize into the required behavior. 
+This also means it is more dynamically flexible: regions can communicate with themselves easily \cite{hellyer_2014, hellyer_2015}, and respond dynamically to the external and internal worlds \cite{ponce-alvarez_2015}. Some authors mention that this flexibility is optimal \cite{alderson_2020}, but it is not completely clear what optimal means is, nor compared to which other dynamical regime.
+
+Metastability is commonly discussed in studies with brains at resting-state, when transitions are considered spontaneous. As discussed previously, this can explain the rich exploration of the functional connectivity observed at rest \cite{kringelbach_2015}. This exploration is proposed to prepare the brain in an optimal state of cognitive and behavioral responses, for when an intense activity is required \cite{cordova-palomera_2017, hellyer_2015, kringelbach_2015}. 
+On another hand, metastability may not be desirable during a task, when a specific activity pattern (or configuration of areas) is needed \cite{hellyer_2015}; and there is evidence that metastability is smaller during a task, compared to a resting state \cite{hellyer_2014}. Care must be taken in interpreting some results in these studies, as they measure metastability through $std(R)$, which does not necessarily measure metastability (see discussions above).
+
+\subsection{Repeatability}
+See Recanatesi, 2021 for experimental observation
+Also Brinkman 2022 supports this
+
+HC people argue quite strong for this also
+
+
+% \subsection{Transients}
+\subsection{Separation of time-scales and slowness}
+The brain operates on several distinct time-scales. An important example comes from Daniel Kahneman's works, showing that the mind operates on two competing systems: one more automatic and impulsive, fast system; and one more deliberate, slow system \cite{kahneman_2011, kringelbach_2015}. Other examples also exist in different sensory modalities of the coexistence of a fast attention-orienting activity  that is modulated by a slower process \cite{kringelbach_2015, litwin-kumar_2012}.
+
+As discussed in  Sec. \ref{sec:metastability-time-scales}, a metastable system generally implements a separation of time-scales naturally: the duration of states occurs on a certain time-scale, while the transitions occur typically on a shorter scale. 
+
+Metastability also serves as a mechanistic explanation for the slowness of thought (e.g. in the slow subsystem by Kahneman). Kringelbach and colleagues \cite{kringelbach_2015} argue that slowness of optimal processing comes both from the time the brain takes to transition to a more information-processing-optimal state, and from a critical slowing down, a phenomenon in which the system recovers more slowly from a perturbation when close to a transition, and which happens during a state transition. \textcolor{purple}{It would be nice to check if I understood this correctly.}
+
+
+
+
+\subsection{Integration and segregation of neural assemblies}
+\label{sec:role:int-seg}
+A crucial feature of brain functioning is the coordination between different neural assemblies or brain areas to generate behavior \cite{tognoli_2014, alderson_2020}. Assemblies (also called ensembles or communities) of strongly interacting neurons arise for some time for a certain function, then dissolve \cite{kringelbach_2015, tognoli_2014, cordova-palomera_2017, hellyer_2014, tognoli_2014a, shanahan_2010, kahana_2006}. These neural assemblies can engage and disengage, integrate and segregate, in a flexible and rapid manner. These integrative and segregative tendencies also occur between cortical areas: each area is well-defined, with specialized functions (segregated), but its behavior is also strongly influenced by its connections with other areas (integrated) \cite{fingelkurts_2004}. A specific role of transient neural assemblies can be seen directly in the dynamic core hypothesis of consciousness. It associates cognitive events with the formation of clusters of highly-interacting neurons (the dynamical core), whose changing composition reflects the changes in the cognitive events \cite{fingelkurts_2006timing, tononi_1998consciousness, werner_2007}. 
+
+This coexistence of integration and segregation is widely viewed as important for brain functioning, and as a phenomenon implemented by metastability \cite{tognoli_2014, fingelkurts_2008}. This is because an activity pattern can correspond to a specific configuration of integration~segregation between areas or neurons. Since transitions between patterns occur spontaneously and flexibly, so do the changes in interactions of areas, and therefore integration~segregation is implemented. The inverse view is also possible, as proposed by Fingelkurts and Fingelkurts in their Operational Architectonics framework: the integration~segregation between the areas is seen as leading to the metastable spatiotemporal activity patterns \cite{fingelkurts_2008}.
+
+A mechanistic explanation for this is also given: each unit has an intrinsic behavior, which can create a tendency of separation, and which is generally attributed to their different parameters \cite{tognoli_2014, fingelkurts_2008}. However, their coupling makes them act in concert, leading to their integration. Ponce-Alvarez \cite{ponce-alvarez_2015} also show that integration and segregation of neural communities coexist when the system is in a metastable regime. 
+
+An important remark is that the communication between groups occurs commonly through their synchronization \cite{fingelkurts_2008}. This takes us to our next discussion.
+
+
+% LER O RETHINKING INTERGRATION E SEGREGATION
+
+\subsection{Communication-through-coherence}
+The activity of neurons and neuronal groups is oscillatory. These oscillations create windows when the neurons in the group are more excitable. During these excitability windows, a group can be most efficiently excited by other groups - communication is optimal during the windows. The communication-through-coherence hypothesis \cite{fries_2005, fries_2015} highlights this, and proposes that communication, or exchange of information, between two groups is most effective when their excitability windows are coherent (i.e. coordinated in time). Coherence between groups can thus have causal consequences for neuronal communication \cite{deco_2016}.
+
+This coherence takes the form of consistent phase relations, meaning the phase synchronization between groups. This phase synchronization can occur at a nonzero phase-difference, the exact value would depend on the groups' frequencies and conduction delays. For CTC to happen, this synchronization needs to have a spatial structure and to be dynamic in time \cite{deco_2016}.
+
+Deco and Kringelbach proposed that metastability supports these requirements for CTC to occur \cite{deco_2016}, thus highlighting in another way the functional role of this regime.
+
+
+\subsection{Experimental correlations}
+Another way to look at the functional role of metastability is to see how it is disrupted in unhealthy individuals. This has been done already in a variety of situations, but care must be taken because some works to be mentioned define metastability, or quantify it, as the standard deviation of the network's global degree of phase synchronization (measured through the Kuramoto order parameter). As discussed in Sec. \ref{sec:studies-syncinter} this measure does not necessarily show metastability as we define here (though it may indicate it). To avoid confusion, we refer to the behavior studied in these cases as phase-synchronization intermittency (PSI). 
+
+The PSI was observed to be decreased in individuals with Alzheimer's disease \cite{cordova-palomera_2017}.   
+Hellyer and colleagues also show that PSI is reduced in individuals with traumatic brain injury, which damages the structural connectome \cite{hellyer_2015}.
+
+
+\section{Quantifying metastability - identifying states}
+The practical definition of metastability we proposed in Sec. \ref{sec:ourdef} uses the concept of activity patterns. This was illustrated in the subsequent examples, which were somewhat simplified. We now review methods used to study metastability in the literature, which look at different activities and different types of spatiotemporal patterns as we defined. We also review methods used which do not agree with our definition. 
+
+
+
+\subsection{Hidden Markov Models}
+Hidden Markov Models (HMMs) have been extensively used to identify hidden states in experimental data \cite{lacamera_2019}. The experimental data can be, for instance, collections of firing rates obtained from electrophysiological recordings \cite{mazzucato_2015, lacamera_2019}, or from time-series obtained from fMRI \cite{vidaurre_2017}. The basic idea is to extract (infer) states that are not explicitly obvious from a series (hidden states) and, to calculate the probability of transitions between each state. A very strong assumption in this model is that the probability of transition from one state to another depends only on the current state, not on past ones.
+
+\subsection{Spectral density of LFP}
+Friston uses in \cite{friston_1997, friston_2000transients} the frequency composition (spectral density) of the time-series of the system's activity \cite{friston_1997} or of local-field potentials (LFP) \cite{friston_2000transients} to measure metastability. He argues that a stable system, be it desynchronized (uncorrelated neurons) or synchronized (correlated neurons), has a constant frequency composition, whereas a metastable one has a changing frequency composition. 
+
+Friston then argues that metastability, or dynamic instability, is characteristic of a system's unpredictable dynamics. He therefore calculates the entropy of the spectral density series as the measure of metastability. This can also be interpreted as the amount of different spectral density configurations, which measure the amount of different metastable states. 
+
+
+\subsection{Brain waves}
+The spatiotemporal patterns of activity can take the form of waves in the mean-field across regions. Roberts and colleagues have identified large-scale waves in a computational model of neural masses with delay and anatomically-based connectivity\cite{roberts_2019}. They observed that the system passes spontaneously through different types of metastable waves (travelling waves, rotating waves and waves with sinks) across time - no parameter change or external inputs are required. The waves can be visually identified in the average membrane potential of excitatory pyramidal cells in their model of neural masses with delay and anatomically-based connectivity.
+In their system, the transition between waves is marked by a clear period of low correlation between the ares, facilitating the identification of the waves.
+
+The detection of arbitrarily-shaped travelling waves in spatiotemporal activity of multichannel recordings (e.g. electrocorticography and voltage-sensitive dye recording) can also be done with the algorithmical approach proposed by Muller \cite{muller_2014, muller_2016}. The authors obtain the phases for each channel's recording using the Hilbert transform method and then calculate the spatial gradient of the phases. By analyzing the divergence or the curl of the gradient field, the algorithm can detect expanding and rotating waves. 
+
+\subsection{Operational modules}
+Metastable activity patterns play a key role in Fingelkurts and Fingelkurts's framework of Operational Architectonics \cite{fingelkurts_2008, fingelkurts_2004}. They start with EEG of MEG recordings and detect periods of quasistationarity. They then look at the boundaries of these periods and identify the channels in which these boundaries are synchronized. These EEG channels are said to form a synchrocomplex (SC). The sequence of the same synchrocomplexes is what they call and operational module (OM). Each EEG/MEG channels captures the behavior of a neural assembly, in the local where it is implanted in the cortex. Therefore, the OM is a set of EEG channels, or neural assemblies. These assemblies have metastable dynamics (in our sense), since they have periods of transient equilibrium, when their quasi-stationary segments are synchronized, followed by transition periods. 
+\textcolor{purple}{It would be really nice if something could check if I understood their ideas correctly. We may also need to discuss this.}
+
+
+\subsection{EEG microstates}
+A number of experiments \cite{lehmann_1987, vandeville_2010} have looked at the spatial configuration of EEG channels' activity, and found that the topography of the scalp's electric field remains quasi-stationary for short periods of around $\SI{100}{\milli\second}$, after which a brief discontinuous transition period follows. Only the topography is regarded, and the field's strength and polarity can change. 
+These segments of quasi-stability are called EEG microstates, and are also states following our definition. The behavior in these experiments is thus metastable. 
+
+
+
+\subsection{Recurrence grammar}
+As discussed in Sec. \ref{sec:varphasespace}, beim Graben and colleagues define metastable states as restricted sections of a system's its phase space that are visited for some finite time \cite{beimgraben_2019}. Since the system leaves these regions spontaneously, they are not attractors, only regions with attracting tendencies.  
+
+They propose a method to identify these metastable states using Recurrence Analysis. Starting from a (discretized) time-series $X_t = \{x_1, x_2, ..., x_T\}$ obtained from fMRI, they first build a recurrence matrix. This is a binary matrix whose elements are $R_{ij} = 1$ if the distance between $x_i$ and $x_j$ is smaller than a threshold (i.e. if the points are "close", or recurrent, in dynamical systems jargon), and $R_{ij} = 0$ otherwise.
+
+As a second step, they introduce a recurrence grammar, whose purpose is to map phase space trajectories (like the time-series) onto sequences of symbols. To do this, they initialize a sequence $\bf{s}$ such that its elements are the time indexes, $s_i = i$. At this initial state, each element in the sequence identifies (labels) a time-series point as $i$, but similar (recurrent) points have different labels.  They then apply two rules: 1. for all pairs of points in the original time series, with $i > j$, if $R_{ij} = 1$, then replace $s_i$ by $s_j = j$; 2. for all triplets of points, with $i > j > k$, if $R_{ij} = 1$ and $R_{ik} = 1$, then replace $s_i$ and $s_j$ by $s_k = k$.
+With these rules, the final sequence has the same labels for recurrent time-series points. 
+
+A metastable state $S_k$ is then defined by the authors as the set of all points in the time-series that have the same index $k$. A metastable state is thus, roughly, the set of points in phase space that are recurrent - it is a region of phase space with similar points. 
+This method does not, however, guarantee that one point from a metastable state will map to another: every point in the state could be apart from the others in time. This may not happen frequently in a well-behaved system, but is a possibility. In this case, the metastable state from this method does not necessarily correspond to an activity pattern as we defined.
+
+\subsection{Principal component analysis}
+Another way to reconstruct phase space structures from time-series data is via principal component analysis (PCA) \cite{viviani_2005, rabinovich_2008}. As proposed by Rabinovich and colleagues \cite{rabinovich_2008}, applying functional principal component analysis of fMRI data can generate a cognitive ``phase space", built on the first few principal components. 
+
+\textcolor{orange}{Are saddles in this phase-space activity patterns, as we defined them? Need to think to know if this agrees or not with our definition!}
+
+\textcolor{orange}{this is also done in several papers, which don't mention metastability; more examples are in the review by buonomano which lyle suggested}
+
+
+\subsection{Phases of oscillation}
+A simple way to observe metastability in recordings is done by Tognoli and Kelso \cite{tognoli_2014} and Ponce-Alvarez \cite{ponce-alvarez_2015}. From fMRI or EEG data, they calculate the oscillations' phases through a Hilbert Transform and then plot the relative phases (pairwise difference between phases) in time. Metastable states are seen as horizontal lines in this plot, where a certain relative phase is kept constant in time. This view matches very well our definition of activity patterns.
+
+\subsection{Variation in synchronization}
+Several works also use the oscillations phases for another measure of metastability. From them, works calculate the Kuramoto order parameter $R$, which quantifies the average degree of global phase synchronization (with zero offset) in the network: a high value means phases are aligned, a low value means they are not. They then calculate the standard deviation of this value in time, which reflects the changes in phase configurations (i.e. phase alignments) in time \cite{deco_2017, lee_2017, alderson_2020, deco_2017, wildie_2012}.  However, this does not guarantee that the activity patterns, or states, are stable for some time. It is indeed common that the system has a synchronization intermittency, shown in Fig. \ref{fig:case-syncninter}, which has a high standard deviation, but no metastable activity pattern as we defined. 
+Another reasoning for this measure is that a high deviation means the system visits a wide range of dynamical states \cite{cordova-palomera_2017}. This is true, but it again does not mean the system is metastable, as we defined, since each dynamical state may only last an instant. Also, as a remark, a low deviation also does not guarantee the system is not metastable, as the system may be changing its spatiotemporal patterns even with a fixed $R$.
+Similar analysis, replacing a global $R$ by a community-level $R$ \cite{shanahan_2010, vasa_2015}, or replacing by an error of synchronization (looking at the deviation of the signal's amplitude \cite{hellyer_2014}) suffer from the same issues. 
+They are not, therefore, a measure of metastability as we defined. 
+
+A more detailed analysis is needed to characterize metastability as we defined, looking at the laminar periods (duration of each state). 
+
+
+
+\textcolor{orange}{We can also discuss what a "degree of metastability" means, and how to quantify it. Questions like:  discrete number of metastable states vs continuous number of metastable states. Given a fixed time period, how many different states?;}
+
+
+
+
+\section{Discussions and future directions}
+
+
+
+% \bibliographystyle{apalike}
+\bibliographystyle{unsrt}
+\bibliography{bibliography}
+\end{document}

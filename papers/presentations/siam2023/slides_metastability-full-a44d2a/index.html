@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+	<html class="sl-root decks export offline loaded">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, minimal-ui">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<link rel="manifest" href='data:application/manifest+json,{"display": "standalone", "name": "Metastability SIAM 2023"}' />
+		<title>Metastability SIAM 2023</title>
+
+
+		<link rel="stylesheet" type="text/css" href="lib/offline-v2.css">
+
+
+
+	</head>
+	<body class="reveal-viewport theme-font-overpass2 theme-color-white-blue">
+		<div class="reveal">
+			<div class="slides">
+				<section data-background-color="rgb(229, 230, 226)" data-id="aa4e206ef7515db632c77ddbcf946afb"><div class="sl-block" data-block-type="text" style="width: 918px; left: 181px; top: 214px; height: auto;" data-block-id="c561ba066b6394794abdfdf73aaebbd5"><div class="sl-block-content" data-placeholder-tag="h1" style="z-index: 10; font-size: 187%; padding: 20px; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><p>Towards a Unifying Framework for Metastable Brain Dynamics</p></div></div>
+<div class="sl-block" data-block-type="line" data-name="line-a5c0c7" style="width: auto; height: auto; left: 250.173px; top: 363px;" data-block-id="ef932dde139ead9abc6b11af2ed06dd6"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="789.827" data-line-y2="0" data-line-color="#ffffff" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="789.827" height="1" viewbox="0 0 789.827 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="789.827" y2="0"></line><line class="line-element" stroke="#ffffff" stroke-width="4" x1="0" y1="0" x2="789.827" y2="0"></line></svg></div></div>
+<div class="sl-block" data-block-type="text" style="width: 877px; left: 201px; top: 363px; height: auto;" data-name="text-d18e72" data-block-id="42318f3a18e872b536f61b3ace549506"><div class="sl-block-content" data-placeholder-tag="p" style="z-index: 12; text-align: center; color: rgb(0, 0, 0); font-size: 86%; padding: 20px;" data-placeholder-text="Text">
+<p><strong>Kalel Rossi</strong>, Everton Medeiros, Roberto Budzinski, Bruno Boaretto, Lyle Muller, Ulrike Feudel</p>
+</div></div>
+
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-aaaf33" data-block-id="8c05114ef6c5d44cf9469b2119ab31a0"><div class="sl-block-content sl-block-group-content" style="transform-origin: 965.029px 635.37px 0px; z-index: 13;">
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-c3198c" data-block-id="c57c8b5b32ef915e3d24c1ef81c3591b"><div class="sl-block-content sl-block-group-content" style="transform-origin: 822.447px 635.37px 0px; z-index: 14;">
+<div class="sl-block" data-block-type="image" style="width: 158.863px; height: 158.863px; left: 743.015px; top: 555.938px; min-width: 1px; min-height: 1px;" data-name="image-5b9661" data-block-id="46037b7dd380fc9ebffae3b0176d6665"><div class="sl-block-content" style="z-index: 15;"><img style="" data-natural-width="117" data-natural-height="117" data-lazy-loaded="" data-src="metastability-full-a44d2a/a563baa6a94f99f49d0c6bc18ec2c081.png"></div></div>
+
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 284.107px; height: 158.863px; left: 902.935px; top: 555.938px; min-width: 1px; min-height: 1px;" data-name="image-6a35ff" data-block-id="a0fed980a0d874559bbccfeea593ac20"><div class="sl-block-content" style="z-index: 16;"><img class="" data-natural-width="1200" data-natural-height="671" data-lazy-loaded="" data-src="metastability-full-a44d2a/1998a390493144ab32a1a3f3fb397d3d.png"></div></div>
+</div></div></section><section class="stack" data-id="a47110197c427edd28e9275ef9c1bf8f"><section data-id="355757c14301dbf01a9409f635c4c7cd">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 240px; top: 23.7616px; height: auto;" data-name="text-c29943" data-block-id="033f070d62f81ff0ccdf79d38bbe301e"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text">
+<p>Metastability in <strong>dynamical systems</strong></p>
+</div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 287.5px; top: 77.7616px;" data-block-id="457b0d2cfdbfca6dc1b050666a59ada7"><div class="sl-block-content" data-line-x1="0" data-line-y1="6" data-line-x2="705.328070280022" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="705.328070280022" height="6" viewbox="0 0 705.328070280022 6"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="6" x2="705.328070280022" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="6" x2="705.328070280022" y2="0"></line></svg></div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 276.304px; left: 821.848px; top: 142.758px; height: auto;" data-block-id="b8bffd1317c30ffe147660fea99f2bc6" data-name="text-09abd2"><div class="sl-block-content fragment" data-placeholder-tag="h2" style="text-align: center; z-index: 13; padding: 5px; line-height: 1.17; font-size: 110%;" data-has-line-height="" data-placeholder-text="Text" data-fragment-index="1">
+<p>Chaotic saddle</p>
+</div></div>
+
+<div class="sl-block" data-block-type="image" style="width: 3.2px; height: 1px; left: 405.318px; top: 692.728px; min-width: 1px; min-height: 1px;" data-name="image-cb59ae" data-block-id="c0cbe0acadd72447499652893540c91a"><div class="sl-block-content" style="z-index: 12;"><img style="" data-natural-width="800" data-natural-height="250" data-lazy-loaded="" data-src="metastability-full-a44d2a/22cceff2d1c0e80bb471a1bb5c68a9c9.png"></div></div>
+
+
+<div class="sl-block" data-block-type="video" style="min-width: 30px; min-height: 30px; width: 480px; height: 360px; left: 730px; top: 238.712px;" data-name="video-e2921c" data-block-id="f1e3edab2840e2c078e4bc0b076d8ae8"><div class="sl-block-content fragment" style="z-index: 17;" data-media-id="10451557" data-video-thumb="metastability-full-a44d2a/dd078c567f4e75fc2ee6325f8cab96f0.jpg" data-fragment-index="1"><video playsinline="" controls="controls" poster="metastability-full-a44d2a/dd078c567f4e75fc2ee6325f8cab96f0.jpg" data-paused-by-reveal="" data-lazy-loaded="" data-autoplay="" data-src="metastability-full-a44d2a/227e20b5cb28e5e9ec4b0f6bb14beda8.mp4"></video></div></div>
+<div class="sl-block" data-block-type="text" style="width: 342.568px; left: 186.008px; top: 155.419px; height: auto;" data-block-id="77b43726daa668e066ba3e3c9c188c3e" data-name="text-215c2d"><div class="sl-block-content fragment fade-in-then-semi-out" data-placeholder-tag="h2" style="text-align: center; z-index: 15; padding: 5px; line-height: 1.17; font-size: 110%;" data-has-line-height="" data-placeholder-text="Text" data-fragment-index="0">
+<p>Noise in bistable system</p>
+</div></div>
+<div class="sl-block" data-block-type="video" style="min-width: 30px; min-height: 30px; width: 600px; height: 360px; left: 57.2916px; top: 238.712px;" data-name="video-81452b" data-block-id="463def59c8d8cf454607873d948cf64a"><div class="sl-block-content fragment fade-in-then-semi-out" style="z-index: 16;" data-media-id="10451481" data-video-thumb="metastability-full-a44d2a/49ea47410f76569245331ba3ea20d45d.jpg" data-fragment-index="0"><video playsinline="" controls="controls" poster="metastability-full-a44d2a/49ea47410f76569245331ba3ea20d45d.jpg" data-paused-by-reveal="" data-lazy-loaded="" data-autoplay="" data-src="metastability-full-a44d2a/54eea3a9e269c3d2da743b9529a42a49.mp4"></video></div></div></section><section data-id="f60f9b5cdc97e1763909fa8215bb3203">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 271.006px; top: 33.2325px; height: auto;" data-name="text-c29943" data-block-id="44f0d25d1c725289fa0ae22734f7ff0e"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text">
+<p>Metastability<strong> </strong>in<strong> the brain</strong></p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; left: 419.678px; top: 88px;" data-name="line-eb27ff" data-block-id="c48de89a07ddee53a401e0547fa9b2ea"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="503.7808084570238" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 12;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="503.7808084570238" height="1" viewbox="0 0 503.7808084570238 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="503.7808084570238" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="503.7808084570238" y2="0"></line></svg></div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-edd402" data-block-id="1f90c35412f369f1f85680bda0569466" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content fragment fade-in-then-semi-out" style="transform-origin: 641.867px 262.846px; z-index: 35;" data-fragment-index="0">
+<div class="sl-block" data-block-type="image" style="width: 324.31px; height: 222px; left: 470.075px; top: 164.155px; min-width: 1px; min-height: 1px;" data-name="image-0a1cba" data-block-id="a72470ba627aef167cec78903d0b17c1"><div class="sl-block-content" style="z-index: 36;"><img class="" data-natural-width="2500" data-natural-height="863" data-crop-x="0" data-crop-y="0" data-crop-width="0.504288" data-crop-height="1" style="left: 0px; top: 0px; width: 643px; height: 222px;" data-lazy-loaded="" data-src="metastability-full-a44d2a/3a220fa31e3e512a69c241868c67d139.png"></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 222.071px; left: 521.194px; top: 408px;" data-block-id="ae1a6c1fec9928e5e5b6b3de1da58583" data-name="text-2cdae1"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 37; line-height: 0.585;" data-has-line-height=""><p><span style="font-size:0.5em">Brinkman, 2022 (Appl. Phys. Rev)</span></p></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-359aa7" data-block-id="9189036d3e605dc6ecbe6e28c344b576"><div class="sl-block-content sl-block-group-content" style="transform-origin: 641.867px 130.919px 0px; z-index: 38;">
+<div class="sl-block" data-block-type="image" style="width: 361.104px; height: 15.9896px; left: 462.579px; top: 144.157px; min-width: 1px; min-height: 1px;" data-name="image-c36110" data-block-id="69e81941ca03bf3b5bf941d6f8f07c5e"><div class="sl-block-content" style="z-index: 39;"><img class="" data-natural-width="955" data-natural-height="1350" data-crop-x="0.188329" data-crop-y="0.1902" data-crop-width="0.758621" data-crop-height="0.023763" style="left: -90px; top: -128px; width: 476px; height: 673px;" data-lazy-loaded="" data-src="metastability-full-a44d2a/f5fa1bfa6a7e105bce3ee0f8e35134d1.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 361.104px; height: 42.4318px; left: 460.051px; top: 101.692px; min-width: 1px; min-height: 1px;" data-block-id="a2f5269b83d98a25a3383a0f06323243" data-name="image-a2da06"><div class="sl-block-content" style="z-index: 40;"><img class="" data-natural-width="955" data-natural-height="1350" data-crop-x="0.188329" data-crop-y="0.069418" data-crop-width="0.758621" data-crop-height="0.06306" style="left: -90px; top: -47px; width: 476px; height: 673px;" data-lazy-loaded="" data-src="metastability-full-a44d2a/f5fa1bfa6a7e105bce3ee0f8e35134d1.png"></div></div>
+</div></div>
+</div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-99019b" data-block-id="59be47a21afb1cced3428628ef2c1fcf" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content fragment fade-in-then-semi-out" style="transform-origin: 1058.12px 259.728px 0px; z-index: 22;" data-fragment-index="1">
+<div class="sl-block" data-block-type="image" style="width: 384.781px; height: 201px; left: 863.903px; top: 190.764px; min-width: 1px; min-height: 1px;" data-name="image-0a852e" data-block-id="12114a0ccc10550478c79a62e1a112f4"><div class="sl-block-content" style="z-index: 23;"><img class="" data-natural-width="2190" data-natural-height="1144" data-lazy-loaded="" data-src="metastability-full-a44d2a/7f9dacf2bfbf8fd8d585c46b8f6fd2c9.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 374.71px; height: 79.99px; left: 877.627px; top: 95.2325px; min-width: 1px; min-height: 1px;" data-name="image-8a7705" data-block-id="d6c8773bab5652a5268dfbef32259ffa"><div class="sl-block-content" style="z-index: 24;"><img class="" data-natural-width="2500" data-natural-height="1119" data-crop-x="0.250263" data-crop-y="0.383754" data-crop-width="0.70901" data-crop-height="0.338145" style="left: -132px; top: -91px; width: 528px; height: 237px;" data-lazy-loaded="" data-src="metastability-full-a44d2a/ad2ec864da96677624fff08f91248666.png"></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 222.071px; left: 945.259px; top: 408.223px;" data-block-id="5b74e3df1d49243492601fcd752c052a" data-name="text-00ec6e"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 25; line-height: 0.585;" data-has-line-height=""><p><span style="font-size:0.5em">Jercog, 2017 (eLife)</span></p></div></div>
+</div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-8a0cd5" data-block-id="bbed2e96f7866adc2b22abee11a343aa" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content fragment fade-in-then-semi-out" style="transform-origin: 409.47px 571.774px; z-index: 30;" data-fragment-index="2"><div class="sl-block sl-block-group" data-block-type="group" data-name="group-ee4d08" data-block-id="0707c6b90fdb5dbb10d0dad7bae24753" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content" style="transform-origin: 409.47px 571.774px; z-index: 31;">
+<div class="sl-block" data-block-type="image" style="width: 256.943px; height: 184.817px; left: 242.455px; top: 514.98px; min-width: 1px; min-height: 1px;" data-name="image-a8423b" data-block-id="634612d03add748a529e9243262ca2cb"><div class="sl-block-content" style="z-index: 32;"><img class="" data-natural-width="1280" data-natural-height="589" data-crop-x="0.52" data-crop-y="0.525351" data-crop-width="0.281679" data-crop-height="0.440305" style="left: -474px; top: -221px; width: 912px; height: 420px;" data-lazy-loaded="" data-src="metastability-full-a44d2a/cef383efb1fa417077e327d3f50ca097.jpg"></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 271.071px; left: 228.327px; top: 691.797px;" data-block-id="21889ab3dd9d12aa018212270234a043" data-name="text-e25d8c"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 33; line-height: 0.585;" data-has-line-height=""><p><span style="font-size:0.5em">Wenzel, 2019 (Journal of Neuroscience)</span></p></div></div>
+<div class="sl-block" data-block-type="image" style="width: 417.566px; height: 75px; left: 200.687px; top: 435.751px; min-width: 1px; min-height: 1px;" data-name="image-84f8c5" data-block-id="66d5b0c4eaf5fbd2b7a155e73491e582"><div class="sl-block-content" style="z-index: 34;"><img class="" data-natural-width="1215" data-natural-height="419" data-crop-x="0" data-crop-y="0.479167" data-crop-width="1" data-crop-height="0.520833" style="left: 0px; top: -69px; width: 418px; height: 144px;" data-lazy-loaded="" data-src="metastability-full-a44d2a/90307d785e22032109687656e08fbbb6.png"></div></div>
+</div></div></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-30809a" data-block-id="cf76fa0bc94fe05e5e0b2cc4cb3f53f8" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content fragment fade-in-then-semi-out" style="transform-origin: 897.627px 567.548px 0px; z-index: 13;" data-fragment-index="3"><div class="sl-block sl-block-group" data-block-type="group" data-name="group-d9fb48" data-block-id="fe053f3f68659d6fe989d22a70a9174d" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content" style="transform-origin: 897.627px 567.548px 0px; z-index: 14;">
+<div class="sl-block" data-block-type="image" style="width: 422px; height: 81.9622px; left: 686.627px; top: 435.751px; min-width: 1px; min-height: 1px;" data-name="image-f627a3" data-block-id="b7139742495e0c242055da15113e69ba"><div class="sl-block-content" style="z-index: 15;"><img class="" data-natural-width="1507" data-natural-height="514" data-crop-x="0" data-crop-y="0.430556" data-crop-width="1" data-crop-height="0.569444" style="left: 0px; top: -62px; width: 422px; height: 144px;" data-lazy-loaded="" data-src="metastability-full-a44d2a/9d51f97c426f7e305101bfc60d12cede.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 402.25px; height: 122.076px; left: 692.971px; top: 540.268px; min-width: 1px; min-height: 1px;" data-name="image-dc7141" data-block-id="33cdc4c3949d79db6c3b988afa1c6c07"><div class="sl-block-content" style="z-index: 16;" data-maintain-ar="false"><img class="" data-natural-width="2236" data-natural-height="623" data-lazy-loaded="" data-src="metastability-full-a44d2a/02758c63ed76695e36fe98d155c58534.png"></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 280.309px; left: 757.473px; top: 676.344px;" data-name="text-0e42db" data-block-id="55b65619e3b8fe4c5f8a445f7d7dc3c8"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 17; line-height: 0.832;" data-has-line-height=""><p><span style="font-size:0.5em">Townsend, 2015 (Journal of Neuroscience)</span></p></div></div>
+</div></div></div></div>
+
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-9ffc88" data-block-id="51664cde36de4b94bb61f10152302e73" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content fragment semi-fade-out" style="transform-origin: 225.096px 264.942px 0px; z-index: 18;" data-fragment-index="0">
+<div class="sl-block" data-block-type="image" style="width: 425.603px; height: 159.592px; left: 5.668px; top: 208.204px; min-width: 1px; min-height: 1px;" data-name="image-fb846a" data-block-id="accd5ee89df149daab0afbd554ee4646"><div class="sl-block-content" style="z-index: 19;"><img class="" data-natural-width="1258" data-natural-height="443" data-lazy-loaded="" data-crop-x="0.06089" data-crop-y="0" data-crop-width="0.93911" data-crop-height="1" style="left: -28px; top: 0px; width: 453px; height: 160px;" data-src="metastability-full-a44d2a/f9bf0b8550cff086912d3699346340e5.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 440.712px; height: 59.136px; left: 4.74px; top: 105.66px; min-width: 1px; min-height: 1px;" data-name="image-f4bc30" data-block-id="21ab1c9ec287901be0e59b69ad3762b0"><div class="sl-block-content" style="z-index: 20;"><img class="" data-natural-width="1334" data-natural-height="179" data-lazy-loaded="" data-src="metastability-full-a44d2a/4d6094114e97991a2477a18508736e9e.png"></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 302.071px; left: 37.929px; top: 408.223px;" data-block-id="7a3ffab0c16acf7e6d9798e9e0de4f51" data-name="text-2bcd86"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 21; line-height: 0.585;" data-has-line-height=""><p><span style="font-size:0.5em">Michel, 2017 (NeuroImage)</span></p></div></div>
+</div></div></section><section data-id="13ed7fe39596c0a98852da96c9ca98bb">
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 232.006px; top: 41px; height: auto;" data-name="text-c29943" data-block-id="9e3a6a8a6101ba5e8e2dc5c06f3abaac"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text"><p>Context-dependent formulations</p></div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; left: 308px; top: 102px;" data-name="line-eb27ff" data-block-id="575a1936a87b02ad70b78d2959b00b7f"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="652" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="652" height="1" viewbox="0 0 652 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="652" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="652" y2="0"></line></svg></div></div>
+<div class="sl-block" data-block-type="image" style="width: 462.724px; height: 142.138px; left: 17.276px; top: 166.931px; min-width: 1px; min-height: 1px;" data-name="image-ffa092" data-block-id="6c5594ea45f1dcfb401d35d791d2ddd0"><div class="sl-block-content fragment semi-fade-out" style="z-index: 12;" data-fragment-index="0"><img class="" data-natural-width="1491" data-natural-height="458" data-lazy-loaded="" data-src="metastability-full-a44d2a/58b4a614198733ff4d9d2bdd8720b801.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 287.643px; height: 122.827px; left: 538.699px; top: 166.931px; min-width: 1px; min-height: 1px;" data-name="image-9b8f3b" data-block-id="97cc1ef52977436bf9d1909cb8a9ceee"><div class="sl-block-content fragment fade-in-then-semi-out" style="z-index: 13;" data-fragment-index="0"><img class="" data-natural-width="733" data-natural-height="313" data-lazy-loaded="" data-src="metastability-full-a44d2a/2c447d831b2ad46ba3bbdcd01379b0f1.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 290.096px; height: 210.507px; left: 933.6px; top: 132.747px; min-width: 1px; min-height: 1px;" data-name="image-1b5c46" data-block-id="fe133cbdb9553253cd9c90616c346135"><div class="sl-block-content fragment fade-in-then-semi-out" style="z-index: 14;" data-fragment-index="1"><img class="" data-natural-width="1006" data-natural-height="730" data-lazy-loaded="" data-src="metastability-full-a44d2a/5213f4f67a0251e667be07058de22fb1.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 443.607px; height: 139.229px; left: 17.276px; top: 470.384px; min-width: 1px; min-height: 1px;" data-name="image-531701" data-block-id="060cfac6ee6a984d2ba57c795ca9bb6f"><div class="sl-block-content fragment fade-in-then-semi-out" style="z-index: 15;" data-fragment-index="2"><img class="" data-natural-width="1198" data-natural-height="376" data-lazy-loaded="" data-src="metastability-full-a44d2a/7909a5940031e6530cb7ee95cea4b0f8.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 383.391px; height: 176.348px; left: 886.953px; top: 451.825px; min-width: 1px; min-height: 1px;" data-name="image-b786ca" data-block-id="b6bf71a8a05b1180b2378c8df2230a13"><div class="sl-block-content fragment fade-in-then-semi-out" style="z-index: 16;" data-fragment-index="4"><img class="" data-natural-width="1274" data-natural-height="586" data-lazy-loaded="" data-src="metastability-full-a44d2a/f0b174d1418d50dac65dbd905df24aa8.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 358.196px; height: 176.348px; left: 503.423px; top: 451.825px; min-width: 1px; min-height: 1px;" data-name="image-9d10e4" data-block-id="080b386dc6461c8961c9d639e3a17bdd"><div class="sl-block-content fragment fade-in-then-semi-out" style="z-index: 17;" data-fragment-index="3"><img class="" data-natural-width="1107" data-natural-height="545" data-lazy-loaded="" data-src="metastability-full-a44d2a/0511d7540c4e4c1c7abc53ed64dedcbf.png"></div></div></section><section data-id="1ffeb29467f148b015bfba283fce10bd">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 268.632px; top: 14.5px; height: auto;" data-name="text-c29943" data-block-id="cc3a08acf233adaa81d97001511b5e29"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 18; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text">
+<p>Metastability<strong> </strong>in<strong> the brain:</strong><br>
+<span>n</span>oise or deterministically driven?</p>
+</div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 344.103px; top: 119.288px;" data-block-id="136f8a9162be950ca2dd441a66d7e606"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="643.7306970437522" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 19;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="643.7306970437522" height="1" viewbox="0 0 643.7306970437522 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="643.7306970437522" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="643.7306970437522" y2="0"></line></svg></div></div>
+
+
+
+
+
+
+
+
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-f43026" data-block-id="5d771c88a45afa2bccc88b21583f4931" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content fragment fade-in-then-semi-out" style="transform-origin: 647.096px 395px; z-index: 20;" data-fragment-index="0">
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 0px; min-height: 0px; left: 480px; top: 150px;" data-name="line-48eece" data-block-id="6274c963c0a39f0358c82db7f6520a17"><div class="sl-block-style" style="z-index: 25; opacity: 0.43;"><div class="sl-block-content" data-line-x1="0" data-line-y1="490.0001677383504" data-line-x2="0" data-line-y2="0" data-line-color="#000000" data-line-start-type="none" data-line-end-type="none" style="z-index: 25;" data-line-style="dashed"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="1" height="490.0001677383504" viewbox="0 0 1 490.0001677383504"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="490.0001677383504" x2="0" y2="0"></line><line class="line-element" stroke="#000000" stroke-width="2" stroke-dasharray="5.902441069979883 5.902441069979883" x1="0" y1="490.0001677383504" x2="0" y2="0"></line></svg></div></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-301ab0" data-block-id="d09150ec132251f82219a0bd436e8e13" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content" style="transform-origin: 651.239px 245.024px; z-index: 21;"><div class="sl-block sl-block-group" data-block-type="group" data-name="group-992edc" data-block-id="776023c449f9a4b54ae6dd7430946ab6" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content" style="transform-origin: 651.239px 245.024px; z-index: 22;">
+<div class="sl-block" data-block-type="text" style="height: auto; width: 137.382px; left: 571.309px; top: 150px;" data-name="text-38cdc2" data-block-id="769030d196014ec3c20c4373e8005c13"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 23;">
+<p>Noise</p>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 325.906px; height: 130.633px; left: 488.286px; top: 209.415px; min-width: 1px; min-height: 1px;" data-name="image-6d49f5" data-block-id="8573ff0df14f58d51622c3c2b6e4d9c1"><div class="sl-block-content" style="z-index: 24;"><img style="left: -26px; top: -13px; width: 373px; height: 528px;" data-natural-width="955" data-natural-height="1350" data-crop-x="0.070621" data-crop-y="0.023952" data-crop-width="0.872881" data-crop-height="0.247505" data-lazy-loaded="" data-src="metastability-full-a44d2a/d06f63daf4ca224f31aafbb6ad32c498.png"></div></div>
+</div></div></div></div>
+</div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-6f16e4" data-block-id="fb1bbcc6f4bcad177d523d15e90919da" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content" style="transform-origin: 1039.88px 428.267px 0px; z-index: 26;">
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 0px; min-height: 0px; left: 821.192px; top: 150px;" data-block-id="38bd422f62047d741cc9fb272e3d9c31" data-name="line-d32943"><div class="sl-block-style" style="z-index: 34; opacity: 0.43;"><div class="sl-block-content fragment" data-line-x1="0" data-line-y1="490" data-line-x2="0" data-line-y2="0" data-line-color="#000000" data-line-start-type="none" data-line-end-type="none" style="z-index: 34;" data-line-style="dashed" data-fragment-index="1"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="1" height="490" viewbox="0 0 1 490"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="490" x2="0" y2="0"></line><line class="line-element" stroke="#000000" stroke-width="2" stroke-dasharray="5.902439024390244 5.902439024390244" x1="0" y1="490" x2="0" y2="0"></line></svg></div></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-abb8ba" data-block-id="56e5d5c3a6c11f22ffca4314b98646df" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content" style="transform-origin: 1046.55px 428.267px 0px; z-index: 27;"><div class="sl-block sl-block-group" data-block-type="group" data-name="group-f71917" data-block-id="b46dbb6471c17fdf1c9b150408946ad5" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content fragment" style="transform-origin: 1046.55px 428.267px 0px; z-index: 28;" data-fragment-index="1">
+<div class="sl-block" data-block-type="image" style="width: 392.487px; height: 149.157px; left: 834.537px; top: 309.201px; min-width: 1px; min-height: 1px;" data-name="image-108c39" data-block-id="d7676bfc46f28a9f5d2a90b3652534d7"><div class="sl-block-content" style="z-index: 33;"><img style="left: -44px; top: -28px; width: 468px; height: 661px;" data-natural-width="955" data-natural-height="1350" data-crop-x="0.09322" data-crop-y="0.041916" data-crop-width="0.838983" data-crop-height="0.225549" data-lazy-loaded="" data-src="metastability-full-a44d2a/fde10b9ce9e96b2eea68230e14c90d28.png"></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-be8640" data-block-id="8e0b2549484687f0ddcc768b579c0187" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content" style="transform-origin: 1046.55px 428.267px 0px; z-index: 29;">
+<div class="sl-block" data-block-type="image" style="width: 374.029px; height: 246.319px; left: 843.766px; top: 460.214px; min-width: 1px; min-height: 1px;" data-name="image-580a8d" data-block-id="2d28578962ac2e5973c3a28ac0bb9ca1"><div class="sl-block-content" style="z-index: 30;"><img style="left: -24px; top: -29px; width: 420px; height: 594px;" data-natural-width="955" data-natural-height="1350" data-crop-x="0.057377" data-crop-y="0.048356" data-crop-width="0.89071" data-crop-height="0.414953" data-lazy-loaded="" data-src="metastability-full-a44d2a/f5fa1bfa6a7e105bce3ee0f8e35134d1.png"></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 160.492px; left: 916.559px; top: 150px;" data-block-id="728c5398eda22330e4c395246316051d" data-name="text-0fc554"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 31;">
+<p>Both</p>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 424.033px; height: 125.951px; left: 834.537px; top: 186px; min-width: 1px; min-height: 1px;" data-name="image-b062d8" data-block-id="7757a5f133fbf41a3c6bc2f75bdc9420"><div class="sl-block-content" style="z-index: 32;"><img style="left: -44px; top: 0px; width: 507px; height: 717px;" data-natural-width="955" data-natural-height="1350" data-crop-x="0.087432" data-crop-y="0" data-crop-width="0.836066" data-crop-height="0.175676" data-lazy-loaded="" data-src="metastability-full-a44d2a/ddf1f6e8c879e12c9c8369e8f5074ae2.png"></div></div>
+</div></div>
+</div></div></div></div>
+</div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-faccbf" data-block-id="7bbcd3b094be48cfda66aac663f2a3eb" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content fragment semi-fade-out" style="transform-origin: 221.049px 426.6px 0px; z-index: 10;" data-fragment-index="0"><div class="sl-block sl-block-group" data-block-type="group" data-name="group-5b3f06" data-block-id="ae74de69a24127b71addc50ea8a13238" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content" style="transform-origin: 221.049px 426.6px 0px; z-index: 11;"><div class="sl-block sl-block-group" data-block-type="group" data-name="group-23baf3" data-block-id="e3f706d6399ccfea9021818eaa3064c1" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content" style="transform-origin: 221.049px 426.6px 0px; z-index: 12;">
+<div class="sl-block" data-block-type="text" style="height: auto; width: 238px; left: 121px; top: 144px;" data-name="text-f4b490" data-block-id="08f4e83cd9da908eed21cfdf1e78cbb7"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p>Deterministic</p>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 402.711px; height: 144.047px; left: 22.2267px; top: 180px; min-width: 1px; min-height: 1px;" data-name="image-8f946b" data-block-id="0c129b01cb86b38c879e6c3e6f150c0d"><div class="sl-block-content" style="z-index: 14;"><img style="left: -34px; top: -29px; width: 482px; height: 681px;" data-natural-width="955" data-natural-height="1350" data-lazy-loaded="" data-crop-x="0.070621" data-crop-y="0.041916" data-crop-width="0.836158" data-crop-height="0.211577" data-src="metastability-full-a44d2a/e10f4ccb7407f20027606fb6f8378dfa.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 382.839px; height: 166.71px; left: 17.161px; top: 309.201px; min-width: 1px; min-height: 1px;" data-name="image-53d6fd" data-block-id="d7c1fdc8675a6d67f8c0a63840bc6cca"><div class="sl-block-content" style="z-index: 15;"><img style="left: -18px; top: -12px; width: 427px; height: 604px;" data-natural-width="955" data-natural-height="1350" data-crop-x="0.040984" data-crop-y="0.019305" data-crop-width="0.896175" data-crop-height="0.276062" data-lazy-loaded="" data-src="metastability-full-a44d2a/8292f86eb41e28f05c6cce212384659f.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 392.226px; height: 91.1415px; left: 19px; top: 475.911px; min-width: 1px; min-height: 1px;" data-name="image-5efb04" data-block-id="b5ef81a429f75a47c554e200b7bfb3e1"><div class="sl-block-content" style="z-index: 16;"><img style="left: -38px; top: -26px; width: 482px; height: 682px;" data-natural-width="955" data-natural-height="1350" data-crop-x="0.079096" data-crop-y="0.037924" data-crop-width="0.813559" data-crop-height="0.133733" data-lazy-loaded="" data-src="metastability-full-a44d2a/38cef9f02ae649f8e14710f6ff6052ae.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 395.463px; height: 125.826px; left: 19px; top: 583.373px; min-width: 1px; min-height: 1px;" data-name="image-0f5812" data-block-id="dd84291fea837b64d59dc2ee4ab1ebe9"><div class="sl-block-content" style="z-index: 17;"><img style="left: -23px; top: -43px; width: 437px; height: 618px;" data-natural-width="955" data-natural-height="1350" data-crop-x="0.053672" data-crop-y="0.069916" data-crop-width="0.903955" data-crop-height="0.203461" data-lazy-loaded="" data-src="metastability-full-a44d2a/79689652b1b363f2a3e023fb6276b931.png"></div></div>
+</div></div></div></div></div></div></section></section><section class="stack" data-id="91110619fcbc3277cb9b273d1c8aa446"><section data-id="18a1401464c14a3881e85c00f33242ac">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 232px; top: 247px; height: auto;" data-name="text-c29943" data-block-id="cce76eb203525422f927b7f1da433353"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text"><h2><strong>What is metastability?</strong></h2></div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 303px; top: 313px;" data-block-id="a42ae44f5274960e44213f91aa156daa"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="648.0768338540291" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="648.0768338540291" height="1" viewbox="0 0 648.0768338540291 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="648.0768338540291" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="648.0768338540291" y2="0"></line></svg></div></div>
+
+
+
+
+
+
+</section><section data-id="0c04055a9000524bec2ea3ea3a2238b4">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 240px; top: 35.5px; height: auto;" data-name="text-c29943" data-block-id="410d57c7fe173215ebf45f6946de075a"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 11; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text"><p><strong>Definition of metastability</strong></p></div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 366.242px; top: 93.5px;" data-block-id="6e80e35bbb11f536f38d4c7bedf2308d"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="546.0768338540291" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 12;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="546.0768338540291" height="1" viewbox="0 0 546.0768338540291 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="546.0768338540291" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="546.0768338540291" y2="0"></line></svg></div></div>
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 585px; left: 347.5px; top: 136px;" data-name="text-35739d" data-block-id="ab85d2f5c8ec9f102bb8c2e78319d741"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;"><p><span style="font-size:1.2em">When is a state metastable?</span></p></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 438px; left: 780px; top: 302.745px;" data-name="text-6b354e" data-block-id="f9d2c0796229afa9c04643d2a60530c4"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;" data-fragment-index="5"><p>States are <strong>metastable</strong> if they are <strong>transient but long-lived</strong></p></div></div>
+<div class="sl-block" data-block-type="shape" style="width: 174.185px; height: 47.425px; left: 658.315px; top: 130.288px;" data-block-id="e7aee30a1e5459b640fada7fecbba8b4" data-name="shape-966af7"><div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 35;" data-shape-stroke-color="#ff9900" data-shape-stroke-width="6px" data-fragment-index="4"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 174 47"><defs><clippath id="shape-mask-1-1683637129003"><rect width="174.185" height="47.425" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff9900" stroke-width="12"></rect></clippath></defs><rect width="174.185" height="47.425" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff9900" stroke-width="12" clip-path="url(#shape-mask-1-1683637129003)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="shape" style="width: 489.185px; height: 96.763px; left: 751px; top: 291.82px;" data-block-id="3be0ee065c6151947be75819f8a6bc57" data-name="shape-0cc03b"><div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 10;" data-shape-stroke-color="#ff9900" data-shape-stroke-width="6px" data-fragment-index="5"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 489 97"><defs><clippath id="shape-mask-2-1683637129003"><rect width="489.185" height="96.763" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff9900" stroke-width="12"></rect></clippath></defs><rect width="489.185" height="96.763" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff9900" stroke-width="12" clip-path="url(#shape-mask-2-1683637129003)"></rect></svg></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-b9273a" data-block-id="7a0cb229ce11fae75c5209bfb7170065" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content fragment semi-fade-out" style="transform-origin: 345.658px 389.144px 0px; z-index: 17;" data-fragment-index="4">
+<div class="sl-block" data-block-type="shape" style="width: 84.5px; height: 47.425px; left: 575.815px; top: 130.288px;" data-name="shape-70bf20" data-block-id="633ec275dc7219e71b54833c39439d85"><div class="sl-block-style" style="z-index: 18; opacity: 0.8;"><div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 18;" data-shape-stroke-color="#274e13" data-shape-stroke-width="5px" data-fragment-index="0"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 85 47"><defs><clippath id="shape-mask-3-1683637129003"><rect width="84.5" height="47.425" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#274e13" stroke-width="10"></rect></clippath></defs><rect width="84.5" height="47.425" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#274e13" stroke-width="10" clip-path="url(#shape-mask-3-1683637129003)"></rect></svg></div></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-d50109" data-block-id="26e5eef5d5727832c1e2241375e4049c" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content" style="transform-origin: 343.142px 462px 0px; z-index: 19;">
+<div class="sl-block" data-block-type="shape" style="width: 130px; height: 50.166px; left: 220px; top: 283px;" data-origin-id="6ff858891d3d6f6d45487b4fdd60c9ac" data-block-id="751e1a37b1f85f74e2474cee6a375e20" data-name="shape-93ed40"><div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 26;" data-shape-stroke-color="#93c47d" data-shape-stroke-width="6px" data-fragment-index="2"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 130 50"><defs><clippath id="shape-mask-4-1683637129003"><rect width="130" height="50.166" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#93c47d" stroke-width="12"></rect></clippath></defs><rect width="130" height="50.166" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#93c47d" stroke-width="12" clip-path="url(#shape-mask-4-1683637129003)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="shape" style="width: 146px; height: 45.166px; left: 134px; top: 366px;" data-origin-id="751e1a37b1f85f74e2474cee6a375e20" data-block-id="fcb99225d1f52a14e60ebf309a19bde0" data-name="shape-ffbc69"><div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 30;" data-shape-stroke-color="#76a5af" data-shape-stroke-width="6px" data-fragment-index="3"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 146 45"><defs><clippath id="shape-mask-5-1683637129004"><rect width="146" height="45.166" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#76a5af" stroke-width="12"></rect></clippath></defs><rect width="146" height="45.166" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#76a5af" stroke-width="12" clip-path="url(#shape-mask-5-1683637129004)"></rect></svg></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-fa7d8e" data-block-id="64464cdd914a8d7fcef94b767a2d5653" style="height: auto;"><div class="sl-block-content sl-block-group-content fragment" style="transform-origin: 533.557px 493.917px 0px; z-index: 31;" data-fragment-index="3">
+<div class="sl-block" data-block-type="text" style="height: auto; width: 238.041px; left: 417.242px; top: 428.47px;" data-name="text-2c9ce0" data-block-id="1117aba21e1401d70caa7ffc0713eb7d"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 33; line-height: 0.702;" data-has-line-height=""><p><span style="font-size:0.7em">wave patterns, hidden Markov states, synchronization, ...</span></p></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 238.041px; left: 417.242px; top: 508.488px;" data-block-id="18fb3ff1595462d3d372ae21284f1f3d" data-name="text-9ac674"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 34; line-height: 1.04;" data-has-line-height=""><p><span style="font-size:0.7em">at least quasi-stationary along the state's duration</span></p></div></div>
+<div class="sl-block" data-block-type="shape" style="width: 243.453px; height: 164.166px; left: 411.83px; top: 411.834px;" data-origin-id="fcb99225d1f52a14e60ebf309a19bde0" data-block-id="61bf140af507b38e796b8eaa033ad70a" data-name="shape-9558f5"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 32;" data-shape-stroke-color="#76a5af" data-shape-stroke-width="6px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 243 164"><defs><clippath id="shape-mask-6-1683637129005"><rect width="243.453" height="164.166" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#76a5af" stroke-width="12"></rect></clippath></defs><rect width="243.453" height="164.166" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#76a5af" stroke-width="12" clip-path="url(#shape-mask-6-1683637129005)"></rect></svg></div></div>
+</div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-36662e" data-block-id="a9e35bb4b40acc35b66744fe55bc0b01" style="height: auto;"><div class="sl-block-content sl-block-group-content fragment" style="transform-origin: 533.642px 333.333px 0px; z-index: 27;" data-fragment-index="2">
+<div class="sl-block" data-block-type="text" style="height: auto; width: 231.325px; left: 417.242px; top: 302.745px;" data-name="text-0a0a70" data-block-id="238c2c7f2033521a5b1c9e815a6e82be"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 29; line-height: 0.715;" data-has-line-height=""><p><span style="font-size:0.7em">observables, e.g. local-field potentials, firing rates, ...</span></p></div></div>
+<div class="sl-block" data-block-type="shape" style="width: 243.283px; height: 86.666px; left: 412px; top: 290px;" data-origin-id="751e1a37b1f85f74e2474cee6a375e20" data-block-id="671b564ddbc135829583df775ab2c980" data-name="shape-071474"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 28;" data-shape-stroke-color="#93c47d" data-shape-stroke-width="6px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 243 87"><defs><clippath id="shape-mask-7-1683637129005"><rect width="243.283" height="86.666" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#93c47d" stroke-width="12"></rect></clippath></defs><rect width="243.283" height="86.666" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#93c47d" stroke-width="12" clip-path="url(#shape-mask-7-1683637129005)"></rect></svg></div></div>
+</div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-04c097" data-block-id="4404e6b4881dd70b0f4d21baef760ab5" style="height: auto;"><div class="sl-block-content sl-block-group-content fragment" style="transform-origin: 207.771px 351.881px; z-index: 20;" data-fragment-index="1">
+<div class="sl-block" data-block-type="text" style="height: auto; width: 346.712px; left: 31px; top: 288px;" data-name="text-215bd1" data-block-id="041d9532a42ff5b1b9211214c52b1100"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 22;">
+<p><em>epoch of the dynamics</em></p>
+
+<p>with typical and unique properties</p>
+</div></div>
+<div class="sl-block" data-block-type="shape" style="width: 353.542px; height: 151.762px; left: 31px; top: 276px;" data-block-id="6ff858891d3d6f6d45487b4fdd60c9ac" data-name="shape-70d884"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 21;" data-shape-stroke-color="#274e13" data-shape-stroke-width="6px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 354 152"><defs><clippath id="shape-mask-8-1683637129005"><rect width="353.542" height="151.762" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#274e13" stroke-width="12"></rect></clippath></defs><rect width="353.542" height="151.762" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#274e13" stroke-width="12" clip-path="url(#shape-mask-8-1683637129005)"></rect></svg></div></div>
+</div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-fb7dad" data-block-id="b8ff3735fdcae3f04a4e1a253a969e22" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content fragment" style="transform-origin: 202.751px 559.5px 0px; z-index: 23;" data-fragment-index="1">
+<div class="sl-block" data-block-type="image" style="width: 207.401px; height: 137.952px; left: 99.05px; top: 471px; min-width: 1px; min-height: 1px;" data-name="image-172d5f" data-origin-id="1a8b8fc4b6c92a6753b75b48ac678d2d" data-block-id="fdff5308d82aff6ad2022cb5fba26907"><div class="sl-block-content" style="z-index: 24;"><img style="left: -120px; top: -118px; width: 639px; height: 903px;" data-natural-width="955" data-natural-height="1350" data-crop-x="0.187621" data-crop-y="0.13104" data-crop-width="0.324677" data-crop-height="0.15277" data-lazy-loaded="" data-src="metastability-full-a44d2a/4c106e8182030ddc2bb368dc6e6afea5.png"></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 270px; left: 67.7505px; top: 612px;" data-name="text-05aad3" data-block-id="93ffebed2f3c0c3f365b2ba71ac6d1d1"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 25;"><p><span style="font-size:0.5em">La Camera, Fontanini, Mazzucato, 2019</span></p></div></div>
+</div></div>
+</div></div>
+</div></div>
+<div class="sl-block" data-block-type="shape" style="width: 329.185px; height: 47.425px; left: 833.815px; top: 332.745px;" data-block-id="e777280f53ec544c2d03c9750c08beec" data-name="shape-e3637e"><div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 36;" data-shape-stroke-color="#f6b26b" data-shape-stroke-width="6px" data-fragment-index="6"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 329 47"><defs><clippath id="shape-mask-9-1683637129006"><rect width="329.185" height="47.425" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#f6b26b" stroke-width="12"></rect></clippath></defs><rect width="329.185" height="47.425" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#f6b26b" stroke-width="12" clip-path="url(#shape-mask-9-1683637129006)"></rect></svg></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-b79d9a" data-block-id="4e24d5a56638539ec415d2a7ce76c19e" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content fragment" style="transform-origin: 995.593px 500.373px 0px; z-index: 15;" data-fragment-index="6"><div class="sl-block" data-block-type="shape" style="width: 489.185px; height: 132.23px; left: 751px; top: 434.258px;" data-block-id="612c46a95b25e4083f2584c60e364dc2" data-name="shape-ef0dcd"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 16;" data-shape-stroke-color="#f6b26b" data-shape-stroke-width="6px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 489 132"><defs><clippath id="shape-mask-10-1683637129006"><rect width="489.185" height="132.23" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#f6b26b" stroke-width="12"></rect></clippath></defs><rect width="489.185" height="132.23" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#f6b26b" stroke-width="12" clip-path="url(#shape-mask-10-1683637129006)"></rect></svg></div></div></div></div>
+<div class="sl-block" data-block-type="math" style="width: auto; height: auto; left: 812px; top: 447.373px;" data-name="math-db1f16" data-block-id="15a61d86e66f8b1908d6b3d5c5bbc05b"><div class="sl-block-content notranslate fragment" style="z-index: 37; font-size: 49%; border-width: 1px;" data-fragment-index="6"><div class="math-input">\text{characteristic time } \tau_0 &lt; \\ \text{duration of metastable state } \tau &lt; \infty  \\ \text{       (separation of time-scales)}</div></div></div></section><section data-id="253963f9eef2c0d8ce99fc144a79f1ac">
+
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 370.242px; top: 93.5px;" data-block-id="b62672c00abb61a6525f23935ca90e50"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="538.9850000000001" data-line-y2="4" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 10;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="538.9850000000001" height="4" viewbox="0 0 538.9850000000001 4"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="538.9850000000001" y2="4"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="538.9850000000001" y2="4"></line></svg></div></div>
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 451px; left: 646.931px; top: 187px;" data-name="text-35739d" data-block-id="76ad427fbe889b9993a2dc13e9a07377"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11;" data-fragment-index="0"><p><span style="font-size:1.2em">Advantages:</span></p></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 680px; left: 600px; top: 237.045px;" data-name="text-0d85fe" data-block-id="feaf76486b574cd3c1fcc2ebbcfc9496"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;"><ul>
+	<li class="fragment" data-fragment-index="0">Simple</li>
+	<li class="fragment" data-fragment-index="1">Directly applicable to experimental data</li>
+	<li class="fragment" data-fragment-index="2">Generalizes previous formulations and observations
+	<ul>
+		<li class="fragment" data-fragment-index="3">encompassed as distinct subtypes</li>
+		<li class="fragment" data-fragment-index="4">does not require stability or invariance</li>
+	</ul>
+	</li>
+	<li class="fragment" data-fragment-index="5">Underlying dynamical principle</li>
+</ul></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-9ff39e" data-block-id="af5a5c422212b8f038b10934d0677115" style="height: auto;"><div class="sl-block-content sl-block-group-content" style="transform-origin: 302.093px 371.545px 0px; z-index: 12;">
+<div class="sl-block" data-block-type="text" style="height: auto; width: 438px; left: 80px; top: 334.088px;" data-name="text-6b354e" data-block-id="0347ddcb248ece2bde7f0c5edb0c0a33"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;"><p>States are <strong>metastable</strong> if they are <strong>transient but long-lived</strong></p></div></div>
+<div class="sl-block" data-block-type="shape" style="width: 444.185px; height: 96.763px; left: 80px; top: 323.163px;" data-name="shape-0cc03b" data-block-id="86af13f653f218f876a82cf9aaa8010e"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 14;" data-shape-stroke-color="#ff9900" data-shape-stroke-width="6px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 444 97"><defs><clippath id="shape-mask-1-1683540542521"><rect width="444.185" height="96.763" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff9900" stroke-width="12"></rect></clippath></defs><rect width="444.185" height="96.763" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff9900" stroke-width="12" clip-path="url(#shape-mask-1-1683540542521)"></rect></svg></div></div>
+</div></div>
+<div class="sl-block sl-block-group" data-block-type="group" style="height: auto;" data-block-id="09480516e04adee43afab91cb52bc822" data-name="group-3fa1f1"><div class="sl-block-content sl-block-group-content" style="transform-origin: 302.093px 371.545px 0px; z-index: 16;">
+<div class="sl-block" data-block-type="text" style="height: auto; width: 438px; left: 80px; top: 334.088px;" data-origin-id="0347ddcb248ece2bde7f0c5edb0c0a33" data-block-id="0490e88e80cbe9c191d931ea10a1184e" data-name="text-c77e9d"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 17;"><p>States are <strong>metastable</strong> if they are <strong>transient but long-lived</strong></p></div></div>
+<div class="sl-block" data-block-type="shape" style="width: 444.185px; height: 96.763px; left: 80px; top: 323.163px;" data-origin-id="86af13f653f218f876a82cf9aaa8010e" data-block-id="f0a2d03edc27e72afc311108e415d431" data-name="shape-fe285f"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 18;" data-shape-stroke-color="#ff9900" data-shape-stroke-width="6px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 444 97"><defs><clippath id="shape-mask-2-1683540542522"><rect width="444.185" height="96.763" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff9900" stroke-width="12"></rect></clippath></defs><rect width="444.185" height="96.763" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff9900" stroke-width="12" clip-path="url(#shape-mask-2-1683540542522)"></rect></svg></div></div>
+</div></div>
+<div class="sl-block" data-block-type="shape" style="width: 253.185px; height: 46.763px; left: 779px; top: 447.282px;" data-block-id="6fa908473a98f294e3e6e0673816e66a" data-name="shape-f84977"><div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 19;" data-shape-stroke-color="#674ea7" data-shape-stroke-width="6px" data-fragment-index="5"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 253 47"><defs><clippath id="shape-mask-3-1683540542522"><rect width="253.185" height="46.763" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#674ea7" stroke-width="12"></rect></clippath></defs><rect width="253.185" height="46.763" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#674ea7" stroke-width="12" clip-path="url(#shape-mask-3-1683540542522)"></rect></svg></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-a7cd67" data-block-id="ea90083e4a43382b474919de14e60e02" style="height: auto;"><div class="sl-block-content sl-block-group-content fragment" style="transform-origin: 909.227px 592.382px 0px; z-index: 20;" data-fragment-index="6">
+<div class="sl-block" data-block-type="shape" style="width: 542.185px; height: 156.763px; left: 638.134px; top: 514px;" data-block-id="061904a2610ef48f908196fb3e489998" data-name="shape-3e316f"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 21;" data-shape-stroke-color="#674ea7" data-shape-stroke-width="6px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 542 157"><defs><clippath id="shape-mask-4-1683540542523"><rect width="542.185" height="156.763" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#674ea7" stroke-width="12"></rect></clippath></defs><rect width="542.185" height="156.763" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#674ea7" stroke-width="12" clip-path="url(#shape-mask-4-1683540542523)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 524.592px; left: 646.931px; top: 537.882px;" data-name="text-594604" data-block-id="6fa96fda0c1fd057cc862b440add541f"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 22;"><p><span style="color:#4b0082"><span style="font-size:0.9em">metastable states occur due the coexistence of attracting and repelling directions around that state in phase space</span></span></p></div></div>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 406.319px; left: 722.841px; top: 680.763px;" data-name="text-01fbd4" data-block-id="a7dd650322e18034ed7a2e68ef75f243"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 23; line-height: 0.715;" data-has-line-height="" data-fragment-index="6"><p><span style="font-size:0.7em">Tognoli &amp; Kelso, 2014; Kaneko &amp; Tsuda, 2003</span></p></div></div>
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 240px; top: 35.5px; height: auto;" data-name="text-c29943" data-block-id="bdb51155ddb1dbf763e19713242f1ad5"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 24; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text"><p><strong>Definition of metastability</strong></p></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 504.185px; left: 30px; top: 561.882px;" data-name="text-c36a22" data-block-id="e9b1a83a4f3a08e6d14b972ff1dbdf9e"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 25;" data-fragment-index="7"><p><span style="color:#800080">Can be implemented through several dynamical mechanisms!</span></p></div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 0px; min-height: 0px; left: 524.185px; top: 592.381px;" data-name="line-3360c7" data-block-id="43f32dd4cc8829a72d43599e31b01353"><div class="sl-block-content fragment" data-line-x1="0" data-line-y1="0" data-line-x2="101.81500000000005" data-line-y2="0.0009999999999763531" data-line-color="#9900ff" data-line-start-type="line-arrow" data-line-end-type="none" style="z-index: 26;" data-fragment-index="7"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="101.81500000000005" height="1" viewbox="0 0 101.81500000000005 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="1.9999999999035334" y1="0.000019643470999913948" x2="101.81500000000005" y2="0.0009999999999763531"></line><line class="line-element" stroke="#9900ff" stroke-width="2" x1="1.9999999999035334" y1="0.000019643470999913948" x2="101.81500000000005" y2="0.0009999999999763531"></line><path style="fill: rgba(0,0,0,0);" stroke="#9900ff" stroke-width="2" transform="translate(1.9999999999035334,0.000019643470999913948) rotate(90.001)" d="M -6 -6 L 0 0 L 6 -6"></path></svg></div></div></section></section><section class="stack" data-id="d23271737373da6f0d000d79d4b096cb"><section data-id="6262f9794f101c717d3776129747b57d">
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 232px; top: 247px; height: auto;" data-name="text-c29943" data-block-id="4fc611b272db9110619771b33d5132b0"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text"><h2><strong>What are the mechanisms for metastability?</strong></h2></div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 251px; top: 378px;" data-block-id="3a1d89e22898e0621e662a6d6ebaa250"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="770.0768338540291" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="770.0768338540291" height="1" viewbox="0 0 770.0768338540291 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="770.0768338540291" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="770.0768338540291" y2="0"></line></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 504.185px; left: 379.908px; top: 467.5px;" data-name="text-c36a22" data-block-id="bd385b133309c70d96a4978606a4d8ba"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12;" data-fragment-index="0"><p><span style="font-size:1.2em"><span style="color:#800080">How is the dynamical principle implemented?</span></span></p></div></div></section><section data-id="15f9ff0b3a803560261c8c7a250763fc">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 929.358px; left: 175.321px; top: 23.0642px; height: auto;" data-name="text-c29943" data-block-id="f312af7596e4d8d8b518fc2ef2e57976"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text"><p>Mechanism 1: stable heteroclynic cycle</p></div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 248.629px; top: 78.1308px;" data-block-id="361c518f84387667b70c0aa881482c8e"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="780.2405289327444" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="780.2405289327444" height="1" viewbox="0 0 780.2405289327444 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="780.2405289327444" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="780.2405289327444" y2="0"></line></svg></div></div>
+
+
+
+
+
+
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-f2c08d" data-block-id="001b5286095bc03682f6edfd981ca43b"><div class="sl-block-content sl-block-group-content" style="transform-origin: 400px 606.9px; z-index: 12;"><div class="sl-block" data-block-type="image" style="width: 619.749px; height: 193.672px; left: 90.1255px; top: 510.064px; min-width: 1px; min-height: 1px;" data-name="image-11c7cf" data-block-id="cccc69823d1becc21f13b7c0152087a8"><div class="sl-block-content" style="z-index: 13;"><img class="" data-natural-width="800" data-natural-height="250" data-lazy-loaded="" data-src="metastability-full-a44d2a/7cc0844f9a5e09282ffcfb48e528cc78.png"></div></div></div></div>
+<div class="sl-block" data-block-type="video" style="min-width: 30px; min-height: 30px; width: 621.667px; height: 373px; left: 90.1255px; top: 116px;" data-name="video-d79566" data-block-id="f0ede9b501f502e5f5d3671863b6ebdb"><div class="sl-block-content" style="z-index: 15;" data-media-id="10451278" data-video-thumb="metastability-full-a44d2a/c61ffbdfb5b97033e53170406b4b0a98.jpg"><video playsinline="" controls="controls" poster="metastability-full-a44d2a/c61ffbdfb5b97033e53170406b4b0a98.jpg" data-paused-by-reveal="" data-lazy-loaded="" muted="" data-autoplay="" data-src="metastability-full-a44d2a/d3f4ddeecd6d07c59bd849a1897c86f6.mp4"></video></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 502px; left: 720px; top: 443.477px;" data-name="text-a5f54d" data-block-id="c40bcdeb884ae5ae49a89fe078768c34"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 16; color: rgb(0, 0, 255);" data-fragment-index="1">
+<p><span style="font-size:0.9em">Concrete instance of abstract proposal in Friston, 2000:</span></p>
+
+<p><span style="font-size:0.9em">metastable states as submanifolds of the same attractor</span></p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 469px; left: 731px; top: 105.791px;" data-name="text-1d2937" data-block-id="05a4f894bcb3bb27964fc3b07ce12d35"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14; line-height: 0.702;" data-has-line-height="">
+<p>For more:</p>
+
+<p><span style="font-size:0.7em">Ashwin et al., 1999; Nonlinearity (for the model here)</span></p>
+
+<p><span style="font-size:0.7em">Afraimovich et al.  2008; PLoS Comp. Bio</span></p>
+
+<p><span style="font-size:0.7em">Fonollosa et al., 2015;</span> <span style="font-size:0.7em">PLoS Comp. Bio</span></p>
+
+<p><span style="font-size:0.7em">Rabinovich et al., 2012; Physics of Life Rev.</span></p>
+
+<p> </p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 504.185px; left: 731px; top: 302.5px;" data-name="text-c36a22" data-block-id="97dc3e6a45a9fe00c8e749c0f1ba8e1b"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 17;" data-fragment-index="0"><p><span style="font-size:1.0em"><span style="color:#800080">Stable manifolds connected to unstable manifolds</span></span></p></div></div></section><section data-id="87e40ac75347e4ae3baa9fe6c1268121">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 240px; top: 23.7616px; height: auto;" data-name="text-c29943" data-block-id="aa621512a5a4183e06173874dbb5870a"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text"><p>Mechanism 2: chaotic saddle</p></div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 344.5px; top: 77.7616px;" data-block-id="ec45ceec6ac2a4451cc3b0f374943120"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="599.328070280022" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="599.328070280022" height="1" viewbox="0 0 599.328070280022 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="599.328070280022" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="599.328070280022" y2="0"></line></svg></div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="video" style="min-width: 30px; min-height: 30px; width: 654.218px; height: 490.664px; left: 6.36052px; top: 130.673px;" data-name="video-d96465" data-block-id="01c38f290a13d920d212efaac9a1edec"><div class="sl-block-content" style="z-index: 12;" data-media-id="10451557" data-video-thumb="metastability-full-a44d2a/dd078c567f4e75fc2ee6325f8cab96f0.jpg"><video playsinline="" controls="controls" poster="metastability-full-a44d2a/dd078c567f4e75fc2ee6325f8cab96f0.jpg" data-paused-by-reveal="" data-lazy-loaded="" muted="" data-autoplay="" data-src="metastability-full-a44d2a/227e20b5cb28e5e9ec4b0f6bb14beda8.mp4"></video></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 490px; left: 710px; top: 154.165px;" data-name="text-b99206" data-block-id="14df2a83844bb3426afdfdcb9034602f"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;" data-fragment-index="0"><p><span style="font-size:0.9em">Metastability "en route to ground state" (i.e. non-repeatable states)</span></p></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 669.077px; top: 237.25px;" data-name="text-47fcb2" data-block-id="e12be3d4d3e5e9f4ec9fc27ecdb5a1c1"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;" data-fragment-index="1">
+<p><span style="font-size:0.9em">Hierarchical chaotic saddle in spiking neural networks:</span></p>
+
+<p><span style="font-size:0.7em">Ansmann et al., 2016 (Phys. Rev. X)</span></p>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 319.697px; height: 331px; left: 825.238px; top: 317px; min-width: 1px; min-height: 1px;" data-name="image-f863f5" data-block-id="c605e1fe8b5d6720612096d829b92d61"><div class="sl-block-content fragment current-visible" style="z-index: 15;" data-fragment-index="1"><img class="" data-natural-width="1229" data-natural-height="394" data-crop-x="0.061395" data-crop-y="0" data-crop-width="0.309638" data-crop-height="1" style="left: -63px; top: 0px; width: 1032px; height: 331px;" data-lazy-loaded="" data-src="metastability-full-a44d2a/93977b1127c3fad8233f24473e1ce04d.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 319.697px; height: 331px; left: 819.086px; top: 317px; min-width: 1px; min-height: 1px;" data-block-id="e293c827a83536c515935c9efde3bb83" data-name="image-6f3669"><div class="sl-block-content fragment" style="z-index: 16;" data-fragment-index="2"><img class="" data-natural-width="1229" data-natural-height="394" data-crop-x="0.686047" data-crop-y="0" data-crop-width="0.309638" data-crop-height="1" style="left: -708px; top: 0px; width: 1032px; height: 331px;" data-lazy-loaded="" data-src="metastability-full-a44d2a/93977b1127c3fad8233f24473e1ce04d.png"></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 398px; left: 779.238px; top: 640.186px;" data-name="text-fdb286" data-block-id="5a9cb8ddade67cd1ecd117e6efec1f71"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 17; color: rgb(0, 0, 255);" data-fragment-index="3"><p>Each pattern is one part of the chaotic saddle (invariant set)</p></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 504.185px; left: 691.736px; top: 108.165px;" data-name="text-c36a22" data-block-id="f3f6c68a6e60de07b757741d13ac5c2f"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 18;" data-fragment-index="0"><p><span style="font-size:1.0em"><span style="color:#800080">Stable and unstable manifolds</span></span></p></div></div></section><section data-id="de01e7c5e73e95d82c9f7791a9a25a99">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 240px; top: 25.5px; height: auto;" data-name="text-c29943" data-block-id="8944472696efa86c7bd214a0d993bd35"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text"><p>Mechanism 3: interior crisis</p></div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 357.895px; top: 87.5px;" data-block-id="c826159f9cb136e43a0d319d712e4f7f"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="567.0192549445202" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="567.0192549445202" height="1" viewbox="0 0 567.0192549445202 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="567.0192549445202" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="567.0192549445202" y2="0"></line></svg></div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 398px; left: 725.914px; top: 346.355px;" data-name="text-fdb286" data-block-id="f202bae037b8d9de1f1224aa9b8697c6"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13; color: rgb(0, 0, 255);" data-fragment-index="3"><p><span style="font-size:0.9em">Inner core is a part of the entire chaotic attractor</span></p></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 353.738px; left: 746.836px; top: 191.5px;" data-name="text-c36a22" data-block-id="5678d7d0adee2878e9306c7973d0ec70"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;" data-fragment-index="2"><p><span style="font-size:1.0em"><span style="color:#800080">Transition mediated by unstable manifold of a periodic orbit</span></span></p></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 207.293px; left: 249.501px; top: 95.0237px;" data-name="text-dd0dc7" data-block-id="49e39227ff50500475d08cce456c66b5"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; font-size: 120%;" data-fragment-index="1"><p><span style="font-size:0.7em">after crisis</span></p></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-9db27f" data-block-id="c6255b728023c1f38f8023c3ee55ced3"><div class="sl-block-content sl-block-group-content" style="transform-origin: 381.988px 400.505px 0px; z-index: 18;">
+<div class="sl-block" data-block-type="video" style="width: 536.727px; height: 536.727px; left: 56.261px; top: 135.024px;" data-name="video-f8ffc6" data-block-id="ca331d423b4b49e8c9ee7631167f0984"><div class="sl-block-content fragment current-visible" style="z-index: 19;" data-media-id="10452504" data-video-thumb="metastability-full-a44d2a/31fead8770900916f3ed1c997251bd13.jpg" data-fragment-index="0"><video playsinline="" controls="controls" poster="metastability-full-a44d2a/31fead8770900916f3ed1c997251bd13.jpg" data-paused-by-reveal="" data-lazy-loaded="" muted="" data-autoplay="" data-src="metastability-full-a44d2a/0ed96edae3690091682349904be5f2ee.mp4"></video></div></div>
+<div class="sl-block" data-block-type="video" style="width: 536.727px; height: 536.727px; left: 50.988px; top: 135.259px;" data-name="video-eaf72f" data-block-id="7c122ea46fd6062672d1bf2243d2f8ca"><div class="sl-block-content fragment" style="z-index: 20;" data-media-id="10452499" data-video-thumb="metastability-full-a44d2a/e5f0da3fef57dbae3378d9b9be3f367b.jpg" data-fragment-index="1"><video playsinline="" controls="controls" data-paused-by-reveal="" poster="metastability-full-a44d2a/e5f0da3fef57dbae3378d9b9be3f367b.jpg" data-lazy-loaded="" muted="" data-autoplay="" data-src="metastability-full-a44d2a/ccbcb8a017093e4b7db39764181759ae.mp4"></video></div></div>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 207.293px; left: 242.057px; top: 94.0147px;" data-name="text-9046bc" data-block-id="54bc1b0d06ee18519fdd2f1baf77dd31"><div class="sl-block-content fragment current-visible" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 17; font-size: 120%;" data-fragment-index="0">
+<p><span style="font-size:0.7em">before crisis</span></p>
+</div></div></section><section data-id="eed0c35544a58d9ea97534d04979890e">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 960px; left: 160px; top: 23.2192px; height: auto;" data-name="text-c29943" data-block-id="4044ada0caf62ed9868f289e6ab777f1"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text"><p>Mechanism 4: type-I intermittency</p></div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 292.485px; top: 81.5px;" data-block-id="9eca6c9e542c6c7d2fbce8022da60315"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="686.3113868320993" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="686.3113868320993" height="1" viewbox="0 0 686.3113868320993 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="686.3113868320993" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="686.3113868320993" y2="0"></line></svg></div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 412.178px; left: 744.574px; top: 214.355px;" data-name="text-4d4229" data-block-id="2a087b73cb5068c0ec1ed7386e647d13"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12;" data-fragment-index="0">
+<p><span style="font-size:0.7em">Saddle-node bifurcation of periodic orbits</span></p>
+</div></div>
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 594.15px; height: 222.806px; left: 11.596px; top: 103.5px; min-width: 1px; min-height: 1px;" data-name="image-ea6c50" data-block-id="8463ca8d54e9b4ade1a4d518c26a27d0"><div class="sl-block-content" style="z-index: 18;"><img class="" data-natural-width="800" data-natural-height="300" data-lazy-loaded="" data-src="metastability-full-a44d2a/84878558bf50b1cba388e0292c1734c2.png"></div></div>
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 672px; top: 641px;" data-name="text-fdb286" data-block-id="84413367653495e09dab0567a4c37d31"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 19; color: rgb(0, 0, 255);" data-fragment-index="2"><p><span style="font-size:0.9em">Each metastable state is a part of a same (chaotic) attractor</span></p></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 278.462px; left: 789.894px; top: 139px;" data-name="text-631bb2" data-block-id="d09853f702ad6068ec7d7c7a0744499f"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 20; line-height: 0.832;" data-has-line-height="">
+<p>For more, see</p>
+
+<p><span style="font-size:0.7em">Tognoli &amp; Kelso, 2014; Neuron</span></p>
+</div></div>
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 486.877px; left: 685.686px; top: 529.5px;" data-name="text-c36a22" data-block-id="e6c38ced6a0c0faf52f87b613467a854"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 21;" data-fragment-index="1"><p><span style="font-size:1.0em"><span style="color:#800080">Transitions mediated by a tunnel in phase space opened by the bifurcation</span></span></p></div></div>
+
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-0f123f" data-block-id="26ccf40aec6498cbb2ecf50a5639c0b7"><div class="sl-block-content sl-block-group-content fragment" style="transform-origin: 773.663px 376.725px 0px; z-index: 13;" data-fragment-index="0"><div class="sl-block sl-block-group" data-block-type="group" data-name="group-04c4a0" data-block-id="8821cefb0ffeb001d1522235411aebd4"><div class="sl-block-content sl-block-group-content" style="transform-origin: 773.663px 376.725px 0px; z-index: 14;"><div class="sl-block sl-block-group" data-block-type="group" data-name="group-35614e" data-block-id="92af19dc3c50335fa3463bf3b94cfd58"><div class="sl-block-content sl-block-group-content" style="transform-origin: 773.663px 376.725px 0px; z-index: 15;">
+<div class="sl-block" data-block-type="image" style="width: 335.834px; height: 252.739px; left: 605.746px; top: 250.355px; min-width: 1px; min-height: 1px;" data-name="image-6a38c1" data-block-id="cd2e2a71504faf2f26927011abcf7193"><div class="sl-block-content" style="z-index: 16;"><img style="" data-natural-width="1750" data-natural-height="1317" data-lazy-loaded="" data-src="metastability-full-a44d2a/2569e0f240bf58cd9a01898bd4a58af7.png"></div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 0px; min-height: 0px; left: 754.226px; top: 278.491px;" data-name="line-f851c3" data-block-id="3e596c04b13490bc3cba6db22a63f8a4"><div class="sl-block-content" data-line-x1="0" data-line-y1="162.9171894569514" data-line-x2="0" data-line-y2="0" data-line-color="#ff0000" data-line-start-type="none" data-line-end-type="none" style="z-index: 17;" data-line-width="3px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="1" height="162.9171894569514" viewbox="0 0 1 162.9171894569514"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0.5" y1="163.4171894569514" x2="0.5" y2="0.5"></line><line class="line-element" stroke="#ff0000" stroke-width="3" x1="0.5" y1="163.4171894569514" x2="0.5" y2="0.5"></line></svg></div></div>
+</div></div></div></div></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-f7c543" data-block-id="1c86866f3da0417e2081ef75ac95ec2c" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content fragment" style="transform-origin: 1075.67px 387.429px 0px; z-index: 22;" data-fragment-index="1">
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-21ec9d" data-origin-id="70055444aa80dd63b3828cd4d98b69b3" data-block-id="07103bf77f27326a557f2608e3185dad"><div class="sl-block-content sl-block-group-content" style="transform-origin: 1078.11px 374.316px 0px; z-index: 23;">
+<div class="sl-block" data-block-type="image" style="width: 206.9px; height: 207.639px; left: 974.663px; top: 270.496px; min-width: 1px; min-height: 1px;" data-name="image-f1c8cb" data-origin-id="df131a4077e9e17cbbb90014cc40f528" data-block-id="36ad59bb5d4f6736ea3b24169a04a8c9"><div class="sl-block-content" style="z-index: 24;"><img style="" data-natural-width="280" data-natural-height="281" data-lazy-loaded="" data-src="metastability-full-a44d2a/cba50e3601bed4d48c121eda61f704b6.png"></div></div>
+
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 97.499px; left: 1026.16px; top: 474.636px;" data-name="text-e4ac40" data-origin-id="eb90009cc18786f25b21d78be4004ffd" data-block-id="c23e8ddf93bba9e10ac14975373bbc4c"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 25; line-height: 0.676; font-size: 90%;" data-has-line-height="">
+<p><span style="font-size:0.5em">(Argyris, 2015)</span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" style="width: 249.337px; height: 233.361px; left: 951px; top: 271px;" data-name="shape-3e316f" data-origin-id="061904a2610ef48f908196fb3e489998" data-block-id="b87658786376a439ad2084aff08f3efd"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 26;" data-shape-stroke-color="#674ea7" data-shape-stroke-width="6px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 249 233"><defs><clippath id="shape-mask-1-1683987457617"><rect width="249.337" height="233.361" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#674ea7" stroke-width="12"></rect></clippath></defs><rect width="249.337" height="233.361" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#674ea7" stroke-width="12" clip-path="url(#shape-mask-1-1683987457617)"></rect></svg></div></div>
+</div></div>
+<div class="sl-block" data-block-type="video" style="min-width: 30px; min-height: 30px; width: 600px; height: 360px; left: 11.596px; top: 333.085px;" data-name="video-8c8371" data-block-id="fafbdc8ba1dcf4fc5a10cfa59aa9bb09"><div class="sl-block-content" style="z-index: 27;" data-media-id="10470872" data-video-thumb="metastability-full-a44d2a/227fc0b0b95653d086dc5b874d4be209.jpg"><video playsinline="" controls="controls" poster="metastability-full-a44d2a/227fc0b0b95653d086dc5b874d4be209.jpg" data-paused-by-reveal="" data-autoplay="" muted="" data-src="metastability-full-a44d2a/58733d33a04d022ef2338708fd989d3a.mp4"></video></div></div></section><section data-id="516ad3a2e1987121d73654eefc146309">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 240px; top: 23.7616px; height: auto;" data-name="text-c29943" data-block-id="f114fab7e1c9cf2191248acf9f9c1298"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text"><p>Mechanism 5: noise in bistable system</p></div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 287.5px; top: 77.7616px;" data-block-id="205ac918762ce6600e749317ad3d9a18"><div class="sl-block-content" data-line-x1="0" data-line-y1="6" data-line-x2="705.328070280022" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="705.328070280022" height="6" viewbox="0 0 705.328070280022 6"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="6" x2="705.328070280022" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="6" x2="705.328070280022" y2="0"></line></svg></div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 3.2px; height: 1px; left: 725.318px; top: 694px; min-width: 1px; min-height: 1px;" data-name="image-cb59ae" data-block-id="4e89c1b3bff8e2df8df2ea822827d1b7"><div class="sl-block-content" style="z-index: 12;"><img style="" data-natural-width="800" data-natural-height="250" data-lazy-loaded="" data-src="metastability-full-a44d2a/22cceff2d1c0e80bb471a1bb5c68a9c9.png"></div></div>
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 420px; left: 782.828px; top: 130.5px;" data-name="text-b5e0fc" data-block-id="b9c3df071fc6619ce85921534f384ef7"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13; line-height: 0.741;" data-has-line-height="">
+<p>For more:</p>
+
+<p><span style="font-size:0.7em">Brinkman, et al. 2022; Appl. Phys. Rev.</span></p>
+
+<p><span style="font-size:0.7em">Hudson, 2017; Front. in Neural Circuits</span></p>
+</div></div>
+<div class="sl-block" data-block-type="video" style="min-width: 30px; min-height: 30px; width: 700px; height: 420px; left: 25.318px; top: 192px;" data-name="video-81452b" data-block-id="5345e1e0fea71de3523acc3af559a1ab"><div class="sl-block-content" style="z-index: 14;" data-media-id="10451481" data-video-thumb="metastability-full-a44d2a/49ea47410f76569245331ba3ea20d45d.jpg"><video playsinline="" controls="controls" poster="metastability-full-a44d2a/49ea47410f76569245331ba3ea20d45d.jpg" data-paused-by-reveal="" data-lazy-loaded="" data-autoplay="" muted="" data-src="metastability-full-a44d2a/54eea3a9e269c3d2da743b9529a42a49.mp4"></video></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 460px; left: 774.246px; top: 379.825px;" data-name="text-e8c1c5" data-block-id="f32a0dc93d84fb0cd8413c17025b0eb0"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;" data-fragment-index="0">
+<p>In general: attractor-hopping</p>
+
+<p><span style="font-size:0.7em">Kraut &amp; Feudel, 2003; Phys. Rev. E</span></p>
+</div></div>
+</section><section data-id="d0fe02ce21ad5eec278383ab36796d11">
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 448.937px; top: 87.5px;" data-block-id="8bac56f9f4d58f525cafabc87f1f2c99"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="389.2894339922203" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 10;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="389.2894339922203" height="1" viewbox="0 0 389.2894339922203 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="389.2894339922203" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="389.2894339922203" y2="0"></line></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 480px; left: 801.127px; top: 269.317px;" data-name="text-5bb368" data-block-id="12abf852eeddcd69d8af2e7a2ff52797"><div class="sl-block-style" style="z-index: 11; transform: rotate(0deg);"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11;"><ul>
+	<li><span style="font-size:0.9em">Chaotic saddles with subregions of high measure (Ansmann, 2016; PRX)</span></li>
+	<li><span style="font-size:0.9em">Crawl-by</span></li>
+	<li><span style="font-size:0.9em">Fast-slow dynamics</span></li>
+	<li><span style="font-size:0.9em">Type-II and Type-III intermittency</span></li>
+	<li><span style="font-size:0.9em">In-out intermittency</span></li>
+	<li><span style="font-size:0.9em">Chaotic itinerancy</span></li>
+	<li><span style="font-size:0.9em">Mixed-mode oscillations</span></li>
+</ul></div></div></div>
+
+<div class="sl-block" data-block-type="image" style="width: 392.513px; height: 294px; left: 408.614px; top: 270.183px; min-width: 1px; min-height: 1px;" data-name="image-9ca781" data-block-id="7a81918993f93f19adcb3c50112a3c93"><div class="sl-block-content" style="z-index: 12;"><img class="" data-natural-width="510" data-natural-height="382" data-lazy-loaded="" data-src="metastability-full-a44d2a/b333c11481e4374dc51d21a7c482d041.png"></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 382.967px; left: 437px; top: 144px;" data-block-id="13bdba6a1cb46becedf28c588e530943" data-name="text-914ec6"><div class="sl-block-style" style="z-index: 13; transform: rotate(0deg);"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;"><p><span style="font-size:1.0em">Attractor-merging crisis</span></p></div></div></div>
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 240px; top: 25.5px; height: auto;" data-block-id="93ffae06b68798b6723febfe34a1b267" data-name="text-7adcf9"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 15; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text"><p>Other mechanisms</p></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 439px; left: -2px; top: 144px;" data-name="text-578f67" data-block-id="be5d702fa02644adc4807bf78ae099ac"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;"><p><span style="font-size:1.0em">On-off intermittency</span></p></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 382.967px; left: 817.033px; top: 144px;" data-block-id="66539addbf73b73e25ab95c42f2d3754" data-name="text-664a79"><div class="sl-block-style" style="z-index: 16; transform: rotate(0deg);"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 16;"><p><span style="font-size:1.0em">Others</span></p></div></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-5c8593" data-block-id="e27e3fee5a7d066cb92d2fdb990f35cc" style="width: auto; height: auto;"><div class="sl-block-content sl-block-group-content" style="transform-origin: 217.5px 441.25px; z-index: 17;">
+<div class="sl-block" data-block-type="image" style="width: 379.955px; height: 278.634px; left: 28.6585px; top: 270.183px; min-width: 1px; min-height: 1px;" data-name="image-458c04" data-block-id="8b62713cd3e8d65b119312164c90e020"><div class="sl-block-content" style="z-index: 18;"><img class="" data-natural-width="765" data-natural-height="561" data-lazy-loaded="" data-src="metastability-full-a44d2a/5bf8e954887b8da3b76f7323023b0909.png"></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 430px; left: 2.5px; top: 560.317px;" data-name="text-9def56" data-block-id="783cc1ee389f056c4d45b726997a53b5"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 19; line-height: 0.936;" data-has-line-height=""><p><span style="font-size:0.7em">(alternation between synchronization and desynchronization)</span></p></div></div>
+</div></div></section></section><section class="stack" data-id="68908794c78c5cdbe0768fd42ce70ead"><section data-id="63b71f27d6b20106fe97cc7e4719da67">
+
+
+
+
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 182.95px; top: 209.5px;" data-block-id="aabdc45dba16077cb70e2be2682bc98b"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="925.4365460167483" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 10;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="925.4365460167483" height="1" viewbox="0 0 925.4365460167483 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="925.4365460167483" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="925.4365460167483" y2="0"></line></svg></div></div>
+<div class="sl-block" data-block-type="text" style="width: 960px; left: 160px; top: 89.5001px; height: auto;" data-name="text-bad4e5" data-block-id="8cb0593bf127a3d1ae80f87147026a48"><div class="sl-block-style" style="z-index: 11; transform: rotate(0deg);"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: left; z-index: 11; padding: 10px; font-size: 238%; color: rgb(68, 68, 68);" data-placeholder-text="Text">
+<h2 style="text-align: center;">Summary / Future</h2>
+</div></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 915.831px; left: 192.556px; top: 277.662px;" data-name="text-22f78c" data-block-id="8347e5be4ef6d222b1753a14168b4ca4"><div class="sl-block-style" style="z-index: 12; transform: rotate(0deg);"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12;"><ul>
+	<li class="fragment semi-fade-out" data-fragment-index="0">
+<span style="font-size:0.9em">Metastability is a crucial dynamical regime for the brain, but a general theoretical framework is still missing.</span><br>
+	 </li>
+	<li class="fragment" data-fragment-index="0">
+<span style="font-size:0.9em">Our work proposes such a framework, and thus helps to unify different context-dependent formulations into <strong>a general framework</strong> to describe and understand metastability</span> by
+	<ul>
+		<li class="fragment" data-fragment-index="1">having a general definition that allows for a unifying principle</li>
+		<li class="fade-in-then-semi-out fragment" data-fragment-index="2">looking deep into dynamical mechanisms</li>
+	</ul>
+	</li>
+</ul></div></div></div>
+</section><section data-background-color="rgb(229, 230, 226)" data-id="950c4fb6c14e7150794a7b209f247bea"><div class="sl-block" data-block-type="text" style="width: 876px; left: 202px; top: 28.5px; height: auto;" data-block-id="7518d7d06bb7c91f046b5b78a8814fa5"><div class="sl-block-content" data-placeholder-tag="h1" style="z-index: 10; font-size: 160%; padding: 20px; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text">
+<p>Acknowledgments</p>
+</div></div>
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 277.246px; left: 36.4579px; top: 169.096px;" data-name="text-db4e3c" data-block-id="f80200f2fd3a5f46a6bc8396fb91c3c3"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11;">
+<p>Everton Medeiros</p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 277.246px; left: 270.05px; top: 169.096px;" data-block-id="4961f277caf5d1ee9e704a44a08ad6cf" data-name="text-fa8d77"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12;">
+<p>Ulrike Feudel</p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 277.246px; left: 501.377px; top: 169.096px;" data-block-id="e042f59883f9e7b4e080b167a7dd3c78" data-name="text-9f6b79"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p>Roberto Budzinski</p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 277.246px; left: 751.131px; top: 169.096px;" data-block-id="933c2d0fa21d68c6441e38f684ab47f2" data-name="text-11cb4d"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p>Lyle Muller</p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 277.246px; left: 981.377px; top: 169.096px;" data-block-id="7d084337ad578d2e73b7dc39f8d7b259" data-name="text-9ad0be"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;">
+<p>Bruno Boaretto</p>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 193.165px; height: 200.72px; left: 63.4175px; top: 231.28px; min-width: 1px; min-height: 1px;" data-name="image-cf2254" data-block-id="227c5503087a0d9df102931b2e200ace"><div class="sl-block-content" style="z-index: 16;"><img style="left: 0px; top: -39px; width: 193px; height: 261px;" data-natural-width="238" data-natural-height="322" data-crop-x="0" data-crop-y="0.149485" data-crop-width="1" data-crop-height="0.768041" data-lazy-loaded="" data-src="metastability-full-a44d2a/321685d68d494e77ebcb472ac5f9218e.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 183.344px; height: 200.72px; left: 318.033px; top: 231.28px; min-width: 1px; min-height: 1px;" data-name="image-2616b8" data-block-id="9e6d1e257e18cd1e62e078192b299fb3"><div class="sl-block-content" style="z-index: 17;"><img style="" data-natural-width="306" data-natural-height="335" data-lazy-loaded="" data-src="metastability-full-a44d2a/03a88f785829008e742b8f0ed7e5044c.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 200.72px; height: 200.72px; left: 536.357px; top: 231.28px; min-width: 1px; min-height: 1px;" data-name="image-eec56e" data-block-id="a3775950c84cdcdb809f576ab773eaad"><div class="sl-block-content" style="z-index: 18;"><img style="" data-natural-width="200" data-natural-height="200" data-lazy-loaded="" data-src="metastability-full-a44d2a/3c53e3445d347d89a524b27fdd3b4e23.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 185.378px; height: 200.72px; left: 794.245px; top: 231.28px; min-width: 1px; min-height: 1px;" data-name="image-7f980c" data-block-id="7869b93aa704ec7a7b51b77c8da73d37"><div class="sl-block-style" style="z-index: 19; transform: rotate(0deg);"><div class="sl-block-content" style="z-index: 19;"><img style="left: -15px; top: 0px; width: 201px; height: 201px;" data-natural-width="400" data-natural-height="400" data-crop-x="0.076433" data-crop-y="0" data-crop-width="0.923567" data-crop-height="1" data-lazy-loaded="" data-src="metastability-full-a44d2a/4daad04d1234d1614e865cfbe43b0e25.png"></div></div></div>
+<div class="sl-block" data-block-type="image" style="width: 200.72px; height: 200.72px; left: 1028.38px; top: 231.28px; min-width: 1px; min-height: 1px;" data-name="image-922a67" data-block-id="f20b0c7a688f892d1bc24143096e87c8"><div class="sl-block-content" style="z-index: 20;"><img style="" data-natural-width="512" data-natural-height="512" data-lazy-loaded="" data-src="metastability-full-a44d2a/dfacb8d7dc05de086b65379c6c5c1fef.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 725.153px; height: 133.056px; left: 296.872px; top: 566.801px; min-width: 1px; min-height: 1px;" data-name="image-f5864e" data-block-id="356d56c16940ea35d82d35bb5c1497c0"><div class="sl-block-content" style="z-index: 21;"><img class="" data-natural-width="545" data-natural-height="100" data-lazy-loaded="" data-src="metastability-full-a44d2a/5c2bea046a1d7eaf0ac9386fd6725dcb.png"></div></div>
+<div class="sl-block" data-block-type="text" style="width: 876px; left: 192.009px; top: 468.107px; height: auto;" data-block-id="1936b06c829acb1caad5c7244919f1ee" data-name="text-f5e683"><div class="sl-block-content" data-placeholder-tag="h1" style="z-index: 22; font-size: 160%; padding: 20px; line-height: 1.04;" data-has-line-height="" data-placeholder-text="Text"><p>Paper</p></div></div></section></section><section class="stack" data-id="3870ea0c579f66d930baf2ad511ba5f9"><section data-id="6a4d955fed4d0d91b16fb4d487ecdbaa">
+
+
+
+
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 182.95px; top: 209.5px;" data-block-id="a16845ccc7c574858a0c471eeff88c24"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="925.4365460167483" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 10;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="925.4365460167483" height="1" viewbox="0 0 925.4365460167483 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="925.4365460167483" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="925.4365460167483" y2="0"></line></svg></div></div>
+<div class="sl-block" data-block-type="text" style="width: 960px; left: 160px; top: 89.5001px; height: auto;" data-name="text-bad4e5" data-block-id="317c1f6a0e04f0d5e695ae7d1f1cc84f"><div class="sl-block-style" style="z-index: 11; transform: rotate(0deg);"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: left; z-index: 11; padding: 10px; font-size: 238%; color: rgb(68, 68, 68);" data-placeholder-text="Text">
+<h2 style="text-align:center">More info</h2>
+</div></div></div>
+</section><section data-id="bfb5de67c148de9dc020821b58cf0e5b"><div class="sl-block" data-block-type="text" style="width: 800px; left: 240px; top: 34.0077px; height: auto;" data-name="text-c29943" data-block-id="c6e66aac2f0d39e50ad1b9f45de6d546"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text">
+<p>What is <strong>stability?</strong></p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 362.498px; left: 80px; top: 297px;" data-block-id="a4f65e18174ff5aa0c6f5dce976bcd32" data-name="text-9f4416"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: left; font-size: 115%;"><p>Asymptotic stability: trajectories stay near set and approach it as</p></div></div>
+<div class="sl-block" data-block-type="video" style="min-width: 30px; min-height: 30px; width: 572.727px; height: 504px; left: 547.273px; top: 146.5px;" data-name="video-fb7520" data-block-id="716380dc03c1e7000cb6f5502709f9b8"><div class="sl-block-content" style="z-index: 12;" data-media-id="9766818" data-video-thumb="metastability-full-a44d2a/554f0a7985edb774f288ee75b2f78cc4.jpg"><video playsinline="" poster="metastability-full-a44d2a/554f0a7985edb774f288ee75b2f78cc4.jpg" data-paused-by-reveal="" muted="" data-lazy-loaded="" controls="controls" data-src="metastability-full-a44d2a/0bd2ae34097c72b7a3377ef5eb79826b.mp4"></video></div></div>
+<div class="sl-block" data-block-type="math" style="width: auto; height: auto; left: 346.5px; top: 376px;" data-name="math-2e4c3a" data-block-id="3c8ec751af21bc0e81ccfbee9f736167"><div class="sl-block-content notranslate" style="z-index: 13; font-size: 65%;"><div class="math-input">t\to\infty</div></div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 471.371px; top: 89.3231px;" data-block-id="488100a3b388f5bbf5aae89407ef1816"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="338.7133442509619" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 14;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="338.7133442509619" height="1" viewbox="0 0 338.7133442509619 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="338.7133442509619" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="338.7133442509619" y2="0"></line></svg></div></div></section><section data-id="7cf315148e122a2eb242ca7e90afba7e">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 241.78px; top: 30.1654px; height: auto;" data-name="text-c29943" data-block-id="33eb719c6715083365c1d1757ffa430b"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 14; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text">
+<p>Metastability in <strong>physics</strong></p>
+</div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 413.28px; top: 84.6385px;" data-block-id="ba61b0a02d0144f35da65933411ebf25"><div class="sl-block-content" data-line-x1="0" data-line-y1="0.0000012550003845035462" data-line-x2="456.5440426700133" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 15;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="456.5440426700133" height="1" viewbox="0 0 456.5440426700133 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0.0000012550003845035462" x2="456.5440426700133" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0.0000012550003845035462" x2="456.5440426700133" y2="0"></line></svg></div></div>
+
+
+
+<div class="sl-block" data-block-type="image" style="width: 478.947px; height: 404.598px; left: 655.5px; top: 175.316px; min-width: 1px; min-height: 1px;" data-name="image-2c8553" data-block-id="685d2d0514df76f6fa073e737e48daca"><div class="sl-block-content fragment" style="z-index: 17;" data-fragment-index="0"><img style="" data-natural-width="1385" data-natural-height="1170" data-lazy-loaded="" data-src="metastability-full-a44d2a/2b18cb9c026f60deb012365ece4fa89b.png"></div></div>
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 29.72px; top: 581.87px;" data-name="text-a7dce9" data-block-id="f1b5921c4517d8bdb38f6a022ccb8ffb"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 16; font-size: 73%;">
+<p><span style="font-size:0.7em">Taken from https://www.youtube.com/watch?v=_9N-Y2CyYhM</span></p>
+</div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-e503da" data-block-id="5901ebf552a416b4f6203ea417bf6712"><div class="sl-block-content sl-block-group-content" style="transform-origin: 279.78px 369.998px 0px; z-index: 10;">
+<div class="sl-block" data-block-type="video" style="min-width: 30px; min-height: 30px; width: 710.504px; height: 389.363px; left: -35.252px; top: 175.316px;" data-name="video-9a7da1" data-block-id="5cad250f16221f745a0d3faf07aea574"><div class="sl-block-content" style="z-index: 11;" data-media-id="9768644" data-video-thumb="metastability-full-a44d2a/ae4ef54f06fc707da31c9cee465cdc0a.jpg"><video playsinline="" data-paused-by-reveal="" poster="metastability-full-a44d2a/ae4ef54f06fc707da31c9cee465cdc0a.jpg" muted="" data-lazy-loaded="" controls="controls" data-src="metastability-full-a44d2a/b50bf1c08b077949587ce176cdd7b3a0.mp4"></video></div></div>
+<div class="sl-block" data-block-type="shape" style="width: 283.936px; height: 398.145px; left: -160.44px; top: 175.316px;" data-name="shape-1a4f48" data-block-id="2a7ddd543e6de90a2c81cf424efa237e"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(255, 255, 255)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 284 398"><rect width="283.936" height="398.145" rx="0" ry="0" class="shape-element" fill="rgb(255, 255, 255)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="shape" style="width: 166.948px; height: 398.145px; left: 553.052px; top: 166.534px;" data-block-id="5d46996e4b78a4ea62d9c1be193b8747" data-name="shape-f55e60"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(255, 255, 255)" data-shape-stretch="true" style="z-index: 13;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 167 398"><rect width="166.948" height="398.145" rx="0" ry="0" class="shape-element" fill="rgb(255, 255, 255)"></rect></svg></div></div>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 481.263px; height: 406.554px; left: 655.5px; top: 175.316px; min-width: 1px; min-height: 1px;" data-name="image-826edc" data-block-id="e23dcd49240edf5d147862e77d9d3d56"><div class="sl-block-content fragment" style="z-index: 18;" data-fragment-index="1"><img style="" data-natural-width="1385" data-natural-height="1170" data-lazy-loaded="" data-src="metastability-full-a44d2a/2bad36bcbcfc970513b3d29de5c0da42.png"></div></div></section><section data-id="a2340d1916cb63302bf2ad8bfb7dbade"><div class="sl-block" data-block-type="image" style="width: 960px; height: 681.388px; left: 160px; top: 19.306px; min-width: 1px; min-height: 1px;" data-name="image-56e93d" data-block-id="135b9be0a44ef854f5342b0184761366"><div class="sl-block-style" style="z-index: 10; transform: rotate(0deg);"><div class="sl-block-content" style="z-index: 10;"><img style="" data-natural-width="1902" data-natural-height="1350" data-lazy-loaded="" data-src="metastability-full-a44d2a/38482df3d68c5200f06e71d0022f667e.png"></div></div></div></section><section data-id="285a4698ace353cd276917ebad74cdb0"><div class="sl-block" data-block-type="text" style="width: 800px; left: 232.006px; top: 41px; height: auto;" data-name="text-c29943" data-block-id="f33a01831b78e1cc55091562714540d6"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text"><p>Mechanisms (fig. from paper)</p></div></div>
+<div class="sl-block" data-block-type="image" style="width: 1075.2px; height: 493.302px; left: 102.4px; top: 163.749px; min-width: 1px; min-height: 1px;" data-name="image-593798" data-block-id="19dc3099ce3a733549e65fe2e928a83a"><div class="sl-block-content" style="z-index: 11;"><img class="" data-natural-width="2500" data-natural-height="1147" data-lazy-loaded="" data-src="metastability-full-a44d2a/ce199de6d325a001238c345c5be040a2.png"></div></div></section><section data-id="8a3cf820a2e112079538f885408ae1d3"><div class="sl-block" data-block-type="text" style="width: 800px; left: 232.006px; top: 41px; height: auto;" data-name="text-c29943" data-block-id="27735ab77bbef5ff2ba3899858dc560b"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text"><p>Mechanisms (old fig. from paper)</p></div></div>
+<div class="sl-block" data-block-type="image" style="width: 1075.2px; height: 450.294px; left: 102.4px; top: 134.853px; min-width: 1px; min-height: 1px;" data-name="image-5f9600" data-block-id="797ca0eab0a9df9995861b5a69859c1f"><div class="sl-block-content" style="z-index: 11;"><img class="" data-natural-width="2500" data-natural-height="1047" data-lazy-loaded="" data-src="metastability-full-a44d2a/1f900c3ff0aa640016ace139da0759e8.png"></div></div></section><section data-id="74426f6fc3da014a494d2f74a51f1e0d">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 271.006px; top: 33.2325px; height: auto;" data-name="text-c29943" data-block-id="858f472fca633564355b89e49c014799"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text">
+<p>Metastability<strong> </strong>in<strong> the brain</strong></p>
+</div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 419.678px; top: 82px;" data-block-id="18962bf396f730bd008a41f661ed36dd"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="503.7808084570238" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="503.7808084570238" height="1" viewbox="0 0 503.7808084570238 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="503.7808084570238" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="503.7808084570238" y2="0"></line></svg></div></div>
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 200.774px; left: 139.613px; top: 90.2325px;" data-name="text-019d6c" data-block-id="c30ed2202230c17090d59ce588905d5d"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15; font-size: 120%;">
+<p><span style="font-size:0.7em">Metastable waves</span></p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 295.727px; left: 537.779px; top: 88.2325px;" data-name="text-997787" data-block-id="5bc2031f41e528e34afea28b5126e9cb"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 16; font-size: 120%;" data-fragment-index="0">
+<p><span style="font-size:0.7em">Metastable hidden states</span></p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 286.426px; left: 935.904px; top: 90.2325px;" data-name="text-1ea633" data-block-id="9cc5b6667a86a33154238e20053d547a"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 17; font-size: 120%;" data-fragment-index="1">
+<p><span style="font-size:0.7em">Metastable EEG states</span></p>
+</div></div>
+
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-f95c75" data-block-id="5f7aafff4c2616bb4cb83cdac5144f2f"><div class="sl-block-content sl-block-group-content" style="transform-origin: 685.627px 313.889px 0px; z-index: 12;">
+<div class="sl-block" data-block-type="image" style="width: 434.325px; height: 264.952px; left: 468.464px; top: 239.826px; min-width: 1px; min-height: 1px;" data-name="image-172d5f" data-block-id="1a8b8fc4b6c92a6753b75b48ac678d2d"><div class="sl-block-content fragment" style="z-index: 13;" data-fragment-index="0"><img style="left: -103px; top: -97px; width: 639px; height: 903px;" data-natural-width="955" data-natural-height="1350" data-crop-x="0.161017" data-crop-y="0.107784" data-crop-width="0.67992" data-crop-height="0.293413" data-lazy-loaded="" data-src="metastability-full-a44d2a/4c106e8182030ddc2bb368dc6e6afea5.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 392.437px; height: 116.566px; left: 492.96px; top: 123px; min-width: 1px; min-height: 1px;" data-name="image-b062d8" data-block-id="4041035d997311c4d319137c4f27e5f9"><div class="sl-block-style" style="z-index: 14;"><div class="sl-block-content fragment" style="z-index: 14;" data-fragment-index="0"><img style="left: -41px; top: 0px; width: 469px; height: 664px;" data-natural-width="955" data-natural-height="1350" data-crop-x="0.087432" data-crop-y="0" data-crop-width="0.836066" data-crop-height="0.175676" data-lazy-loaded="" data-src="metastability-full-a44d2a/ddf1f6e8c879e12c9c8369e8f5074ae2.png"></div></div></div>
+</div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-53f7da" data-block-id="a809ed7734a23328d408ce3ab13e9407"><div class="sl-block-content sl-block-group-content" style="transform-origin: 1086.08px 324.399px 0px; z-index: 18;">
+<div class="sl-block" data-block-type="image" style="width: 352.203px; height: 149.347px; left: 899.817px; top: 144px; min-width: 1px; min-height: 1px;" data-name="image-69016a" data-block-id="4ae648208caafc43bdfd991c7ec26c94"><div class="sl-block-style" style="z-index: 19;"><div class="sl-block-content fragment" style="z-index: 19;" data-fragment-index="1"><img style="left: -38px; top: -25px; width: 588px; height: 831px;" data-natural-width="955" data-natural-height="1350" data-crop-x="0.064972" data-crop-y="0.02994" data-crop-width="0.59887" data-crop-height="0.179641" data-lazy-loaded="" data-src="metastability-full-a44d2a/5886e07e270654c6ca778bd0ce207f7d.png"></div></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-0e3dac" data-block-id="73be515b553a7e71c14e8b01240d4952"><div class="sl-block-content sl-block-group-content" style="transform-origin: 1089.35px 408.995px 0px; z-index: 20;"><div class="sl-block" data-block-type="image" style="width: 365.978px; height: 191.606px; left: 906.358px; top: 313.192px; min-width: 1px; min-height: 1px;" data-name="image-b76d30" data-block-id="bd7a5ef04c66172df4bce87a45cbb234"><div class="sl-block-content fragment" style="z-index: 21;" data-fragment-index="1"><img style="left: -259px; top: -258px; width: 697px; height: 986px;" data-natural-width="955" data-natural-height="1350" data-crop-x="0.37069" data-crop-y="0.262084" data-crop-width="0.524778" data-crop-height="0.194356" data-lazy-loaded="" data-src="metastability-full-a44d2a/f215be14522b59c881c38e91002edaf2.png"></div></div></div></div>
+</div></div>
+
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 348.071px; top: 322.995px;" data-name="text-998fbb" data-block-id="98bb2721a5b23e9150bb6b69456c7552"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 32; background-color: rgb(255, 255, 255); font-size: 118%;" data-fragment-index="4">
+<h3><strong>What exactly is metastability?</strong></h3>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 406.958px; left: 756.521px; top: 340.319px;" data-name="text-d0df84" data-block-id="8b32062f8cb71ca1223e7583e96e4d13"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 31; font-size: 120%; background-color: rgb(255, 255, 255);" data-fragment-index="3">
+<p><span style="font-size:0.7em">Integration and segregation</span></p>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 406.958px; height: 139.336px; left: 756.521px; top: 384.319px; min-width: 1px; min-height: 1px;" data-name="image-d57f56" data-block-id="f91fb8a2406e41fd667d2a441c9f44ea"><div class="sl-block-style" style="z-index: 22; filter: drop-shadow(rgba(0, 0, 0, 0.5) 0px 0px 5px) opacity(100%);"><div class="sl-block-content fragment" style="z-index: 22; border-width: 1px;" data-fragment-index="3"><img style="left: -55px; top: -35px; width: 690px; height: 975px;" data-natural-width="955" data-natural-height="1350" data-crop-x="0.079235" data-crop-y="0.036053" data-crop-width="0.590032" data-crop-height="0.142909" data-lazy-loaded="" data-src="metastability-full-a44d2a/33ae7c0d55b2483af4d4642b1df320f0.png"></div></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 430.816px; left: 732.663px; top: 549.615px;" data-name="text-ce0cb9" data-block-id="bb2d9f8dd1fea25b29dd4da5bf0a37e2"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 23; line-height: 0.689; border-width: 1px;" data-has-line-height="" data-fragment-index="3">
+<p><span style="font-size:0.7em">"[...] lingering in quasisynchrony (<em>integrative</em> tendencies) and escaping from one another (<strong> </strong><em>segregation</em><strong> </strong> tendencies) coexist [...] <em>is called metastability</em>"</span></p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 508.335px; left: 177.308px; top: 340.319px;" data-name="text-49025c" data-block-id="6bffb7dcdd0e91da5414f2adeca9aae9"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 30; font-size: 120%; background-color: rgb(255, 255, 255);" data-fragment-index="2">
+<p><span style="font-size:0.7em">Variability of synchronization</span></p>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 501.639px; height: 147.082px; left: 177.308px; top: 384.319px; min-width: 1px; min-height: 1px;" data-name="image-c9473f" data-block-id="7e852f004a3e323144eefa99d7b6485e"><div class="sl-block-content fragment" style="z-index: 29;" data-fragment-index="2"><img style="left: -26px; top: -56px; width: 567px; height: 802px;" data-natural-width="955" data-natural-height="1350" data-crop-x="0.045198" data-crop-y="0.06986" data-crop-width="0.884193" data-crop-height="0.183394" data-lazy-loaded="" data-src="metastability-full-a44d2a/5f56a19c76852b199291a43cf174a161.png"></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-f5076e" data-block-id="c9c3e09faff758730cb42cb8854cf736"><div class="sl-block-content sl-block-group-content" style="transform-origin: 410.944px 621.755px 0px; z-index: 24;">
+<div class="sl-block" data-block-type="image" style="width: 345.307px; height: 196.49px; left: 238.287px; top: 523.51px; min-width: 1px; min-height: 1px;" data-name="image-79d4ac" data-block-id="b20c04875c83a3f6ebc18e5cfb00ced3"><div class="sl-block-content fragment" style="z-index: 25;" data-fragment-index="2"><img style="left: -34px; top: -45px; width: 390px; height: 245px;" data-natural-width="500" data-natural-height="314" data-lazy-loaded="" data-crop-x="0.086957" data-crop-y="0.183168" data-crop-width="0.885093" data-crop-height="0.80198" data-src="metastability-full-a44d2a/6ba747344b8ffe41f8d133f12757b7b0.png"></div></div>
+<div class="sl-block" data-block-type="shape" style="width: 107.236px; height: 43.968px; left: 476.364px; top: 566.131px;" data-name="shape-addb6a" data-block-id="43991ea52e548601ba725b3aecc60c61"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(255, 255, 255)" data-shape-stretch="true" style="z-index: 26;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 107 44"><rect width="107.236" height="43.968" rx="0" ry="0" class="shape-element" fill="rgb(255, 255, 255)"></rect></svg></div></div>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 455.403px; height: 223.362px; left: 12.2985px; top: 293.347px; min-width: 1px; min-height: 1px;" data-name="image-efe877" data-block-id="c4a0b33377a35412008eed5db80a360f"><div class="sl-block-content" style="z-index: 27;"><img style="left: -25px; top: -19px; width: 490px; height: 338px;" data-natural-width="1959" data-natural-height="1350" data-crop-x="0.051325" data-crop-y="0.055288" data-crop-width="0.928808" data-crop-height="0.661058" data-lazy-loaded="" data-src="metastability-full-a44d2a/fa1fe78c324d37f4c41b4fdfa17502b1.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 409.667px; height: 171.145px; left: 35.1665px; top: 122.202px; min-width: 1px; min-height: 1px;" data-name="image-554258" data-block-id="8766ffe2d93a939424e8ea6cfc13528c"><div class="sl-block-content" style="z-index: 28;"><img style="left: -27px; top: -14px; width: 467px; height: 659px;" data-natural-width="956" data-natural-height="1350" data-crop-x="0.057823" data-crop-y="0.021635" data-crop-width="0.877551" data-crop-height="0.259615" data-lazy-loaded="" data-src="metastability-full-a44d2a/3c72373c826fa295b6d98209503ca424.png"></div></div></section><section data-id="a5afb1d0b60fbb4663ee7d0eb8b7c6ad">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 271.006px; top: 33.2325px; height: auto;" data-name="text-c29943" data-block-id="ea7fdce5f86e53580ea8a9292bc09da3"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text">
+<p>Metastability<strong> </strong>in<strong> the brain</strong></p>
+</div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 419.678px; top: 82px;" data-block-id="6c3cd71723349b77e984f30fb72aca33"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="503.7808084570238" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="503.7808084570238" height="1" viewbox="0 0 503.7808084570238 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="503.7808084570238" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="503.7808084570238" y2="0"></line></svg></div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; left: 240px; top: 82px;" data-block-id="58e26087fb111b08fdf621572a0bcd84" data-name="line-eb27ff"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="784.4588084570238" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 13;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="784.4588084570238" height="1" viewbox="0 0 784.4588084570238 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="784.4588084570238" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="784.4588084570238" y2="0"></line></svg></div></div>
+<div class="sl-block" data-block-type="image" style="width: 389.935px; height: 137.314px; left: 10.065px; top: 245.682px; min-width: 1px; min-height: 1px;" data-name="image-fb846a" data-block-id="651445424040b46cdbb42df1bfeeea90"><div class="sl-block-content" style="z-index: 14;"><img class="" data-natural-width="1258" data-natural-height="443" data-lazy-loaded="" data-src="metastability-full-a44d2a/f9bf0b8550cff086912d3699346340e5.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 375.778px; height: 104.767px; left: 26.24px; top: 114.233px; min-width: 1px; min-height: 1px;" data-name="image-8496f4" data-block-id="5834bd79682346d4af831500adaf73c5"><div class="sl-block-content" style="z-index: 15;"><img class="" data-natural-width="2500" data-natural-height="697" data-lazy-loaded="" data-src="metastability-full-a44d2a/188c3ee0f4aee8dda98d3799633d8157.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 324.31px; height: 222px; left: 475.69px; top: 194.223px; min-width: 1px; min-height: 1px;" data-name="image-0a1cba" data-block-id="81c31dae6e25f54008b8a1beb07e30e3"><div class="sl-block-content fragment" style="z-index: 16;" data-fragment-index="0"><img class="" data-natural-width="2500" data-natural-height="863" data-crop-x="0" data-crop-y="0" data-crop-width="0.504288" data-crop-height="1" style="left: 0px; top: 0px; width: 643px; height: 222px;" data-lazy-loaded="" data-src="metastability-full-a44d2a/3a220fa31e3e512a69c241868c67d139.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 302px; height: 84.4648px; left: 475.69px; top: 111.996px; min-width: 1px; min-height: 1px;" data-name="image-c36110" data-block-id="819d88690ef8dcf5db74c033d83ac42c"><div class="sl-block-content fragment" style="z-index: 17;" data-fragment-index="0"><img class="" data-natural-width="955" data-natural-height="1350" data-crop-x="0.188329" data-crop-y="0.069418" data-crop-width="0.758621" data-crop-height="0.150094" style="left: -75px; top: -39px; width: 398px; height: 563px;" data-lazy-loaded="" data-src="metastability-full-a44d2a/f5fa1bfa6a7e105bce3ee0f8e35134d1.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 384.781px; height: 201px; left: 863.903px; top: 208.924px; min-width: 1px; min-height: 1px;" data-name="image-0a852e" data-block-id="6d6d3a543c82450105b4b466a1b87dac"><div class="sl-block-content fragment" style="z-index: 18;" data-fragment-index="1"><img class="" data-natural-width="2190" data-natural-height="1144" data-lazy-loaded="" data-src="metastability-full-a44d2a/7f9dacf2bfbf8fd8d585c46b8f6fd2c9.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 374.71px; height: 79.99px; left: 880px; top: 114.233px; min-width: 1px; min-height: 1px;" data-name="image-8a7705" data-block-id="ed8b8875b9fd0ad4039a6e2b72208f64"><div class="sl-block-content fragment" style="z-index: 19;" data-fragment-index="1"><img class="" data-natural-width="2500" data-natural-height="1119" data-crop-x="0.250263" data-crop-y="0.383754" data-crop-width="0.70901" data-crop-height="0.338145" style="left: -132px; top: -91px; width: 528px; height: 237px;" data-lazy-loaded="" data-src="metastability-full-a44d2a/ad2ec864da96677624fff08f91248666.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 351.007px; height: 187.405px; left: 42.731px; top: 504px; min-width: 1px; min-height: 1px;" data-name="image-4dcb5a" data-block-id="c4d1895f1d18266025d86f8dcf00e6b6"><div class="sl-block-content fragment" style="z-index: 20;" data-fragment-index="2"><img class="" data-natural-width="929" data-natural-height="496" data-lazy-loaded="" data-src="metastability-full-a44d2a/a39037ff1f7b47fd6a3c05386a9aff5b.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 357.335px; height: 134.644px; left: 877.627px; top: 535.924px; min-width: 1px; min-height: 1px;" data-name="image-e0a6fc" data-block-id="1743cd651a13bc43522e897d9f9d88ae"><div class="sl-block-content fragment" style="z-index: 21;" data-fragment-index="4"><img class="" data-natural-width="2500" data-natural-height="942" data-lazy-loaded="" data-src="metastability-full-a44d2a/badc7f80d6779626b1f921933fc9789d.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 367.567px; height: 32.8481px; left: 34.451px; top: 450.005px; min-width: 1px; min-height: 1px;" data-name="image-bc6dd6" data-block-id="ce4106aa06a4c55ae689be03fb5aec72"><div class="sl-block-content fragment" style="z-index: 22;" data-fragment-index="2"><img class="" data-natural-width="2500" data-natural-height="501" data-crop-x="0" data-crop-y="0.722222" data-crop-width="0.622905" data-crop-height="0.277778" style="left: 0px; top: -85px; width: 590px; height: 118px;" data-lazy-loaded="" data-src="metastability-full-a44d2a/cbcf9610915feb827917c2f3b83e7ada.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 360.36px; height: 74px; left: 876.114px; top: 439.369px; min-width: 1px; min-height: 1px;" data-name="image-6c7089" data-block-id="e1183a1986028cd45deecf936045f80c"><div class="sl-block-content fragment" style="z-index: 23;" data-fragment-index="4"><img class="" data-natural-width="2500" data-natural-height="888" data-lazy-loaded="" data-crop-x="0" data-crop-y="0.421875" data-crop-width="1" data-crop-height="0.578125" style="left: 0px; top: -54px; width: 360px; height: 128px;" data-src="metastability-full-a44d2a/25b3dffe7a022f7675950d285ef85b5c.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 278.801px; height: 163.989px; left: 432.199px; top: 556.246px; min-width: 1px; min-height: 1px;" data-name="image-fcc731" data-block-id="82d99dd48578302fe15d601ef2e0dd6f"><div class="sl-block-content fragment" style="z-index: 24;" data-fragment-index="3"><img class="" data-natural-width="1058" data-natural-height="420" data-crop-x="0.310861" data-crop-y="0.040881" data-crop-width="0.318352" data-crop-height="0.471698" style="left: -272px; top: -14px; width: 876px; height: 348px;" data-lazy-loaded="" data-src="metastability-full-a44d2a/e083d64bb4fb59a4954cbe9837b48286.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 202.693px; height: 118px; left: 637.845px; top: 497.246px; min-width: 1px; min-height: 1px;" data-name="image-922736" data-block-id="1f438a44c7b53860fedaf6616d1cebb2"><div class="sl-block-content fragment" style="z-index: 26;" data-fragment-index="3"><img class="" data-natural-width="541" data-natural-height="854" data-crop-x="0.14497" data-crop-y="0.358349" data-crop-width="0.83432" data-crop-height="0.307692" style="left: -35px; top: -137px; width: 243px; height: 384px;" data-lazy-loaded="" data-src="metastability-full-a44d2a/867ba939bd7b09df0f5969a54c97634c.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 340.24px; height: 80.3231px; left: 451.646px; top: 440.691px; min-width: 1px; min-height: 1px;" data-name="image-09cbf7" data-block-id="ab79f59d9163434f2b302692c19a2b12"><div class="sl-block-content fragment" style="z-index: 25;" data-fragment-index="3"><img class="" data-natural-width="826" data-natural-height="195" data-lazy-loaded="" data-src="metastability-full-a44d2a/14c62695f78f96779cc3e0980e90bb69.png"></div></div></section><section data-id="c0cc1bcb30fe25c887a12cb8045cd0f6">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 960px; left: 160px; top: 23.2192px; height: auto;" data-name="text-c29943" data-block-id="87133a773261e72b89081479799cbbd7"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text"><p>Mechanism 4: type-I intermittency</p></div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 198.485px; top: 81.5px;" data-block-id="87e8dc40217341074236150f507e57ee"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="888.3113868320993" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="888.3113868320993" height="1" viewbox="0 0 888.3113868320993 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="888.3113868320993" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="888.3113868320993" y2="0"></line></svg></div></div>
+
+
+
+
+
+
+
+
+
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-655a46" style="width: auto; height: auto;" data-block-id="a3d34d372ec8079ccc06831aea908a6d"><div class="sl-block-content sl-block-group-content" style="transform-origin: 913.151px 540.426px 0px; z-index: 12;">
+<div class="sl-block" data-block-type="image" style="width: 354.981px; height: 232.148px; left: 735.66px; top: 415.852px; min-width: 1px; min-height: 1px;" data-name="image-fec9e4" data-block-id="14a686338eb32fc0c6093fb6f7e70753"><div class="sl-block-style" style="z-index: 15; transform: rotate(0deg);"><div class="sl-block-content fragment" style="z-index: 15;" data-fragment-index="0"><img style="" data-natural-width="604" data-natural-height="395" data-lazy-loaded="" data-src="metastability-full-a44d2a/9e79278ad45995f103bac0293128f778.png"></div></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 97.499px; left: 864.401px; top: 648px;" data-name="text-e7e55f" data-block-id="85fa1b4b749463221b8b1be4902c8721"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 16; line-height: 0.676; font-size: 90%;" data-has-line-height="" data-fragment-index="0">
+<p><span style="font-size:0.5em">(Argyris, 2015)</span></p>
+</div></div>
+</div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-ae0faf" style="width: auto; height: auto;" data-block-id="a8ebbdf57971953c8565f03ed98902fc"><div class="sl-block-content sl-block-group-content" style="transform-origin: 1090.64px 242.112px 0px; z-index: 17;">
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-21ec9d" data-block-id="70055444aa80dd63b3828cd4d98b69b3"><div class="sl-block-content sl-block-group-content" style="transform-origin: 1090.64px 232.505px 0px; z-index: 22;">
+<div class="sl-block" data-block-type="image" style="width: 173.477px; height: 174.097px; left: 916.301px; top: 145.456px; min-width: 1px; min-height: 1px;" data-name="image-f1c8cb" data-block-id="df131a4077e9e17cbbb90014cc40f528"><div class="sl-block-content" style="z-index: 25;"><img style="" data-natural-width="280" data-natural-height="281" data-lazy-loaded="" data-src="metastability-full-a44d2a/cba50e3601bed4d48c121eda61f704b6.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 174.988px; height: 173.139px; left: 1089.99px; top: 146.414px; min-width: 1px; min-height: 1px;" data-name="image-9331c4" data-block-id="a422632a81a721f1650be93d8bf2d3e4"><div class="sl-block-content" style="z-index: 26;"><img style="" data-natural-width="284" data-natural-height="281" data-lazy-loaded="" data-src="metastability-full-a44d2a/ec803d9d8a88aeaad78d7a5d44f12dbf.png"></div></div>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 97.499px; left: 1043.92px; top: 321.767px;" data-name="text-e4ac40" data-block-id="eb90009cc18786f25b21d78be4004ffd"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 27; line-height: 0.676; font-size: 90%;" data-has-line-height="">
+<p><span style="font-size:0.5em">(Argyris, 2015)</span></p>
+</div></div>
+</div></div>
+
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 412.178px; left: 753.911px; top: 92.5px;" data-name="text-4d4229" data-block-id="bde93d24486fc7608cd00d11ab7203c2"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 28;">
+<p><span style="font-size:0.7em">Saddle-node bifurcation of periodic orbits</span></p>
+</div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-04c4a0" data-block-id="fccb47a969dbdc3c0ed0d21e5644ce51"><div class="sl-block-content sl-block-group-content" style="transform-origin: 774.917px 254.87px 0px; z-index: 29;"><div class="sl-block sl-block-group" data-block-type="group" data-name="group-35614e" data-block-id="2000453c1d47aac49f0e755126865742"><div class="sl-block-content sl-block-group-content" style="transform-origin: 774.917px 254.87px 0px; z-index: 33;">
+<div class="sl-block" data-block-type="image" style="width: 335.834px; height: 252.739px; left: 607px; top: 128.5px; min-width: 1px; min-height: 1px;" data-name="image-6a38c1" data-block-id="4ed3bbcb428000871207867f95047ee0"><div class="sl-block-content" style="z-index: 36;"><img style="" data-natural-width="1750" data-natural-height="1317" data-lazy-loaded="" data-src="metastability-full-a44d2a/2569e0f240bf58cd9a01898bd4a58af7.png"></div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 0px; min-height: 0px; left: 755.48px; top: 156.636px;" data-name="line-f851c3" data-block-id="5c6553cd2dcbfa92393a92f87739fa38"><div class="sl-block-content" data-line-x1="0" data-line-y1="162.9171894569514" data-line-x2="0" data-line-y2="0" data-line-color="#ff0000" data-line-start-type="none" data-line-end-type="none" style="z-index: 37;" data-line-width="3px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="1" height="162.9171894569514" viewbox="0 0 1 162.9171894569514"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0.5" y1="163.4171894569514" x2="0.5" y2="0.5"></line><line class="line-element" stroke="#ff0000" stroke-width="3" x1="0.5" y1="163.4171894569514" x2="0.5" y2="0.5"></line></svg></div></div>
+</div></div></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 1056.09px; top: 523.458px;" data-name="text-bfa56e" data-block-id="03ba2b4510620fa2d1b923796280f639"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 38; font-size: 80%;" data-fragment-index="0">
+<p>Finite time duration</p>
+</div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; left: 1024.61px; top: 552.457px;" data-name="line-68a7bd" data-block-id="1e2566cb318d5186d60892d51fb93edc"><div class="sl-block-content fragment" data-line-x1="0" data-line-y1="64.23908004802891" data-line-x2="38.62317390434259" data-line-y2="0" data-line-color="#000000" data-line-start-type="line-arrow" data-line-end-type="none" style="z-index: 39;" data-fragment-index="0"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="38.62317390434259" height="64.23908004802891" viewbox="0 0 38.62317390434259 64.23908004802891"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="1.0305552519992764" y1="62.52503341138897" x2="38.62317390434259" y2="0"></line><line class="line-element" stroke="#000000" stroke-width="2" x1="1.0305552519992764" y1="62.52503341138897" x2="38.62317390434259" y2="0"></line><path style="fill: rgba(0,0,0,0);" stroke="#000000" stroke-width="2" transform="translate(1.0305552519992764,62.52503341138897) rotate(31.016)" d="M -6 -6 L 0 0 L 6 -6"></path></svg></div></div>
+<div class="sl-block" data-block-type="image" style="width: 537.192px; height: 201.447px; left: 43px; top: 115.277px; min-width: 1px; min-height: 1px;" data-name="image-ea6c50" data-block-id="fb63f2ee5a1ac63eff140bb0382b5cee"><div class="sl-block-content" style="z-index: 40;"><img class="" data-natural-width="800" data-natural-height="300" data-lazy-loaded="" data-src="metastability-full-a44d2a/84878558bf50b1cba388e0292c1734c2.png"></div></div>
+<div class="sl-block" data-block-type="video" style="width: 600px; height: 360px; left: 20px; top: 343.458px;" data-name="video-d55471" data-block-id="ab9e4ff441a5f4f60905e313f4af580d"><div class="sl-block-content" style="z-index: 41;" data-media-id="10452305" data-video-thumb="metastability-full-a44d2a/57fc9cac4c3f6cf5301178d1f463ad4a.jpg"><video playsinline="" controls="controls" poster="metastability-full-a44d2a/57fc9cac4c3f6cf5301178d1f463ad4a.jpg" data-paused-by-reveal="" data-lazy-loaded="" data-autoplay="" muted="" loop="loop" data-src="metastability-full-a44d2a/2e312c14e9a1cce2f55a230b998153f7.mp4"></video></div></div></section><section data-id="32db99a1893e9d4a7c33581e4f08d76a">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 960px; left: 160px; top: 23.2192px; height: auto;" data-name="text-c29943" data-block-id="fc1127e263fcf17f92c63cc23747e903"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text"><p>Mechanism 5: type-I intermittency</p></div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 292.485px; top: 81.5px;" data-block-id="d0a41b0683491c0006da7954dd900137"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="686.3113868320993" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="686.3113868320993" height="1" viewbox="0 0 686.3113868320993 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="686.3113868320993" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="686.3113868320993" y2="0"></line></svg></div></div>
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-ae0faf" style="width: auto; height: auto;" data-block-id="d628561c8e62494e0986ab1827e6392d"><div class="sl-block-content sl-block-group-content" style="transform-origin: 1090.64px 242.112px 0px; z-index: 12;">
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-21ec9d" data-block-id="12143606ef0b4932f3f5d925fdaf9bd1"><div class="sl-block-content sl-block-group-content" style="transform-origin: 1090.64px 232.505px 0px; z-index: 17;">
+<div class="sl-block" data-block-type="image" style="width: 173.477px; height: 174.097px; left: 916.301px; top: 145.456px; min-width: 1px; min-height: 1px;" data-name="image-f1c8cb" data-block-id="441dcf11e1688fc92775889a71e1ec16"><div class="sl-block-content" style="z-index: 20;"><img style="" data-natural-width="280" data-natural-height="281" data-lazy-loaded="" data-src="metastability-full-a44d2a/cba50e3601bed4d48c121eda61f704b6.png"></div></div>
+<div class="sl-block" data-block-type="image" style="width: 174.988px; height: 173.139px; left: 1089.99px; top: 146.414px; min-width: 1px; min-height: 1px;" data-name="image-9331c4" data-block-id="6eaaecdceef3c15c519e7dbef0975547"><div class="sl-block-content" style="z-index: 21;"><img style="" data-natural-width="284" data-natural-height="281" data-lazy-loaded="" data-src="metastability-full-a44d2a/ec803d9d8a88aeaad78d7a5d44f12dbf.png"></div></div>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 97.499px; left: 1043.92px; top: 321.767px;" data-name="text-e4ac40" data-block-id="ae2e505b508d9ddd9282a835c66074f6"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 22; line-height: 0.676; font-size: 90%;" data-has-line-height="">
+<p><span style="font-size:0.5em">(Argyris, 2015)</span></p>
+</div></div>
+</div></div>
+
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 412.178px; left: 753.911px; top: 92.5px;" data-name="text-4d4229" data-block-id="9a7a667c487f935e4f2c9971a330aef7"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 23;">
+<p><span style="font-size:0.7em">Saddle-node bifurcation of periodic orbits</span></p>
+</div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-04c4a0" data-block-id="77279d41b4eb64453e4f6990785377bf"><div class="sl-block-content sl-block-group-content" style="transform-origin: 774.917px 254.87px 0px; z-index: 24;"><div class="sl-block sl-block-group" data-block-type="group" data-name="group-35614e" data-block-id="60ab6a98c816a02640b0ac06e58b5a66"><div class="sl-block-content sl-block-group-content" style="transform-origin: 774.917px 254.87px 0px; z-index: 28;">
+<div class="sl-block" data-block-type="image" style="width: 335.834px; height: 252.739px; left: 607px; top: 128.5px; min-width: 1px; min-height: 1px;" data-name="image-6a38c1" data-block-id="379e707d10125ac31f6954b4ffadf538"><div class="sl-block-content" style="z-index: 31;"><img style="" data-natural-width="1750" data-natural-height="1317" data-lazy-loaded="" data-src="metastability-full-a44d2a/2569e0f240bf58cd9a01898bd4a58af7.png"></div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 0px; min-height: 0px; left: 755.48px; top: 156.636px;" data-name="line-f851c3" data-block-id="c8c78e1c3546e5a27f7a3269fb01e133"><div class="sl-block-content" data-line-x1="0" data-line-y1="162.9171894569514" data-line-x2="0" data-line-y2="0" data-line-color="#ff0000" data-line-start-type="none" data-line-end-type="none" style="z-index: 32;" data-line-width="3px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="1" height="162.9171894569514" viewbox="0 0 1 162.9171894569514"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0.5" y1="163.4171894569514" x2="0.5" y2="0.5"></line><line class="line-element" stroke="#ff0000" stroke-width="3" x1="0.5" y1="163.4171894569514" x2="0.5" y2="0.5"></line></svg></div></div>
+</div></div></div></div>
+
+
+<div class="sl-block" data-block-type="image" style="width: 537.192px; height: 201.447px; left: 43px; top: 115.277px; min-width: 1px; min-height: 1px;" data-name="image-ea6c50" data-block-id="26df2d107a8a103ade7a7e310c847aa5"><div class="sl-block-content" style="z-index: 33;"><img class="" data-natural-width="800" data-natural-height="300" data-lazy-loaded="" data-src="metastability-full-a44d2a/84878558bf50b1cba388e0292c1734c2.png"></div></div>
+<div class="sl-block" data-block-type="video" style="width: 600px; height: 360px; left: 20px; top: 343.458px;" data-name="video-d55471" data-block-id="26849c88edc9d999b10a63d6ac5b674d"><div class="sl-block-content" style="z-index: 34;" data-media-id="10452305" data-video-thumb="metastability-full-a44d2a/57fc9cac4c3f6cf5301178d1f463ad4a.jpg"><video playsinline="" controls="controls" poster="metastability-full-a44d2a/57fc9cac4c3f6cf5301178d1f463ad4a.jpg" data-paused-by-reveal="" data-lazy-loaded="" data-autoplay="" muted="" loop="loop" data-src="metastability-full-a44d2a/2e312c14e9a1cce2f55a230b998153f7.mp4"></video></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 671px; top: 427.239px;" data-name="text-fdb286" data-block-id="bd82a6a4263217889f4a672b3ebea18b"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 35;"><p><span style="font-size:0.9em">Another concrete instance of proposal in (Friston, 2000)</span></p></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 664.978px; top: 536px;" data-name="text-631bb2" data-block-id="a3c9e772638a8643379f5037f3db9ca4"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 36;">
+<p>For more, see</p>
+
+<p><span style="font-size:0.7em">Tognoli &amp; Kelso, 2014; Neuron</span></p>
+</div></div></section><section data-id="cd83bb042eabd4248d975630e4bf0d3a"><div class="sl-block" data-block-type="text" style="width: 800px; left: 239px; top: 54.5px; height: auto;" data-name="text-c29943" data-block-id="87b0fb37fe7a36df0e88461a1daf92c2"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 110%;" data-has-line-height="" data-placeholder-text="Text">
+<h2>Attractor-merging crisis</h2>
+</div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 274.744px; top: 105.5px;" data-block-id="f4feb2fc60a9dbab52535e0bf1453b14"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="732.2894339922203" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="732.2894339922203" height="1" viewbox="0 0 732.2894339922203 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="732.2894339922203" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="732.2894339922203" y2="0"></line></svg></div></div>
+<div class="sl-block" data-block-type="image" style="width: 611.733px; height: 458.2px; left: 333.134px; top: 113.8px; min-width: 1px; min-height: 1px;" data-name="image-9ca781" data-block-id="4ca16163bbf3148b7eb09ddcc808b6e0"><div class="sl-block-content" style="z-index: 12;"><img class="" data-natural-width="510" data-natural-height="382" data-lazy-loaded="" data-src="metastability-full-a44d2a/b333c11481e4374dc51d21a7c482d041.png"></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 278px; left: 30px; top: 302.9px;" data-name="text-850696" data-block-id="e923fe36f5bc8e0edb620b73919b71a3"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p>Duffing oscillators</p>
+
+<p>without noise</p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 316px; left: 2px; top: 396px;" data-name="text-c464b4" data-block-id="c3101f9a3c0c290e1257464d684933d5"><div class="sl-block-style" style="z-index: 14; transform: rotate(0deg);"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14; font-size: 75%; line-height: 0.845;" data-has-line-height="">
+<p><span style="font-size:0.5em">Ishii 1999: <span class="ng-star-inserted">Breakdown of chaos symmetry and intermittency in the double-well potential system</span></span></p>
+</div></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-40b992" data-block-id="84183219f2b6e249ee79035d38047ad4"><div class="sl-block-content sl-block-group-content" style="transform-origin: 1058.2px 608px 0px; z-index: 15;">
+<div class="sl-block" data-block-type="image" style="width: 417.6px; height: 208.8px; left: 849.4px; top: 503.6px; min-width: 1px; min-height: 1px;" data-name="image-2382d4" data-origin-id="8a24c8f794dd72f097578c12abb26358" data-block-id="e48e01d2aaa77a50c9a7ae4150d754ea"><div class="sl-block-content fragment" style="z-index: 16;" data-fragment-index="0"><img class="" data-natural-width="510" data-natural-height="255" data-lazy-loaded="" data-src="metastability-full-a44d2a/655f22323959d2279db1c03537f0925f.png"></div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 0px; min-height: 0px; left: 1195px; top: 520px;" data-name="line-a74ac4" data-origin-id="3a7354cca8eae572736aeeb2d239ef0e" data-block-id="5c2c7cf152283d045e156b357d9fe2e2"><div class="sl-block-content" data-line-x1="0" data-line-y1="157" data-line-x2="0" data-line-y2="0" data-line-color="#ff0000" data-line-start-type="none" data-line-end-type="none" style="z-index: 17;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="1" height="157" viewbox="0 0 1 157"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="157" x2="0" y2="0"></line><line class="line-element" stroke="#ff0000" stroke-width="2" x1="0" y1="157" x2="0" y2="0"></line></svg></div></div>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 398px; left: 430.075px; top: 604px;" data-name="text-997cfa" data-block-id="0d26827d1a72c51d426fb7d220d58396"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 18; background-color: rgb(255, 255, 255);" data-fragment-index="1">
+<p><span style="font-size:0.9em">Outro mecanismo para o que Friston, 2000 propõe</span></p>
+</div></div></section><section data-id="eb58d870363e2ee6022672337e34011b"><div class="sl-block" data-block-type="text" style="width: 800px; left: 239px; top: 54.5px; height: auto;" data-name="text-c29943" data-block-id="14f72ececda872c958ad095cdfb20f53"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 110%;" data-has-line-height="" data-placeholder-text="Text">
+<h2>On-off intermittency</h2>
+</div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 400px; top: 105.5px;" data-block-id="fcc9debbaf5be82b3b28bff2ef16592e"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="472.03343399222035" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="472.03343399222035" height="1" viewbox="0 0 472.03343399222035 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="472.03343399222035" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="472.03343399222035" y2="0"></line></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 278px; left: 0px; top: 315px;" data-name="text-850696" data-block-id="a983b253b6acfe2f91e40bab17d3b6f8"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12;">
+<p>Diffusively-coupled Rössler oscillators</p>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 726.546px; height: 532.8px; left: 342.727px; top: 144px; min-width: 1px; min-height: 1px;" data-name="image-458c04" data-block-id="c4bef101d1e5bfa61b7fd9067cca8251"><div class="sl-block-content" style="z-index: 13;"><img class="" data-natural-width="765" data-natural-height="561" data-lazy-loaded="" data-src="metastability-full-a44d2a/5bf8e954887b8da3b76f7323023b0909.png"></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 340px; top: 676.8px;" data-name="text-af3eac" data-block-id="927ba6da4e2b8623eaefc0a05fc33800"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14; background-color: rgb(255, 255, 255);" data-fragment-index="0">
+<p><span style="font-size:0.9em">Evidência em <em>Hramov, 2006</em></span></p>
+</div></div></section><section data-id="7bb3ee0bcc43a4a275dd702bdba8cbdd">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 240px; top: 54.5px; height: auto;" data-name="text-c29943" data-block-id="4a1884302cedf70bea0ac2df52c09783"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 110%;" data-has-line-height="" data-placeholder-text="Text">
+<h2>rOUND 1 - Interior crisis</h2>
+</div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 391.936px; top: 105.5px;" data-block-id="9ddc8d1d2b220861abfd2b64a0fb609e"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="496.9550057950305" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="496.9550057950305" height="1" viewbox="0 0 496.9550057950305 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="496.9550057950305" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="496.9550057950305" y2="0"></line></svg></div></div>
+
+
+
+
+
+
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-afdf8a" style="width: auto; height: auto;" data-block-id="3814ba2a4dec6729671f88f41fae8706"><div class="sl-block-content sl-block-group-content" style="transform-origin: 692.655px 644px 0px; z-index: 12;">
+<div class="sl-block" data-block-type="text" style="height: auto; width: 299.269px; left: 543.02px; top: 606px;" data-name="text-0ac58e" data-block-id="b1d40a5393f49a41bda13abc9bd25a44"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;" data-fragment-index="0">
+<p><span style="font-size:0.5em">Length of laminar period (between the bursts):</span></p>
+</div></div>
+<div class="sl-block" data-block-type="math" style="width: auto; height: auto; left: 614.841px; top: 642px;" data-name="math-ad1466" data-block-id="540328ef29eb24214a92ddc5ca58f54a"><div class="sl-block-content notranslate fragment" style="z-index: 14; font-size: 55%;" data-fragment-index="0"><div class="math-input">P(\tau) \propto e^{-\tau/\tau_0}</div></div></div>
+</div></div>
+
+
+
+
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-7ab5dd" style="width: auto; height: auto;" data-block-id="36a2529248ecac82c3b6db051a6c7245"><div class="sl-block-content sl-block-group-content" style="transform-origin: 400.001px 132px 0px; z-index: 15;">
+<div class="sl-block sl-block-group" data-block-type="group" data-name="group-7826a1" style="width: auto; height: auto;" data-block-id="d799b26ef7294b86fd6346076eba42fe"><div class="sl-block-content sl-block-group-content" style="transform-origin: 400.001px 132px 0px; z-index: 16;"><div class="sl-block sl-block-group" data-block-type="group" data-name="group-e5f6b2" style="width: auto; height: auto;" data-block-id="7f49ac8b855acbe61db0c217aa41ffe8"><div class="sl-block-content sl-block-group-content" style="transform-origin: 400.001px 132px 0px; z-index: 17;">
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 207.293px; left: 296.354px; top: 114px;" data-name="text-9046bc" data-block-id="779434bd6cfb4a5af870f06f12a9b44a"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 18;">
+<p><span style="font-size:0.7em">before crisis</span></p>
+</div></div>
+</div></div></div></div>
+
+</div></div>
+
+
+<div class="sl-block" data-block-type="image" style="width: 217.962px; height: 163.471px; left: 862.043px; top: 546.529px; min-width: 1px; min-height: 1px;" data-name="image-15ca6c" data-block-id="fb896536fdbe3d11c0256d33dca774e1"><div class="sl-block-content fragment" style="z-index: 19;" data-fragment-index="0"><img style="" data-natural-width="800" data-natural-height="600" data-lazy-loaded="" data-src="metastability-full-a44d2a/eb5011b280ae63e0286e4dd280b74d4d.png"></div></div>
+<div class="sl-block" data-block-type="video" style="min-width: 30px; min-height: 30px; width: 420px; height: 360px; left: 660.005px; top: 161.905px;" data-name="video-0482e7" data-block-id="2d083d049a0a262512a3f915713c8e88"><div class="sl-block-content" style="z-index: 20;" data-media-id="9767637" data-video-thumb="metastability-full-a44d2a/da92eed6dbfabeba92b05dc632a6eb4e.jpg"><video playsinline="" controls="controls" poster="metastability-full-a44d2a/da92eed6dbfabeba92b05dc632a6eb4e.jpg" data-paused-by-reveal="" data-lazy-loaded="" data-src="metastability-full-a44d2a/c1d42f20a0eea23e9855bbaab2177c30.mp4"></video></div></div>
+<div class="sl-block" data-block-type="video" style="min-width: 30px; min-height: 30px; width: 420px; height: 360px; left: 181.936px; top: 150px;" data-name="video-fdb03e" data-block-id="b72a760408af90cfe804cf9d38bb427a"><div class="sl-block-content" style="z-index: 21;" data-media-id="9767671" data-video-thumb="metastability-full-a44d2a/6f40662e567d6920a8096686ccd9ed57.jpg"><video playsinline="" controls="controls" poster="metastability-full-a44d2a/6f40662e567d6920a8096686ccd9ed57.jpg" data-paused-by-reveal="" data-lazy-loaded="" data-src="metastability-full-a44d2a/efe493071ddba5b3ba861c858a508297.mp4"></video></div></div>
+<div class="sl-block sl-block-group" data-block-type="group" style="width: auto; height: auto;" data-origin-id="7f49ac8b855acbe61db0c217aa41ffe8" data-block-id="526f940a4311bb84e7666be2961f9d32" data-name="group-a44e86"><div class="sl-block-content sl-block-group-content" style="transform-origin: 895.675px 143.905px 0px; z-index: 22;">
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 207.293px; left: 792.028px; top: 125.905px;" data-origin-id="779434bd6cfb4a5af870f06f12a9b44a" data-block-id="25fd01304a7253b23fd4c277970ae39f" data-name="text-52c6bb"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 23;">
+<p><span style="font-size:0.7em">after crisis</span></p>
+</div></div>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 240.925px; left: 220px; top: 539.668px;" data-name="text-703275" data-block-id="4b36faf515b4e4432fcdf647777036ea"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 24;">
+<p><span style="font-size:0.7em">Colors proportional to 1/speed of trajectories</span></p>
+</div></div>
+</section><section data-id="4a6dffd9c5d3400003c381577994cb9c">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 240px; top: 54.5px; height: auto;" data-name="text-c29943" data-block-id="76de2681f45a70b238093e8385675b55"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 110%;" data-has-line-height="" data-placeholder-text="Text">
+<h2>rOUND 1 - Interior crisis</h2>
+</div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 391.936px; top: 105.5px;" data-block-id="6abf063e75935186c94380f37625b5c5"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="496.9550057950305" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="496.9550057950305" height="1" viewbox="0 0 496.9550057950305 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="496.9550057950305" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="496.9550057950305" y2="0"></line></svg></div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="height: auto; width: 240.925px; left: 220px; top: 539.668px;" data-name="text-703275" data-block-id="38b6ed8e3468a36516d2e31b8872e45c"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 33;">
+<p><span style="font-size:0.7em">Colors proportional to 1/speed of trajectories</span></p>
+</div></div>
+<div class="sl-block" data-block-type="image" style="width: 806.4px; height: 438.9px; left: 236.8px; top: 100.768px; min-width: 1px; min-height: 1px;" data-name="image-d6905c" data-block-id="d0e3bbc206fc356f8832d06a63534b52"><div class="sl-block-content" style="z-index: 34;"><img style="" data-natural-width="1920" data-natural-height="1045" data-lazy-loaded="" data-src="metastability-full-a44d2a/17f7faa507150f9ae1068e82366bccd3.png"></div></div></section><section data-id="cab869ba4e40f226a8dd979176d1bd69">
+
+
+
+
+
+
+
+
+
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 239px; top: 54.5px; height: auto;" data-name="text-c29943" data-block-id="4a8b433b40c50df18d4b885a5a20cc48"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 10; padding: 5px; line-height: 1.17; font-size: 110%;" data-has-line-height="" data-placeholder-text="Text">
+<h2>rOUND 4 -Crawl-By</h2>
+</div></div>
+<div class="sl-block" data-block-type="line" data-name="line-29000e" style="width: auto; height: auto; left: 447.744px; top: 105.5px;" data-block-id="c3846834e421fb8940ca2df7f6c1e018"><div class="sl-block-content" data-line-x1="0" data-line-y1="0.0000028975152872590115" data-line-x2="377.2894339922203" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 11;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="377.2894339922203" height="1" viewbox="0 0 377.2894339922203 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0.0000028975152872590115" x2="377.2894339922203" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0.0000028975152872590115" x2="377.2894339922203" y2="0"></line></svg></div></div>
+
+
+
+
+
+<div class="sl-block" data-block-type="video" style="min-width: 30px; min-height: 30px; width: 626.702px; height: 470.027px; left: 307.756px; top: 150px;" data-name="video-7e6366" data-block-id="32bdc58d11980aba7e38fa9a580ee5a5"><div class="sl-block-content" style="z-index: 14;" data-media-id="9768377" data-video-thumb="metastability-full-a44d2a/9165043ea0b30db76da0c29127cccd88.jpg"><video playsinline="" controls="controls" data-paused-by-reveal="" poster="metastability-full-a44d2a/9165043ea0b30db76da0c29127cccd88.jpg" data-autoplay="" muted="" loop="loop" data-lazy-loaded="" data-src="metastability-full-a44d2a/66d3fb67b95dd1b9b18f5684f0696459.mp4"></video></div></div></section><section data-id="110a56da0238d9a2f5fdd20059f15783"><div class="sl-block" data-block-type="image" style="width: 1074.89px; height: 340px; left: 80px; top: 199.93px; min-width: 1px; min-height: 1px;" data-name="image-46d32b" data-block-id="2ae174ddd7e07e077283fc6577e5f20c"><div class="sl-block-content" style="z-index: 10;"><img class="" data-natural-width="2500" data-natural-height="1135" data-crop-x="0" data-crop-y="0" data-crop-width="1" data-crop-height="0.696721" style="left: 0px; top: 0px; width: 1075px; height: 488px;" data-lazy-loaded="" data-src="metastability-full-a44d2a/990b47328902088f8fdbfdcdb405da71.png"></div></div>
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 232.006px; top: 41px; height: auto;" data-name="text-c29943" data-block-id="35150abd2a2e52c098732fd6c4336b1d"><div class="sl-block-content" data-placeholder-tag="h2" style="text-align: center; z-index: 11; padding: 5px; line-height: 1.17; font-size: 160%;" data-has-line-height="" data-placeholder-text="Text"><p>Context-dependent formulations</p></div></div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; left: 308px; top: 102px;" data-name="line-eb27ff" data-block-id="a5633c83f1139633cd02774cc4f2a8e3"><div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="652" data-line-y2="0" data-line-color="#f2ede8" data-line-start-type="none" data-line-end-type="none" style="z-index: 12;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="652" height="1" viewbox="0 0 652 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="652" y2="0"></line><line class="line-element" stroke="#f2ede8" stroke-width="4" x1="0" y1="0" x2="652" y2="0"></line></svg></div></div></section></section>
+			</div>
+		</div>
+
+		<script>
+			var SLConfig = {"deck": {"id":2604564,"slug":"metastability-full-a44d2a","title":"Metastability SIAM 2023","description":"","width":1280,"height":720,"margin":0.05,"visibility":"self","published_at":"2020-11-27T13:47:48.491Z","sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/939a2ebc68de717e53c185b86f4f711e/thumb.jpg?1683987412","view_count":0,"user":{"id":1257988,"username":"kalelrossi","name":"Kalel Rossi","description":null,"thumbnail_url":"//graph.facebook.com/v2.6/2866732500037161/picture","account_type":"lite","team_id":null,"settings":{"id":4773914,"present_controls":true,"present_upsizing":true,"present_pointer":true,"present_notes":true,"default_deck_tag_id":null}},"background_transition":"fade","transition":"slide","theme_id":null,"theme_font":"overpass2","theme_color":"white-blue","auto_slide_interval":0,"comments_enabled":false,"forking_enabled":false,"rolling_links":false,"center":false,"shuffle":false,"should_loop":false,"share_notes":false,"slide_number":true,"slide_count":38,"rtl":false,"version":2,"collaborative":false,"deck_user_editor_limit":1,"data_updated_at":1683993495066,"font_typekit":null,"font_google":null,"time_limit":null,"navigation_mode":"default","upsizing_enabled":true,"notes":{"0c04055a9000524bec2ea3ea3a2238b4":"For continuous-time\nsystems without external perturbations, τ0 can be, for\ninstance, (i) the period of periodic oscillations, (ii) an\naverage period for chaotic oscillations, or (iii) a charac-\nteristic return time to equilibria (fixed points, when per-\nturbed) that can be obtained from the eigenvalues of the\nJacobian at those points [68]. For systems with exter-\nnal perturbations (driven systems), τ0 can be the period\nor a characteristic time of the forcing. In noisy systems,\ndescribed by stochastic differential equations, metastable\nbehaviors have an explicit timescale separation, and their\ncharacteristic times can be obtained from the eigenvalues\nof transfer operators [69, 70]. Finally, for discrete-time\nsystems, τ0 can be simply one iterate (i.e., the time-step)\n[67].","f60f9b5cdc97e1763909fa8215bb3203":"UP-DOWN: see Luczak, 2009 also","253963f9eef2c0d8ce99fc144a79f1ac":"point about stability or invariance is to counterpoint with Deco, 2019, who provide a def of brain state using attractors and stability, even though they are transient"}}};
+
+
+			// Use local fonts
+			SLConfig.fonts_url = 'lib/fonts/';
+		</script>
+
+		<script src="lib/reveal.js"></script>
+		<script src="lib/reveal-plugins.js"></script>
+		<script src="lib/offline.js"></script>
+
+		<!-- Initialize the presentation -->
+		<script>
+			Reveal.initialize({
+				width: 1280,
+				height: 720,
+				margin: 0.05,
+				
+
+				hash: true,
+				controls: true,
+				progress: true,
+				mouseWheel: false,
+				showNotes: false,
+				slideNumber: true,
+				fragmentInURL: true,
+
+				autoSlide: 0,
+				autoSlideStoppable: true,
+
+				autoAnimateMatcher: SL.deck.AutoAnimate.matcher,
+
+				center: false,
+				shuffle: false,
+				loop: false,
+				rtl: false,
+				navigationMode: "default",
+
+				transition: "slide",
+				backgroundTransition: "fade",
+
+				highlight: {
+					escapeHTML: false
+				},
+
+				plugins: [ RevealZoom, RevealNotes, RevealMarkdown, RevealHighlight ]
+			});
+		</script>
+
+		
+
+	</body>
+</html>
