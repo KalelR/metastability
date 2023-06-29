@@ -8,6 +8,25 @@ include("$(srcdir())/analyses/utils.jl")
 include("$(srcdir())/attractor_classification/classify_fixedpoints.jl")
 include("$(srcdir())/systems/ratemodel.jl")
 
+
+function run_heteroclinic_cycle_with_noise(; noise_strength=0.0, Ttr=50000, T=100000, Δt=1.0)
+    u0 = [-5, 0.031, -5, 0.03, -5, 0.03]
+    hcgh, params = heteroclinic_cycle(; η=noise_strength, T, rngseed=1, u0)
+    solver = noise_strength == 0.0 ? Vern9() : SKenCarp(); #vern9 is for deterministic, Skencarp is a good one for stochastic
+    sol = solve(hcgh, solver, maxiters=1e9, saveat=Ttr:Δt:T, abstol=1e-9, reltol=1e-9);
+    N = 3
+    logvars = @view sol[((1:N) .- 1) .* 2 .+ 1, :];
+    ogvars = map(x->z_to_s(x, params.Smax), logvars);
+    ts = sol.t; xs, ys, zs = collect(eachrow(ogvars))
+
+    fps = fixedpoints_ratemodel(params)
+    c1 = :green; c2 = :purple; c3=:red; fulltrajcolor=:black; saddle_colors = [c1, c2, c3]
+    traj_state_idxs_all, dwelltimes = dwelltimes_heteroclinicycle(xs, ys, zs, fps; neigh_th=0.001)
+    fp_colors, traj_colors = color_trajectory_hc(traj_state_idxs_all; c1, c2, c3, trajcolor=fulltrajcolor)
+    fig, axs = plot_heteroclinic_cycle(ts, xs, ys, zs, fps; fulltrajcolor=traj_colors, saddle_colors, title="noise strength = $(noise_strength)")
+end
+
+
 function plot_heteroclinic_cycle(ts, xs, ys, zs, fps; fulltrajcolor, saddle_colors, title="", azimuth=7, elevation=0.4, mksize=12, resolution=(800, 600))
     fig = Figure(; resolution); axs = [];
     
@@ -28,24 +47,6 @@ function plot_heteroclinic_cycle(ts, xs, ys, zs, fps; fulltrajcolor, saddle_colo
     return fig, axs 
 end
 
-function run_heteroclinic_cycle_with_noise(; noise_strength=0.0, Ttr=50000, T=100000, Δt=1.0)
-    u0 = [-5, 0.031, -5, 0.03, -5, 0.03]
-    hcgh, params = heteroclinic_cycle(; η=noise_strength, T, rngseed=1, u0)
-    solver = noise_strength == 0.0 ? Vern9() : SKenCarp()
-    # solver = noise_strength == 0.0 ? Vern9() : SOSRA()
-    sol = solve(hcgh, solver, maxiters=1e9, saveat=Ttr:Δt:T, abstol=1e-9, reltol=1e-9);
-    # sol = solve(hcgh, solver, maxiters=1e9, saveat=Ttr:Δt:T, abstol=1e-4, reltol=1e-4);
-    N = 3
-    logvars = @view sol[((1:N) .- 1) .* 2 .+ 1, :];
-    ogvars = map(x->z_to_s(x, params.Smax), logvars);
-    ts = sol.t; xs, ys, zs = collect(eachrow(ogvars))
-
-    fps = fixedpoints_ratemodel(params)
-    c1 = :green; c2 = :purple; c3=:red; fulltrajcolor=:black; saddle_colors = [c1, c2, c3]
-    traj_state_idxs_all, dwelltimes = dwelltimes_heteroclinicycle(xs, ys, zs, fps; neigh_th=0.001)
-    fp_colors, traj_colors = color_trajectory_hc(traj_state_idxs_all; c1, c2, c3, trajcolor=fulltrajcolor)
-    fig, axs = plot_heteroclinic_cycle(ts, xs, ys, zs, fps; fulltrajcolor=traj_colors, saddle_colors, title="noise strength = $(noise_strength)")
-end
 
 
 #0.01 is way too high 

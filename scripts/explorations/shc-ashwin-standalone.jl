@@ -2,9 +2,7 @@ using DrWatson
 @quickactivate
 using GLMakie, DifferentialEquations, RandomNumbers
 
-"""
-Eq. 18 in Ashwin, 2011
-"""
+# Eq. 18 in Ashwin, 2011
 @inbounds function ratemodel_rule_Z!(du, u, p, t)
     Smax = p.Smax; x₀ = p.x₀; I = p.I; gs = p.gs; τ = p.τ; ϵ = p.ϵ; α = p.α
     N = size(gs, 1)
